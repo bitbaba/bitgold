@@ -86,7 +86,8 @@ elif [ "$matrix" = "bitcoind" ]; then
 	export HOST=x86_64-unknown-linux-gnu 
 	export PACKAGES="bc python3-zmq" 
 	export DEP_OPTS="NO_QT=1 NO_UPNP=1 DEBUG=1" 
-	export RUN_TESTS=true GOAL="install" 
+	export RUN_TESTS=false
+	export GOAL="install"
 	export BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
 
 # No wallet
