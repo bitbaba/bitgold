@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Note: remember to switch to sources other than CN, e.g. US(united states) source 
+# and do `apt-get update' before building;
+
 # Travis env.
 export TRAVIS_BUILD_ID="TravisBuildId-0"
 export TRAVIS_BUILD_DIR=$(pwd)
