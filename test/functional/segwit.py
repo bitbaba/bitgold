@@ -12,7 +12,6 @@ from test_framework.script import CScript, OP_HASH160, OP_CHECKSIG, OP_0, hash16
 from io import BytesIO
 
 NODE_0 = 0
-NODE_1 = 1
 NODE_2 = 2
 WIT_V0 = 0
 WIT_V1 = 1
@@ -75,9 +74,7 @@ def find_unspent(node, min_value):
             return utxo
 
 class SegWitTest(BitcoinTestFramework):
-
-    def __init__(self):
-        super().__init__()
+    def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3
         self.extra_args = [["-walletprematurewitness", "-rpcserialversion=0"],
@@ -282,6 +279,9 @@ class SegWitTest(BitcoinTestFramework):
         assert(txid2 in template_txids)
         assert(txid3 in template_txids)
 
+        # Check that wtxid is properly reported in mempool entry
+        assert_equal(int(self.nodes[0].getmempoolentry(txid3)["wtxid"], 16), tx.calc_sha256(True))
+
         # Mine a block to clear the gbt cache again.
         self.nodes[0].generate(1)
 
@@ -459,12 +459,13 @@ class SegWitTest(BitcoinTestFramework):
         self.mine_and_test_listunspent(unsolvable_after_importaddress, 1)
         self.mine_and_test_listunspent(unseen_anytime, 0)
 
-        # addwitnessaddress should refuse to return a witness address if an uncompressed key is used or the address is
-        # not in the wallet
+        # addwitnessaddress should refuse to return a witness address if an uncompressed key is used
         # note that no witness address should be returned by unsolvable addresses
-        # the multisig_without_privkey_address will fail because its keys were not added with importpubkey
-        for i in uncompressed_spendable_address + uncompressed_solvable_address + unknown_address + unsolvable_address + [multisig_without_privkey_address]:
+        for i in uncompressed_spendable_address + uncompressed_solvable_address + unknown_address + unsolvable_address:
             assert_raises_jsonrpc(-4, "Public key or redeemscript not known to wallet, or the key is uncompressed", self.nodes[0].addwitnessaddress, i)
+
+        # addwitnessaddress should return a witness addresses even if keys are not in the wallet
+        self.nodes[0].addwitnessaddress(multisig_without_privkey_address)
 
         for i in compressed_spendable_address + compressed_solvable_address:
             witaddress = self.nodes[0].addwitnessaddress(i)
@@ -542,7 +543,7 @@ class SegWitTest(BitcoinTestFramework):
         # addwitnessaddress should refuse to return a witness address if an uncompressed key is used
         # note that a multisig address returned by addmultisigaddress is not solvable until it is added with importaddress
         # premature_witaddress are not accepted until the script is added with addwitnessaddress first
-        for i in uncompressed_spendable_address + uncompressed_solvable_address + premature_witaddress + [compressed_solvable_address[1]]:
+        for i in uncompressed_spendable_address + uncompressed_solvable_address + premature_witaddress:
             # This will raise an exception
             assert_raises_jsonrpc(-4, "Public key or redeemscript not known to wallet, or the key is uncompressed", self.nodes[0].addwitnessaddress, i)
 

@@ -5,6 +5,7 @@
 #include "consensus/validation.h"
 #include "wallet/coincontrol.h"
 #include "wallet/feebumper.h"
+#include "wallet/fees.h"
 #include "wallet/wallet.h"
 #include "policy/fees.h"
 #include "policy/policy.h"
@@ -76,12 +77,12 @@ CFeeBumper::CFeeBumper(const CWallet *pWallet, const uint256 txidIn, const CCoin
     vErrors.clear();
     bumpedTxid.SetNull();
     AssertLockHeld(pWallet->cs_wallet);
-    if (!pWallet->mapWallet.count(txid)) {
+    auto it = pWallet->mapWallet.find(txid);
+    if (it == pWallet->mapWallet.end()) {
         vErrors.push_back("Invalid or non-wallet transaction id");
         currentResult = BumpFeeResult::INVALID_ADDRESS_OR_KEY;
         return;
     }
-    auto it = pWallet->mapWallet.find(txid);
     const CWalletTx& wtx = it->second;
 
     if (!preconditionChecks(pWallet, wtx)) {
@@ -156,7 +157,7 @@ CFeeBumper::CFeeBumper(const CWallet *pWallet, const uint256 txidIn, const CCoin
             currentResult = BumpFeeResult::INVALID_PARAMETER;
             return;
         }
-        CAmount requiredFee = CWallet::GetRequiredFee(maxNewTxSize);
+        CAmount requiredFee = GetRequiredFee(maxNewTxSize);
         if (totalFee < requiredFee) {
             vErrors.push_back(strprintf("Insufficient totalFee (cannot be less than required fee %s)",
                                                                 FormatMoney(requiredFee)));
@@ -166,7 +167,7 @@ CFeeBumper::CFeeBumper(const CWallet *pWallet, const uint256 txidIn, const CCoin
         nNewFee = totalFee;
         nNewFeeRate = CFeeRate(totalFee, maxNewTxSize);
     } else {
-        nNewFee = CWallet::GetMinimumFee(maxNewTxSize, coin_control, mempool, ::feeEstimator, nullptr /* FeeCalculation */);
+        nNewFee = GetMinimumFee(maxNewTxSize, coin_control, mempool, ::feeEstimator, nullptr /* FeeCalculation */);
         nNewFeeRate = CFeeRate(nNewFee, maxNewTxSize);
 
         // New fee rate must be at least old rate + minimum incremental relay rate
@@ -193,7 +194,7 @@ CFeeBumper::CFeeBumper(const CWallet *pWallet, const uint256 txidIn, const CCoin
     // This may occur if the user set TotalFee or paytxfee too low, if fallbackfee is too low, or, perhaps,
     // in a rare situation where the mempool minimum fee increased significantly since the fee estimation just a
     // moment earlier. In this case, we report an error to the user, who may use totalFee to make an adjustment.
-    CFeeRate minMempoolFeeRate = mempool.GetMinFee(GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000);
+    CFeeRate minMempoolFeeRate = mempool.GetMinFee(gArgs.GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000);
     if (nNewFeeRate.GetFeePerK() < minMempoolFeeRate.GetFeePerK()) {
         vErrors.push_back(strprintf("New fee rate (%s) is less than the minimum fee rate (%s) to get into the mempool. totalFee value should to be at least %s or settxfee value should be at least %s to add transaction.", FormatMoney(nNewFeeRate.GetFeePerK()), FormatMoney(minMempoolFeeRate.GetFeePerK()), FormatMoney(minMempoolFeeRate.GetFee(maxNewTxSize)), FormatMoney(minMempoolFeeRate.GetFeePerK())));
         currentResult = BumpFeeResult::WALLET_ERROR;
@@ -241,12 +242,13 @@ bool CFeeBumper::commit(CWallet *pWallet)
     if (!vErrors.empty() || currentResult != BumpFeeResult::OK) {
         return false;
     }
-    if (txid.IsNull() || !pWallet->mapWallet.count(txid)) {
+    auto it = txid.IsNull() ? pWallet->mapWallet.end() : pWallet->mapWallet.find(txid);
+    if (it == pWallet->mapWallet.end()) {
         vErrors.push_back("Invalid or non-wallet transaction id");
         currentResult = BumpFeeResult::MISC_ERROR;
         return false;
     }
-    CWalletTx& oldWtx = pWallet->mapWallet[txid];
+    CWalletTx& oldWtx = it->second;
 
     // make sure the transaction still has no descendants and hasn't been mined in the meantime
     if (!preconditionChecks(pWallet, oldWtx)) {

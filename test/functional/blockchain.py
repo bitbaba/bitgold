@@ -21,7 +21,7 @@ from decimal import Decimal
 import http.client
 import subprocess
 
-from test_framework.test_framework import (BitcoinTestFramework, BITCOIND_PROC_WAIT_TIMEOUT)
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises,
@@ -30,16 +30,13 @@ from test_framework.util import (
     assert_is_hash_string,
 )
 
-
 class BlockchainTest(BitcoinTestFramework):
-
-    def __init__(self):
-        super().__init__()
-        self.setup_clean_chain = False
+    def set_test_params(self):
         self.num_nodes = 1
-        self.extra_args = [['-stopatheight=207']]
+        self.extra_args = [['-stopatheight=207', '-prune=1']]
 
     def run_test(self):
+        self._test_getblockchaininfo()
         self._test_getchaintxstats()
         self._test_gettxoutsetinfo()
         self._test_getblockheader()
@@ -47,6 +44,33 @@ class BlockchainTest(BitcoinTestFramework):
         self._test_getnetworkhashps()
         self._test_stopatheight()
         assert self.nodes[0].verifychain(4, 0)
+
+    def _test_getblockchaininfo(self):
+        self.log.info("Test getblockchaininfo")
+
+        keys = [
+            'bestblockhash',
+            'bip9_softforks',
+            'blocks',
+            'chain',
+            'chainwork',
+            'difficulty',
+            'headers',
+            'mediantime',
+            'pruned',
+            'softforks',
+            'verificationprogress',
+        ]
+        res = self.nodes[0].getblockchaininfo()
+        # result should have pruneheight and default keys if pruning is enabled
+        assert_equal(sorted(res.keys()), sorted(['pruneheight'] + keys))
+        # pruneheight should be greater or equal to 0
+        assert res['pruneheight'] >= 0
+
+        self.restart_node(0, ['-stopatheight=207'])
+        res = self.nodes[0].getblockchaininfo()
+        # should have exact keys
+        assert_equal(sorted(res.keys()), keys)
 
     def _test_getchaintxstats(self):
         chaintxstats = self.nodes[0].getchaintxstats(1)
@@ -139,14 +163,14 @@ class BlockchainTest(BitcoinTestFramework):
         self.nodes[0].generate(6)
         assert_equal(self.nodes[0].getblockcount(), 206)
         self.log.debug('Node should not stop at this height')
-        assert_raises(subprocess.TimeoutExpired, lambda: self.bitcoind_processes[0].wait(timeout=3))
+        assert_raises(subprocess.TimeoutExpired, lambda: self.nodes[0].process.wait(timeout=3))
         try:
             self.nodes[0].generate(1)
         except (ConnectionError, http.client.BadStatusLine):
             pass  # The node already shut down before response
         self.log.debug('Node should stop at this height...')
-        self.bitcoind_processes[0].wait(timeout=BITCOIND_PROC_WAIT_TIMEOUT)
-        self.nodes[0] = self.start_node(0, self.options.tmpdir)
+        self.nodes[0].wait_until_stopped()
+        self.start_node(0)
         assert_equal(self.nodes[0].getblockcount(), 207)
 
 

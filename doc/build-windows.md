@@ -6,6 +6,9 @@ Below are some notes on how to build Bitcoin Core for Windows.
 Most developers use cross-compilation from Ubuntu to build executables for
 Windows. This is also used to build the release binaries.
 
+Currently only building on Ubuntu Trusty 14.04 is supported.
+Other versions are unsupported or known to be broken (e.g. Ubuntu Xenial 16.04).
+
 While there are potentially a number of ways to build on Windows (for example using msys / mingw-w64),
 using the Windows Subsystem For Linux is the most straightforward. If you are building with
 another method, please contribute the instructions here for others who are running versions
@@ -58,6 +61,8 @@ First, install the general dependencies:
 A host toolchain (`build-essential`) is necessary because some dependency
 packages (such as `protobuf`) need to build host utilities that are used in the
 build process.
+
+See also: [dependencies.md](dependencies.md).
 
 ## Building for 64-bit Windows
 

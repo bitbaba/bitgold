@@ -17,10 +17,8 @@ from test_framework.util import (
     p2p_port,
 )
 
-
 class NetTest(BitcoinTestFramework):
-    def __init__(self):
-        super().__init__()
+    def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
 
@@ -85,7 +83,7 @@ class NetTest(BitcoinTestFramework):
         added_nodes = self.nodes[0].getaddednodeinfo(ip_port)
         assert_equal(len(added_nodes), 1)
         assert_equal(added_nodes[0]['addednode'], ip_port)
-        # check that a non-existant node returns an error
+        # check that a non-existent node returns an error
         assert_raises_jsonrpc(-24, "Node has not been added",
                               self.nodes[0].getaddednodeinfo, '1.1.1.1')
 
