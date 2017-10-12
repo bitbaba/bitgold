@@ -7,6 +7,7 @@
 from base64 import b64encode
 from binascii import hexlify, unhexlify
 from decimal import Decimal, ROUND_DOWN
+import hashlib
 import json
 import logging
 import os
@@ -50,6 +51,8 @@ def assert_raises(exc, fun, *args, **kwds):
 def assert_raises_message(exc, message, fun, *args, **kwds):
     try:
         fun(*args, **kwds)
+    except JSONRPCException:
+        raise AssertionError("Use assert_raises_rpc_error() to test RPC failures")
     except exc as e:
         if message is not None and message not in e.error['message']:
             raise AssertionError("Expected substring not found:" + e.error['message'])
@@ -82,7 +85,7 @@ def assert_raises_process_error(returncode, output, fun, *args, **kwds):
     else:
         raise AssertionError("No exception raised")
 
-def assert_raises_jsonrpc(code, message, fun, *args, **kwds):
+def assert_raises_rpc_error(code, message, fun, *args, **kwds):
     """Run an RPC and verify that a specific JSONRPC exception code and message is raised.
 
     Calls function `fun` with arguments `args` and `kwds`. Catches a JSONRPCException
@@ -98,6 +101,13 @@ def assert_raises_jsonrpc(code, message, fun, *args, **kwds):
         args*: positional arguments for the function.
         kwds**: named arguments for the function.
     """
+    assert try_rpc(code, message, fun, *args, **kwds), "No exception raised"
+
+def try_rpc(code, message, fun, *args, **kwds):
+    """Tries to run an rpc command.
+
+    Test against error code and message if the rpc fails.
+    Returns whether a JSONRPCException was raised."""
     try:
         fun(*args, **kwds)
     except JSONRPCException as e:
@@ -106,10 +116,11 @@ def assert_raises_jsonrpc(code, message, fun, *args, **kwds):
             raise AssertionError("Unexpected JSONRPC error code %i" % e.error["code"])
         if (message is not None) and (message not in e.error['message']):
             raise AssertionError("Expected substring not found:" + e.error['message'])
+        return True
     except Exception as e:
         raise AssertionError("Unexpected exception raised: " + type(e).__name__)
     else:
-        raise AssertionError("No exception raised")
+        return False
 
 def assert_is_hex_string(string):
     try:
@@ -172,6 +183,13 @@ def count_bytes(hex_string):
 
 def bytes_to_hex_str(byte_str):
     return hexlify(byte_str).decode('ascii')
+
+def hash256(byte_str):
+    sha256 = hashlib.sha256()
+    sha256.update(byte_str)
+    sha256d = hashlib.sha256()
+    sha256d.update(sha256.digest())
+    return sha256d.digest()[::-1]
 
 def hex_str_to_bytes(hex_str):
     return unhexlify(hex_str.encode('ascii'))

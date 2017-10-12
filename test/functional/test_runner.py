@@ -98,6 +98,7 @@ BASE_SCRIPTS= [
     'disconnect_ban.py',
     'decodescript.py',
     'blockchain.py',
+    'deprecated_rpc.py',
     'disablewallet.py',
     'net.py',
     'keypool.py',
@@ -122,6 +123,7 @@ BASE_SCRIPTS= [
     'uptime.py',
     'resendwallettransactions.py',
     'minchainwork.py',
+    'p2p-fingerprint.py',
 ]
 
 EXTENDED_SCRIPTS = [
@@ -147,7 +149,7 @@ EXTENDED_SCRIPTS = [
     'example_test.py',
     'txn_doublespend.py',
     'txn_clone.py --mineblock',
-    'forknotify.py',
+    'notifications.py',
     'invalidateblock.py',
     'p2p-acceptblock.py',
     'replace-by-fee.py',
