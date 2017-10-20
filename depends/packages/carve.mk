@@ -1,9 +1,9 @@
 package=carve
-$(package)_version=5.3.4
+$(package)_version=5.3.4.2
 $(package)_download_path=https://codeload.github.com/bitbaba/carve/tar.gz
-$(package)_download_file=5.3.4
+$(package)_download_file=5.3.4.2
 $(package)_file_name=$(package)-$($(package)_version).tar.gz
-$(package)_sha256_hash=92e8d4b4d4244a40c231ff34446076ed07a34d3c52342f71710d738eab379e27
+$(package)_sha256_hash=ba0085307d8f1e3cf8c6569598f26eb926ec91640edc19ae6c9a2bb1f3f010e1
 
 define $(package)_preprocess_cmds
   ./autogen.sh
