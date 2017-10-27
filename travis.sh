@@ -12,6 +12,9 @@ export TRAVIS_JOB_NUMBER=JobNo.1
 
 # Matrix
 #matrix="32-bit + bash"
+#matrix="Win32Gui"
+matrix="bitcoind"
+
 
 # matrix="Win32"
 # ref: a lite addon for mingw-w64  https://github.com/meganz/mingw-std-threads
@@ -22,7 +25,6 @@ export TRAVIS_JOB_NUMBER=JobNo.1
 # sudo update-alternatives --config i686-w64-mingw32-gcc
 # sudo update-alternatives --config i686-w64-mingw32-g++
 # Note: if --enable-gui, RUN_TESTs=false is recommended for Win32Gui, otherwise QtTest will fail.
-matrix="Win32Gui"
 
 export MAKEJOBS=-j1
 export RUN_TESTS=false
@@ -91,7 +93,10 @@ elif [ "$matrix" = "bitcoind" ]; then
 	export DEP_OPTS="NO_QT=1 NO_UPNP=1 DEBUG=1" 
 	export RUN_TESTS=false
 	export GOAL="install"
-	export BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
+	# for debug
+	export BITCOIN_CONFIG="--enable-debug --enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
+	# no-debug
+	#export BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
 
 # No wallet
 elif [ "$matrix" = "No wallet" ]; then
