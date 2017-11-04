@@ -180,6 +180,7 @@ TxConfirmStats::TxConfirmStats(const std::vector<double>& defaultBuckets,
     : buckets(defaultBuckets), bucketMap(defaultBucketMap)
 {
     decay = _decay;
+    assert(_scale != 0 && "_scale must be non-zero");
     scale = _scale;
     confAvg.resize(maxPeriods);
     for (unsigned int i = 0; i < maxPeriods; i++) {
@@ -418,6 +419,9 @@ void TxConfirmStats::Read(CAutoFile& filein, int nFileVersion, size_t numBuckets
             throw std::runtime_error("Corrupt estimates file. Decay must be between 0 and 1 (non-inclusive)");
         }
         filein >> scale;
+        if (scale == 0) {
+            throw std::runtime_error("Corrupt estimates file. Scale must be non-zero");
+        }
     }
 
     filein >> avg;
@@ -503,6 +507,7 @@ void TxConfirmStats::removeTx(unsigned int entryHeight, unsigned int nBestSeenHe
         }
     }
     if (!inBlock && (unsigned int)blocksAgo >= scale) { // Only counts as a failure if not confirmed for entire period
+        assert(scale != 0);
         unsigned int periodsAgo = blocksAgo / scale;
         for (size_t i = 0; i < periodsAgo && i < failAvg.size(); i++) {
             failAvg[i][bucketindex]++;
@@ -543,16 +548,13 @@ CBlockPolicyEstimator::CBlockPolicyEstimator()
     bucketMap[INF_FEERATE] = bucketIndex;
     assert(bucketMap.size() == buckets.size());
 
-    feeStats = new TxConfirmStats(buckets, bucketMap, MED_BLOCK_PERIODS, MED_DECAY, MED_SCALE);
-    shortStats = new TxConfirmStats(buckets, bucketMap, SHORT_BLOCK_PERIODS, SHORT_DECAY, SHORT_SCALE);
-    longStats = new TxConfirmStats(buckets, bucketMap, LONG_BLOCK_PERIODS, LONG_DECAY, LONG_SCALE);
+    feeStats = std::unique_ptr<TxConfirmStats>(new TxConfirmStats(buckets, bucketMap, MED_BLOCK_PERIODS, MED_DECAY, MED_SCALE));
+    shortStats = std::unique_ptr<TxConfirmStats>(new TxConfirmStats(buckets, bucketMap, SHORT_BLOCK_PERIODS, SHORT_DECAY, SHORT_SCALE));
+    longStats = std::unique_ptr<TxConfirmStats>(new TxConfirmStats(buckets, bucketMap, LONG_BLOCK_PERIODS, LONG_DECAY, LONG_SCALE));
 }
 
 CBlockPolicyEstimator::~CBlockPolicyEstimator()
 {
-    delete feeStats;
-    delete shortStats;
-    delete longStats;
 }
 
 void CBlockPolicyEstimator::processTransaction(const CTxMemPoolEntry& entry, bool validFeeEstimate)
@@ -685,16 +687,16 @@ CFeeRate CBlockPolicyEstimator::estimateRawFee(int confTarget, double successThr
     double sufficientTxs = SUFFICIENT_FEETXS;
     switch (horizon) {
     case FeeEstimateHorizon::SHORT_HALFLIFE: {
-        stats = shortStats;
+        stats = shortStats.get();
         sufficientTxs = SUFFICIENT_TXS_SHORT;
         break;
     }
     case FeeEstimateHorizon::MED_HALFLIFE: {
-        stats = feeStats;
+        stats = feeStats.get();
         break;
     }
     case FeeEstimateHorizon::LONG_HALFLIFE: {
-        stats = longStats;
+        stats = longStats.get();
         break;
     }
     default: {
@@ -997,12 +999,9 @@ bool CBlockPolicyEstimator::Read(CAutoFile& filein)
             }
 
             // Destroy old TxConfirmStats and point to new ones that already reference buckets and bucketMap
-            delete feeStats;
-            delete shortStats;
-            delete longStats;
-            feeStats = fileFeeStats.release();
-            shortStats = fileShortStats.release();
-            longStats = fileLongStats.release();
+            feeStats = std::move(fileFeeStats);
+            shortStats = std::move(fileShortStats);
+            longStats = std::move(fileLongStats);
 
             nBestSeenHeight = nFileBestSeenHeight;
             historicalFirst = nFileHistoricalFirst;
