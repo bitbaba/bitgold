@@ -5,6 +5,8 @@
 #ifndef BITCOIN_RPC_BLOCKCHAIN_H
 #define BITCOIN_RPC_BLOCKCHAIN_H
 
+#include "uint256.h"
+
 class CBlock;
 class CBlockIndex;
 class UniValue;
@@ -32,6 +34,9 @@ UniValue mempoolToJSON(bool fVerbose = false);
 
 /** Block header to JSON */
 UniValue blockheaderToJSON(const CBlockIndex* blockindex);
+
+/** Get Serialized Utxo Hash */
+uint256 GetHashUtxo();
 
 #endif
 
