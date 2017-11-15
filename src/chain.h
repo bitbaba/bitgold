@@ -212,6 +212,7 @@ public:
     uint32_t nTime;
     uint32_t nBits;
     uint32_t nNonce;
+    uint256 hashUtxo;
 
     //! (memory only) Sequential id assigned to distinguish order in which blocks are received.
     int32_t nSequenceId;
@@ -240,6 +241,7 @@ public:
         nTime          = 0;
         nBits          = 0;
         nNonce         = 0;
+        hashUtxo       = uint256();
     }
 
     CBlockIndex()
@@ -256,6 +258,7 @@ public:
         nTime          = block.nTime;
         nBits          = block.nBits;
         nNonce         = block.nNonce;
+        hashUtxo       = block.hashUtxo;
     }
 
     CDiskBlockPos GetBlockPos() const {
@@ -286,6 +289,7 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
+        block.hashUtxo       = hashUtxo;
         return block;
     }
 
@@ -322,9 +326,10 @@ public:
 
     std::string ToString() const
     {
-        return strprintf("CBlockIndex(pprev=%p, nHeight=%d, merkle=%s, hashBlock=%s)",
+        return strprintf("CBlockIndex(pprev=%p, nHeight=%d, merkle=%s, utxo=%s, hashBlock=%s)",
             pprev, nHeight,
             hashMerkleRoot.ToString(),
+            hashUtxo.ToString(),
             GetBlockHash().ToString());
     }
 
@@ -405,6 +410,7 @@ public:
         READWRITE(nTime);
         READWRITE(nBits);
         READWRITE(nNonce);
+        READWRITE(hashUtxo);
     }
 
     uint256 GetBlockHash() const
@@ -416,6 +422,7 @@ public:
         block.nTime           = nTime;
         block.nBits           = nBits;
         block.nNonce          = nNonce;
+        block.hashUtxo        = hashUtxo;
         return block.GetHash();
     }
 

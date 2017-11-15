@@ -31,6 +31,8 @@ struct CCheckpointData {
     MapCheckpoints mapCheckpoints;
 };
 
+typedef CCheckpointData CBasepointData;
+
 struct ChainTxData {
     int64_t nTime;
     int64_t nTxCount;
@@ -95,6 +97,7 @@ protected:
     bool fRequireStandard;
     bool fMineBlocksOnDemand;
     CCheckpointData checkpointData;
+    CBasepointData basepointData;
     ChainTxData chainTxData;
 };
 
