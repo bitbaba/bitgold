@@ -949,7 +949,7 @@ uint256 GetHashUtxo()
 {
     CCoinsStats stats;
     FlushStateToDisk();
-    if (GetUTXOStats(pcoinsdbview, stats)) {
+    if (GetUTXOStats(pcoinsdbview.get(), stats)) {
         return stats.hashSerialized;
     } else {
         throw JSONRPCError(RPC_INTERNAL_ERROR, "Unable to read UTXO set");
