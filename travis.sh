@@ -33,7 +33,7 @@ export BOOST_TEST_RANDOM=$(date +%s)
 export CCACHE_SIZE=100M
 export CCACHE_TEMPDIR=/tmp/.ccache-temp
 export CCACHE_COMPRESS=1
-export BASE_OUTDIR=~/workspace/built
+export BASE_OUTDIR=$HOME/workspace/built
 export SDK_URL=https://bitcoincore.org/depends-sources/sdks
 export PYTHON_DEBUG=1
 export WINEDEBUG=fixme-all
@@ -183,7 +183,7 @@ if [ "$CHECK_DOC" = 1 -a "$TRAVIS_REPO_SLUG" = "bitcoin/bitcoin" -a "$TRAVIS_PUL
 	contrib/verify-commits/verify-commits.sh; 
 fi
 
-export TRAVIS_COMMIT_LOG=`git log --format=fuller -1`
+export TRAVIS_COMMIT_LOG="$(git log --format=fuller -1)"
 
 if [ -n "$USE_SHELL" ]; then 
 	export CONFIG_SHELL="$USE_SHELL"; 
