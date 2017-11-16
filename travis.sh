@@ -12,8 +12,8 @@ export TRAVIS_JOB_NUMBER=JobNo.1
 
 # Matrix
 #matrix="32-bit + bash"
-#matrix="Win32Gui"
-matrix="bitcoind"
+matrix="Win32Gui"
+#matrix="bitcoind"
 
 
 # matrix="Win32"
@@ -55,7 +55,7 @@ elif [ "$matrix" = "Win32" ]; then
 	export PACKAGES="python3 nsis g++-mingw-w64-i686 wine1.6 bc" 
 	export RUN_TESTS=true 
 	export GOAL="install" 
-	export BITCOIN_CONFIG="--enable-reduce-exports"
+	export BITCOIN_CONFIG="--disable-tests --enable-reduce-exports"
 
 # Win32Gui
 elif [ "$matrix" = "Win32Gui" ]; then
@@ -64,7 +64,7 @@ elif [ "$matrix" = "Win32Gui" ]; then
 	export PACKAGES="python3 nsis g++-mingw-w64-i686 wine1.6 bc" 
 	export RUN_TESTS=false
 	export GOAL="deploy" 
-	export BITCOIN_CONFIG="--with-gui --enable-reduce-exports"
+	export BITCOIN_CONFIG="--with-gui --disable-tests --enable-reduce-exports"
 
 # 32-bit + dash
 elif [ "$matrix" = "32-bit + bash" ]; then
