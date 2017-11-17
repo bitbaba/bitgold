@@ -11,9 +11,9 @@ export TRAVIS_REPO_SLUG="username/reponame"
 export TRAVIS_JOB_NUMBER=JobNo.1
 
 # Matrix
-#matrix="32-bit + bash"
-matrix="Win32Gui"
+#matrix="Win32Gui"
 #matrix="bitcoind"
+matrix="bitcoindWithoutWallet"
 
 
 # matrix="Win32"
@@ -99,13 +99,13 @@ elif [ "$matrix" = "bitcoind" ]; then
 	#export BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
 
 # No wallet
-elif [ "$matrix" = "No wallet" ]; then
+elif [ "$matrix" = "bitcoindWithoutWallet" ]; then
 	export HOST=x86_64-unknown-linux-gnu 
-	export PACKAGES="python3 xvfb" 
-	export DEP_OPTS="NO_WALLET=1" 
-	export RUN_TESTS=true 
+	export PACKAGES="bc python3 xvfb"
+	export DEP_OPTS="NO_QT=1 DEBUG=1 NO_WALLET=1"
+	export RUN_TESTS=false
 	export GOAL="install" 
-	export BITCOIN_CONFIG="--enable-glibc-back-compat --enable-reduce-exports"
+	export BITCOIN_CONFIG="--without-gui --enable-debug --disable-tests --enable-zmq --enable-glibc-back-compat --enable-reduce-exports --disable-wallet"
 
 # Cross-Mac
 elif [ "$matrix" = "Cross-Mac" ]; then
