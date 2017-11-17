@@ -12,8 +12,8 @@ export TRAVIS_JOB_NUMBER=JobNo.1
 
 # Matrix
 #matrix="Win32Gui"
-#matrix="bitcoind"
-matrix="bitcoindWithoutWallet"
+matrix="bitcoind"
+#matrix="bitcoindWithoutWallet"
 
 
 # matrix="Win32"
