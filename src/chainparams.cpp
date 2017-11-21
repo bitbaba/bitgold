@@ -94,7 +94,7 @@ public:
         consensus.BIP65Height = 0; // 0000000a49e3ce0f6623d6e4a2fbd8b3ab81c7bd1bb5df60b592dfe7fbcc81b0
         consensus.BIP66Height = 0; // 0000000a49e3ce0f6623d6e4a2fbd8b3ab81c7bd1bb5df60b592dfe7fbcc81b0
 
-        consensus.powLimit = uint256S("0x0000000fffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = false;
