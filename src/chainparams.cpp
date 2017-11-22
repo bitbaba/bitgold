@@ -22,10 +22,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
     txNew.nVersion = 1;
     txNew.vin.resize(1);
     txNew.vout.resize(1);
-    txNew.vin[0].scriptSig = CScript()
-	<< CScriptNum(0)
-	<< CScriptNum(1509699945)
-	<< std::vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
+    txNew.vin[0].scriptSig = (CScript() << 0 <<CScriptNum(0)) + (CScript() << std::vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp)));
     txNew.vout[0].nValue = genesisReward;
     txNew.vout[0].scriptPubKey = genesisOutputScript;
 
@@ -88,11 +85,11 @@ public:
     CMainParams() {
         strNetworkID = "main";
         consensus.nSubsidyHalvingInterval = 210000;
-        consensus.BIP16Height = 0; // 0000000a49e3ce0f6623d6e4a2fbd8b3ab81c7bd1bb5df60b592dfe7fbcc81b0
+        consensus.BIP16Height = 0; // 000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07
         consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x0000000a49e3ce0f6623d6e4a2fbd8b3ab81c7bd1bb5df60b592dfe7fbcc81b0");
-        consensus.BIP65Height = 0; // 0000000a49e3ce0f6623d6e4a2fbd8b3ab81c7bd1bb5df60b592dfe7fbcc81b0
-        consensus.BIP66Height = 0; // 0000000a49e3ce0f6623d6e4a2fbd8b3ab81c7bd1bb5df60b592dfe7fbcc81b0
+        consensus.BIP34Hash = uint256S("0x000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07");
+        consensus.BIP65Height = 0; // 000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07
+        consensus.BIP66Height = 0; // 000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07
 
         consensus.powLimit = uint256S("0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
@@ -118,7 +115,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514736000; // November 15th, 2018
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000000000fffffff");
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000000000000fffff");
 
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid.SetNull();
@@ -136,10 +133,10 @@ public:
         nDefaultPort = 30333;
         nPruneAfterHeight = 105200; // about 2 years
 
-        genesis = CreateGenesisBlock(1509526800/*20171101-170000*/, 314295870/*nonce*/, 0x1d0a901d/*bits*/, VERSIONBITS_TOP_BITS/*version*/, 50 * COIN/*subsidy*/);
+        genesis = CreateGenesisBlock(1509526800/*20171101-170000*/, 2749520/*nonce*/, 0x1e0f901d/*bits*/, VERSIONBITS_TOP_BITS/*version*/, 50 * COIN/*subsidy*/);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000000a49e3ce0f6623d6e4a2fbd8b3ab81c7bd1bb5df60b592dfe7fbcc81b0"));
-        assert(genesis.hashMerkleRoot == uint256S("0x824c6bf0092259ffeb9e430d61c89b21739c00fd0f0cc53688be1fa8d4a48927"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07"));
+        assert(genesis.hashMerkleRoot == uint256S("0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a"));
 
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,38);
@@ -163,13 +160,13 @@ public:
 
         checkpointData = (CCheckpointData) {
             {
-                {     0, uint256S("0x0000000a49e3ce0f6623d6e4a2fbd8b3ab81c7bd1bb5df60b592dfe7fbcc81b0")},
+                {     0, uint256S("0x000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07")},
             }
         };
 
         basepointData = (CBasepointData) {
             {
-                {     0, uint256S("0x0000000a49e3ce0f6623d6e4a2fbd8b3ab81c7bd1bb5df60b592dfe7fbcc81b0")},
+                {     0, uint256S("0x000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07")},
             }
         };
 

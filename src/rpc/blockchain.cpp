@@ -60,14 +60,14 @@ double GetDifficulty(const CBlockIndex* blockindex)
     int nShift = (blockindex->nBits >> 24) & 0xff;
 
     double dDiff =
-        (double)0x000a901d / (double)(blockindex->nBits & 0x00ffffff);
+        (double)0x000f901d / (double)(blockindex->nBits & 0x00fffff);
 
-    while (nShift < 29)
+    while (nShift < 0x1e) // 0x1e0f901d
     {
         dDiff *= 256.0;
         nShift++;
     }
-    while (nShift > 29)
+    while (nShift > 0x1e) // 0x1e0f901d
     {
         dDiff /= 256.0;
         nShift--;
