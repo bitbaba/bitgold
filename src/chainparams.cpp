@@ -34,7 +34,6 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
     genesis.vtx.push_back(MakeTransactionRef(std::move(txNew)));
     genesis.hashPrevBlock.SetNull();
     genesis.hashMerkleRoot = BlockMerkleRoot(genesis);
-    genesis.hashUtxo.SetNull();
     return genesis;
 }
 
@@ -47,7 +46,6 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  *        ver=0x20000000,
  *        hashPrevBlock=0000000000000000000000000000000000000000000000000000000000000000,
  *        hashMerkleRoot=824c6bf0092259ffeb9e430d61c89b21739c00fd0f0cc53688be1fa8d4a48927,
- *        hashUtxo=0000000000000000000000000000000000000000000000000000000000000000,
  *        nTime=1509526800,
  *        nBits=1d0a901d,
  *        nNonce=314295870,

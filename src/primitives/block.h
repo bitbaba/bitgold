@@ -27,7 +27,6 @@ public:
     uint32_t nTime;
     uint32_t nBits;
     uint32_t nNonce;
-    uint256 hashUtxo;
 
     CBlockHeader()
     {
@@ -44,7 +43,6 @@ public:
         READWRITE(nTime);
         READWRITE(nBits);
         READWRITE(nNonce);
-        READWRITE(hashUtxo);
     }
 
     void SetNull()
@@ -55,7 +53,6 @@ public:
         nTime = 0;
         nBits = 0;
         nNonce = 0;
-        hashUtxo.SetNull();
     }
 
     bool IsNull() const
@@ -116,7 +113,6 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
-        block.hashUtxo       = hashUtxo;
         return block;
     }
 
