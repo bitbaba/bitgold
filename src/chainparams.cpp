@@ -83,11 +83,11 @@ public:
     CMainParams() {
         strNetworkID = "main";
         consensus.nSubsidyHalvingInterval = 210000;
-        consensus.BIP16Height = 0; // 000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07
+        consensus.BIP16Height = 0; // 0x0000018d2d31e4ed7df7b699d32cc1f4da1ba6e3e6f49a2b33b9ff43ffa630e0
         consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07");
-        consensus.BIP65Height = 0; // 000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07
-        consensus.BIP66Height = 0; // 000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07
+        consensus.BIP34Hash = uint256S("0x0000018d2d31e4ed7df7b699d32cc1f4da1ba6e3e6f49a2b33b9ff43ffa630e0");
+        consensus.BIP65Height = 0; // 0x0000018d2d31e4ed7df7b699d32cc1f4da1ba6e3e6f49a2b33b9ff43ffa630e0
+        consensus.BIP66Height = 0; // 0x0000018d2d31e4ed7df7b699d32cc1f4da1ba6e3e6f49a2b33b9ff43ffa630e0
 
         consensus.powLimit = uint256S("0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
@@ -131,9 +131,9 @@ public:
         nDefaultPort = 30333;
         nPruneAfterHeight = 105200; // about 2 years
 
-        genesis = CreateGenesisBlock(1509526800/*20171101-170000*/, 2749520/*nonce*/, 0x1e0f901d/*bits*/, VERSIONBITS_TOP_BITS/*version*/, 50 * COIN/*subsidy*/);
+        genesis = CreateGenesisBlock(1509526800/*20171101-170000*/, 7240431/*nonce*/, 0x1e0f901d/*bits*/, VERSIONBITS_TOP_BITS/*version*/, 50 * COIN/*subsidy*/);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000018d2d31e4ed7df7b699d32cc1f4da1ba6e3e6f49a2b33b9ff43ffa630e0"));
         assert(genesis.hashMerkleRoot == uint256S("0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a"));
 
 
@@ -158,13 +158,13 @@ public:
 
         checkpointData = (CCheckpointData) {
             {
-                {     0, uint256S("0x000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07")},
+                {     0, uint256S("0x0000018d2d31e4ed7df7b699d32cc1f4da1ba6e3e6f49a2b33b9ff43ffa630e0")},
             }
         };
 
         basepointData = (CBasepointData) {
             {
-                {     0, uint256S("0x000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07")},
+                {     0, uint256S("0x0000018d2d31e4ed7df7b699d32cc1f4da1ba6e3e6f49a2b33b9ff43ffa630e0")},
             }
         };
 
@@ -186,11 +186,11 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         consensus.nSubsidyHalvingInterval = 210000;
-        consensus.BIP16Height = 0; // 0x59d1262a3f71460ef159d984445b5a5585db86a3aaa8ea0c41631c1a75938f2f
+        consensus.BIP16Height = 0; // 0x54192846adbe9997460098a0fd4f041c7456429d6885adc0c7d4900f04621b8b
         consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x59d1262a3f71460ef159d984445b5a5585db86a3aaa8ea0c41631c1a75938f2f");
-        consensus.BIP65Height = 0; // 0x59d1262a3f71460ef159d984445b5a5585db86a3aaa8ea0c41631c1a75938f2f
-        consensus.BIP66Height = 0; // 0x59d1262a3f71460ef159d984445b5a5585db86a3aaa8ea0c41631c1a75938f2f
+        consensus.BIP34Hash = uint256S("0x54192846adbe9997460098a0fd4f041c7456429d6885adc0c7d4900f04621b8b");
+        consensus.BIP65Height = 0; // 0x54192846adbe9997460098a0fd4f041c7456429d6885adc0c7d4900f04621b8b
+        consensus.BIP66Height = 0; // 0x54192846adbe9997460098a0fd4f041c7456429d6885adc0c7d4900f04621b8b
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
@@ -218,7 +218,7 @@ public:
         consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000000001");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x59d1262a3f71460ef159d984445b5a5585db86a3aaa8ea0c41631c1a75938f2f"); //0
+        consensus.defaultAssumeValid = uint256S("0x54192846adbe9997460098a0fd4f041c7456429d6885adc0c7d4900f04621b8b"); //0
 
         /**
         * 0xc01dbeef => cold beef
@@ -230,9 +230,9 @@ public:
         nDefaultPort = 38333;
         nPruneAfterHeight = 105200;
 
-        genesis = CreateGenesisBlock(1509526800/*20171101-170000*/, 0/*nonce*/, 0x207fffff/*bits*/, VERSIONBITS_TOP_BITS/*version*/, 50 * COIN/*subsidy*/);
+        genesis = CreateGenesisBlock(1509526800/*20171101-170000*/, 1/*nonce*/, 0x207fffff/*bits*/, VERSIONBITS_TOP_BITS/*version*/, 50 * COIN/*subsidy*/);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x59d1262a3f71460ef159d984445b5a5585db86a3aaa8ea0c41631c1a75938f2f"));
+        assert(consensus.hashGenesisBlock == uint256S("0x54192846adbe9997460098a0fd4f041c7456429d6885adc0c7d4900f04621b8b"));
         assert(genesis.hashMerkleRoot == uint256S("0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a"));
 
         vFixedSeeds.clear();
@@ -261,13 +261,13 @@ public:
 
         checkpointData = (CCheckpointData) {
             {
-                {     0, uint256S("0x59d1262a3f71460ef159d984445b5a5585db86a3aaa8ea0c41631c1a75938f2f")},
+                {     0, uint256S("0x54192846adbe9997460098a0fd4f041c7456429d6885adc0c7d4900f04621b8b")},
             }
         };
 
         basepointData = (CBasepointData) {
             {
-                {     0, uint256S("0x59d1262a3f71460ef159d984445b5a5585db86a3aaa8ea0c41631c1a75938f2f")},
+                {     0, uint256S("0x54192846adbe9997460098a0fd4f041c7456429d6885adc0c7d4900f04621b8b")},
             }
         };
 
@@ -292,7 +292,7 @@ public:
         consensus.nSubsidyHalvingInterval = 150;
         consensus.BIP16Height = 0; // always enforce P2SH BIP16 on regtest
         consensus.BIP34Height = 0; // BIP34 has activated on regtest
-        consensus.BIP34Hash = uint256S("0x000002bfb1a3353d59a7926e1bce9014c8713bf1fe234e7c9754d66f03149c07");
+        consensus.BIP34Hash = uint256S("0x1285c90cd4cbd709bc3db0494f7b2631daa7945aa1311872b5fcba8b7c0352ea");
         consensus.BIP65Height = 0; // BIP65 activated on regtest (Used in rpc activation tests)
         consensus.BIP66Height = 0; // BIP66 activated on regtest (Used in rpc activation tests)
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
@@ -320,7 +320,7 @@ public:
         consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000000001");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x3a91eb5d8b4ba9bdfa0064045aa8332e6aef4fe6f5719a461a4eac461eca08e4");
+        consensus.defaultAssumeValid = uint256S("0x1285c90cd4cbd709bc3db0494f7b2631daa7945aa1311872b5fcba8b7c0352ea");
 
         /**
         * 0xabadfee1 => a bad feel
@@ -334,7 +334,7 @@ public:
 
         genesis = CreateGenesisBlock(1509526800/*20171101-170000*/, 2/*nonce*/, 0x207fffff/*bits*/, VERSIONBITS_TOP_BITS/*version*/, 50 * COIN/*subsidy*/);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x3a91eb5d8b4ba9bdfa0064045aa8332e6aef4fe6f5719a461a4eac461eca08e4"));
+        assert(consensus.hashGenesisBlock == uint256S("0x1285c90cd4cbd709bc3db0494f7b2631daa7945aa1311872b5fcba8b7c0352ea"));
         assert(genesis.hashMerkleRoot == uint256S("0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
@@ -346,13 +346,13 @@ public:
 
         checkpointData = (CCheckpointData) {
             {
-                {     0, uint256S("0x3a91eb5d8b4ba9bdfa0064045aa8332e6aef4fe6f5719a461a4eac461eca08e4")},
+                {     0, uint256S("0x1285c90cd4cbd709bc3db0494f7b2631daa7945aa1311872b5fcba8b7c0352ea")},
             }
         };
 
         basepointData = (CBasepointData) {
             {
-                {     0, uint256S("0x3a91eb5d8b4ba9bdfa0064045aa8332e6aef4fe6f5719a461a4eac461eca08e4")},
+                {     0, uint256S("0x1285c90cd4cbd709bc3db0494f7b2631daa7945aa1311872b5fcba8b7c0352ea")},
             }
         };
 

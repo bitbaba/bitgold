@@ -26,6 +26,7 @@
 #include <primitives/transaction.h>
 #include <random.h>
 #include <reverse_iterator.h>
+#include <rpc/blockchain.h>
 #include <script/script.h>
 #include <script/sigcache.h>
 #include <script/standard.h>
@@ -2910,11 +2911,26 @@ static int GetWitnessCommitmentIndex(const CBlock& block)
 void UpdateUncommittedBlockStructures(CBlock& block, const CBlockIndex* pindexPrev, const Consensus::Params& consensusParams)
 {
     int commitpos = GetWitnessCommitmentIndex(block);
-    static const std::vector<unsigned char> nonce(32, 0x00);
+
+    //
+    // * Example for Upgrading with softfork:
+    //   DHash(witnewssRoot | {witnessReserved})
+    //         -> DHash(witnessRoot | {AnyHash( ver0_commitment | witnewssReserved)})
+    //                 -> DHash(witnewssRoot | {AnyHash( ver0_commitment | AnyHash( ver1_commitment | witnessReserved))})
+    //                         -> DHash(witnewssRoot, ...,{ ver0, ..., ver1, ..., ver2, witnessReserved})
+    // * Data in {} will goto the witnessScript[0] of coinbase (that is, vin[0].witnessScript[0] == {data}).
+    std::vector<unsigned char> ret(32, 0x00);
+    do {
+        std::vector<unsigned char> witnessReservedData(32, 0x00);
+        uint256 hashUtxo = GetHashUtxo();
+        CHash256().Write(hashUtxo.begin(), 32).Write(witnessReservedData.data(), 32).Finalize(hashUtxo.begin());
+        memcpy(&ret[0], hashUtxo.begin(), 32);
+    }while(0);
+
     if (commitpos != -1 && IsWitnessEnabled(pindexPrev, consensusParams) && !block.vtx[0]->HasWitness()) {
         CMutableTransaction tx(*block.vtx[0]);
         tx.vin[0].scriptWitness.stack.resize(1);
-        tx.vin[0].scriptWitness.stack[0] = nonce;
+        tx.vin[0].scriptWitness.stack[0] = ret;
         block.vtx[0] = MakeTransactionRef(std::move(tx));
     }
 }
@@ -2930,6 +2946,7 @@ std::vector<unsigned char> GenerateCoinbaseCommitment(CBlock& block, const CBloc
 {
     std::vector<unsigned char> commitment;
     int commitpos = GetWitnessCommitmentIndex(block);
+
     //
     // * Example for Upgrading with softfork:
     //   DHash(witnewssRoot | {witnessReserved})
@@ -2938,6 +2955,13 @@ std::vector<unsigned char> GenerateCoinbaseCommitment(CBlock& block, const CBloc
     //                         -> DHash(witnewssRoot, ...,{ ver0, ..., ver1, ..., ver2, witnessReserved})
     // * Data in {} will goto the witnessScript[0] of coinbase (that is, vin[0].witnessScript[0] == {data}).
     std::vector<unsigned char> ret(32, 0x00);
+    do {
+        std::vector<unsigned char> witnessReservedData(32, 0x00);
+        uint256 hashUtxo = GetHashUtxo();
+        CHash256().Write(hashUtxo.begin(), 32).Write(witnessReservedData.data(), 32).Finalize(hashUtxo.begin());
+        memcpy(&ret[0], hashUtxo.begin(), 32);
+    }while(0);
+
     if (consensusParams.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout != 0) {
         if (commitpos == -1) {
             uint256 witnessroot = BlockWitnessMerkleRoot(block, nullptr);
