@@ -6,12 +6,12 @@
 #ifndef BITCOIN_WALLET_DB_H
 #define BITCOIN_WALLET_DB_H
 
-#include "clientversion.h"
-#include "fs.h"
-#include "serialize.h"
-#include "streams.h"
-#include "sync.h"
-#include "version.h"
+#include <clientversion.h>
+#include <fs.h>
+#include <serialize.h>
+#include <streams.h>
+#include <sync.h>
+#include <version.h>
 
 #include <atomic>
 #include <map>
@@ -167,9 +167,9 @@ public:
        ideal to be called periodically */
     static bool PeriodicFlush(CWalletDBWrapper& dbw);
     /* verifies the database environment */
-    static bool VerifyEnvironment(const std::string& walletFile, const fs::path& dataDir, std::string& errorStr);
+    static bool VerifyEnvironment(const std::string& walletFile, const fs::path& walletDir, std::string& errorStr);
     /* verifies the database file */
-    static bool VerifyDatabaseFile(const std::string& walletFile, const fs::path& dataDir, std::string& warningStr, std::string& errorStr, CDBEnv::recoverFunc_type recoverFunc);
+    static bool VerifyDatabaseFile(const std::string& walletFile, const fs::path& walletDir, std::string& warningStr, std::string& errorStr, CDBEnv::recoverFunc_type recoverFunc);
 
 public:
     template <typename K, typename T>

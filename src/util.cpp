@@ -4,17 +4,17 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/bitcoin-config.h"
+#include <config/bitcoin-config.h>
 #endif
 
-#include "util.h"
+#include <util.h>
 
-#include "chainparamsbase.h"
-#include "fs.h"
-#include "random.h"
-#include "serialize.h"
-#include "utilstrencodings.h"
-#include "utiltime.h"
+#include <chainparamsbase.h>
+#include <fs.h>
+#include <random.h>
+#include <serialize.h>
+#include <utilstrencodings.h>
+#include <utiltime.h>
 
 #include <stdarg.h>
 
@@ -574,7 +574,10 @@ const fs::path &GetDataDir(bool fNetSpecific)
     if (fNetSpecific)
         path /= BaseParams().DataDir();
 
-    fs::create_directories(path);
+    if (fs::create_directories(path)) {
+        // This is the first run, create wallets subdirectory too
+        fs::create_directories(path / "wallets");
+    }
 
     return path;
 }

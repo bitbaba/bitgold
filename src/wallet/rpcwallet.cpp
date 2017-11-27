@@ -3,29 +3,30 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "amount.h"
-#include "base58.h"
-#include "chain.h"
-#include "consensus/validation.h"
-#include "core_io.h"
-#include "httpserver.h"
-#include "validation.h"
-#include "net.h"
-#include "policy/feerate.h"
-#include "policy/fees.h"
-#include "policy/policy.h"
-#include "policy/rbf.h"
-#include "rpc/mining.h"
-#include "rpc/safemode.h"
-#include "rpc/server.h"
-#include "script/sign.h"
-#include "timedata.h"
-#include "util.h"
-#include "utilmoneystr.h"
-#include "wallet/coincontrol.h"
-#include "wallet/feebumper.h"
-#include "wallet/wallet.h"
-#include "wallet/walletdb.h"
+#include <amount.h>
+#include <base58.h>
+#include <chain.h>
+#include <consensus/validation.h>
+#include <core_io.h>
+#include <httpserver.h>
+#include <validation.h>
+#include <net.h>
+#include <policy/feerate.h>
+#include <policy/fees.h>
+#include <policy/policy.h>
+#include <policy/rbf.h>
+#include <rpc/mining.h>
+#include <rpc/safemode.h>
+#include <rpc/server.h>
+#include <script/sign.h>
+#include <timedata.h>
+#include <util.h>
+#include <utilmoneystr.h>
+#include <wallet/coincontrol.h>
+#include <wallet/feebumper.h>
+#include <wallet/wallet.h>
+#include <wallet/walletdb.h>
+#include <wallet/walletutil.h>
 
 #include <init.h>  // For StartShutdown
 
@@ -2531,12 +2532,15 @@ UniValue lockunspent(const JSONRPCRequest& request)
 
     RPCTypeCheckArgument(request.params[1], UniValue::VARR);
 
-    UniValue outputs = request.params[1].get_array();
-    for (unsigned int idx = 0; idx < outputs.size(); idx++) {
-        const UniValue& output = outputs[idx];
-        if (!output.isObject())
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected object");
-        const UniValue& o = output.get_obj();
+    const UniValue& output_params = request.params[1];
+
+    // Create and validate the COutPoints first.
+
+    std::vector<COutPoint> outputs;
+    outputs.reserve(output_params.size());
+
+    for (unsigned int idx = 0; idx < output_params.size(); idx++) {
+        const UniValue& o = output_params[idx].get_obj();
 
         RPCTypeCheckObj(o,
             {
@@ -2544,20 +2548,50 @@ UniValue lockunspent(const JSONRPCRequest& request)
                 {"vout", UniValueType(UniValue::VNUM)},
             });
 
-        std::string txid = find_value(o, "txid").get_str();
-        if (!IsHex(txid))
+        const std::string& txid = find_value(o, "txid").get_str();
+        if (!IsHex(txid)) {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected hex txid");
+        }
 
-        int nOutput = find_value(o, "vout").get_int();
-        if (nOutput < 0)
+        const int nOutput = find_value(o, "vout").get_int();
+        if (nOutput < 0) {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, vout must be positive");
+        }
 
-        COutPoint outpt(uint256S(txid), nOutput);
+        const COutPoint outpt(uint256S(txid), nOutput);
 
-        if (fUnlock)
-            pwallet->UnlockCoin(outpt);
-        else
-            pwallet->LockCoin(outpt);
+        const auto it = pwallet->mapWallet.find(outpt.hash);
+        if (it == pwallet->mapWallet.end()) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, unknown transaction");
+        }
+
+        const CWalletTx& trans = it->second;
+
+        if (outpt.n >= trans.tx->vout.size()) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, vout index out of bounds");
+        }
+
+        if (pwallet->IsSpent(outpt.hash, outpt.n)) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected unspent output");
+        }
+
+        const bool is_locked = pwallet->IsLockedCoin(outpt.hash, outpt.n);
+
+        if (fUnlock && !is_locked) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected locked output");
+        }
+
+        if (!fUnlock && is_locked) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, output already locked");
+        }
+
+        outputs.push_back(outpt);
+    }
+
+    // Atomically set (un)locked status for the outputs.
+    for (const COutPoint& outpt : outputs) {
+        if (fUnlock) pwallet->UnlockCoin(outpt);
+        else pwallet->LockCoin(outpt);
     }
 
     return true;

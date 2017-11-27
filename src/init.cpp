@@ -4,49 +4,49 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/bitcoin-config.h"
+#include <config/bitcoin-config.h>
 #endif
 
-#include "init.h"
+#include <init.h>
 
-#include "addrman.h"
-#include "amount.h"
-#include "chain.h"
-#include "chainparams.h"
-#include "checkpoints.h"
-#include "compat/sanity.h"
-#include "consensus/validation.h"
-#include "fs.h"
-#include "httpserver.h"
-#include "httprpc.h"
-#include "key.h"
-#include "validation.h"
-#include "miner.h"
-#include "netbase.h"
-#include "net.h"
-#include "net_processing.h"
-#include "policy/feerate.h"
-#include "policy/fees.h"
-#include "policy/policy.h"
-#include "rpc/server.h"
-#include "rpc/register.h"
-#include "rpc/safemode.h"
-#include "rpc/blockchain.h"
-#include "script/standard.h"
-#include "script/sigcache.h"
-#include "scheduler.h"
-#include "timedata.h"
-#include "txdb.h"
-#include "txmempool.h"
-#include "torcontrol.h"
-#include "ui_interface.h"
-#include "util.h"
-#include "utilmoneystr.h"
-#include "validationinterface.h"
+#include <addrman.h>
+#include <amount.h>
+#include <chain.h>
+#include <chainparams.h>
+#include <checkpoints.h>
+#include <compat/sanity.h>
+#include <consensus/validation.h>
+#include <fs.h>
+#include <httpserver.h>
+#include <httprpc.h>
+#include <key.h>
+#include <validation.h>
+#include <miner.h>
+#include <netbase.h>
+#include <net.h>
+#include <net_processing.h>
+#include <policy/feerate.h>
+#include <policy/fees.h>
+#include <policy/policy.h>
+#include <rpc/server.h>
+#include <rpc/register.h>
+#include <rpc/safemode.h>
+#include <rpc/blockchain.h>
+#include <script/standard.h>
+#include <script/sigcache.h>
+#include <scheduler.h>
+#include <timedata.h>
+#include <txdb.h>
+#include <txmempool.h>
+#include <torcontrol.h>
+#include <ui_interface.h>
+#include <util.h>
+#include <utilmoneystr.h>
+#include <validationinterface.h>
 #ifdef ENABLE_WALLET
-#include "wallet/init.h"
+#include <wallet/init.h>
 #endif
-#include "warnings.h"
+#include <warnings.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <memory>
@@ -64,7 +64,7 @@
 #include <openssl/crypto.h>
 
 #if ENABLE_ZMQ
-#include "zmq/zmqnotificationinterface.h"
+#include <zmq/zmqnotificationinterface.h>
 #endif
 
 bool fFeeEstimatesInitialized = false;
@@ -1030,11 +1030,6 @@ bool AppInitParameterInteraction()
         fPruneMode = true;
     }
 
-    RegisterAllCoreRPCCommands(tableRPC);
-#ifdef ENABLE_WALLET
-    RegisterWalletRPC(tableRPC);
-#endif
-
     nConnectTimeout = gArgs.GetArg("-timeout", DEFAULT_CONNECT_TIMEOUT);
     if (nConnectTimeout <= 0)
         nConnectTimeout = DEFAULT_CONNECT_TIMEOUT;
@@ -1238,6 +1233,14 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     GetMainSignals().RegisterBackgroundSignalScheduler(scheduler);
     GetMainSignals().RegisterWithMempoolSignals(mempool);
+
+    /* Register RPC commands regardless of -server setting so they will be
+     * available in the GUI RPC console even if external calls are disabled.
+     */
+    RegisterAllCoreRPCCommands(tableRPC);
+#ifdef ENABLE_WALLET
+    RegisterWalletRPC(tableRPC);
+#endif
 
     /* Start the RPC server already.  It will be started in "warmup" mode
      * and not really process calls already (but it will signify connections
