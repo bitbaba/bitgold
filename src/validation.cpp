@@ -2919,6 +2919,13 @@ void UpdateUncommittedBlockStructures(CBlock& block, const CBlockIndex* pindexPr
     }
 }
 
+/**
+ * @brief GenerateCoinbaseCommitment
+ * @param block
+ * @param pindexPrev
+ * @param consensusParams
+ * @return
+ */
 std::vector<unsigned char> GenerateCoinbaseCommitment(CBlock& block, const CBlockIndex* pindexPrev, const Consensus::Params& consensusParams)
 {
     std::vector<unsigned char> commitment;
@@ -3029,6 +3036,13 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
     // * There must be at least one output whose scriptPubKey is a single 36-byte push, the first 4 bytes of which are
     //   {0xaa, 0x21, 0xa9, 0xed}, and the following 32 bytes are SHA256^2(witness root, witness nonce). In case there are
     //   multiple, the last one is used.
+    //
+    // * Example for Upgrading with softfork:
+    //   DHash(witnewssRoot | {witnessReserved})
+    //         -> DHash(witnessRoot | {AnyHash( ver0_commitment | witnewssReserved)})
+    //                 -> DHash(witnewssRoot | {AnyHash( ver0_commitment | AnyHash( ver1_commitment | witnessReserved))})
+    //                         -> DHash(witnewssRoot, ...,{ ver0, ..., ver1, ..., ver2, witnessReserved})
+    // * Data in {} will goto the witnessScript[0] of coinbase (that is, vin[0].witnessScript[0] == {data}).
     bool fHaveWitness = false;
     if (VersionBitsState(pindexPrev, consensusParams, Consensus::DEPLOYMENT_SEGWIT, versionbitscache) == THRESHOLD_ACTIVE) {
         int commitpos = GetWitnessCommitmentIndex(block);
