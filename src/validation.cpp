@@ -2930,6 +2930,13 @@ std::vector<unsigned char> GenerateCoinbaseCommitment(CBlock& block, const CBloc
 {
     std::vector<unsigned char> commitment;
     int commitpos = GetWitnessCommitmentIndex(block);
+    //
+    // * Example for Upgrading with softfork:
+    //   DHash(witnewssRoot | {witnessReserved})
+    //         -> DHash(witnessRoot | {AnyHash( ver0_commitment | witnewssReserved)})
+    //                 -> DHash(witnewssRoot | {AnyHash( ver0_commitment | AnyHash( ver1_commitment | witnessReserved))})
+    //                         -> DHash(witnewssRoot, ...,{ ver0, ..., ver1, ..., ver2, witnessReserved})
+    // * Data in {} will goto the witnessScript[0] of coinbase (that is, vin[0].witnessScript[0] == {data}).
     std::vector<unsigned char> ret(32, 0x00);
     if (consensusParams.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout != 0) {
         if (commitpos == -1) {
