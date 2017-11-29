@@ -152,7 +152,7 @@ UniValue importprivkey(const JSONRPCRequest& request)
         }
     }
 
-    return NullUniValue;
+    return EncodeDestination(vchAddress);
 }
 
 UniValue abortrescan(const JSONRPCRequest& request)
