@@ -554,15 +554,23 @@ UniValue dumpprivkey(const JSONRPCRequest& request)
         return NullUniValue;
     }
 
-    if (request.fHelp || request.params.size() != 1)
+    if (request.fHelp || request.params.size() < 1)
         throw std::runtime_error(
-            "dumpprivkey \"address\"\n"
-            "\nReveals the private key corresponding to 'address'.\n"
+            "dumpprivkey \"address\" (fVerbose)\n"
+            "\nReveals the private key structure corresponding to 'address'.\n"
             "Then the importprivkey can be used with this output\n"
             "\nArguments:\n"
-            "1. \"address\"   (string, required) The bitcoin address for the private key\n"
+            "1. \"address\"    (string, required) The bitcoin address for the private key\n"
+            "2. fVerbose       (boolean, optional) detailed output\n"
             "\nResult:\n"
-            "\"key\"                (string) The private key\n"
+            "\"key\"           (string) The private key, if verbose then as following: \n"
+            "{                 (json object) The private key structure\n"
+            "  \"priv\" :      (string) in base58-prefixed format\n"
+            "  \"hex\" :       (string) private key in hex format\n"
+            "  \"pub\" :       (string) public key\n"
+            "  \"comp\" :      (boolean) if true, public key is compressed\n"
+            "  \"export\" :    (string) private key in openssl export format\n"
+            "}\n"
             "\nExamples:\n"
             + HelpExampleCli("dumpprivkey", "\"myaddress\"")
             + HelpExampleCli("importprivkey", "\"mykey\"")
@@ -574,6 +582,10 @@ UniValue dumpprivkey(const JSONRPCRequest& request)
     EnsureWalletIsUnlocked(pwallet);
 
     std::string strAddress = request.params[0].get_str();
+    bool fVerbose = false;
+    if (request.params.size() > 1){
+        fVerbose = request.params[1].getBool();
+    }
     CTxDestination dest = DecodeDestination(strAddress);
     if (!IsValidDestination(dest)) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Bitcoin address");
@@ -586,7 +598,20 @@ UniValue dumpprivkey(const JSONRPCRequest& request)
     if (!pwallet->GetKey(*keyID, vchSecret)) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Private key for address " + strAddress + " is not known");
     }
-    return CBitcoinSecret(vchSecret).ToString();
+
+    if (fVerbose){
+        CPubKey pubKey = vchSecret.GetPubKey();
+        CPrivKey privKey = vchSecret.GetPrivKey();
+        UniValue reply(UniValue::VOBJ);
+        reply.push_back(Pair("priv", CBitcoinSecret(vchSecret).ToString()));
+        reply.push_back(Pair("hex", HexStr(vchSecret)));
+        reply.push_back(Pair("pub", HexStr(pubKey)));
+        reply.push_back(Pair("compressed", vchSecret.IsCompressed()));
+        reply.push_back(Pair("opensslexport", HexStr(privKey)));
+        return reply;
+    }else{
+        return CBitcoinSecret(vchSecret).ToString();
+    }
 }
 
 
@@ -608,7 +633,7 @@ UniValue dumpwallet(const JSONRPCRequest& request)
             "1. \"filename\"    (string, required) The filename with path (either absolute or relative to bitcoind)\n"
             "\nResult:\n"
             "{                           (json object)\n"
-            "  \"filename\" : {        (string) The filename with full absolute path\n"
+            "  \"filename\" :            (string) The filename with full absolute path\n"
             "}\n"
             "\nExamples:\n"
             + HelpExampleCli("dumpwallet", "\"test\"")
