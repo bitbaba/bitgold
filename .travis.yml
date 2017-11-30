@@ -24,11 +24,11 @@ env:
 # ARM
 #    - HOST=arm-linux-gnueabihf PACKAGES="g++-arm-linux-gnueabihf" DEP_OPTS="NO_QT=1" CHECK_DOC=1 GOAL="install" BITCOIN_CONFIG="--enable-glibc-back-compat --enable-reduce-exports"
 # Win32
-    - HOST=i686-w64-mingw32 DPKG_ADD_ARCH="i386" PACKAGES="python3 nsis g++-mingw-w64-i686 wine1.6" GOAL="deploy" BITCOIN_CONFIG="--enable-gui --disable-tests --enable-reduce-exports"
+    - HOST=i686-w64-mingw32 DPKG_ADD_ARCH="i386" PACKAGES="sshpass python3 nsis g++-mingw-w64-i686 wine1.6" GOAL="deploy" BITCOIN_CONFIG="--enable-gui --disable-tests --enable-reduce-exports"
 # Qt4 & system libs
 #    - HOST=x86_64-unknown-linux-gnu PACKAGES="python3-zmq qt4-dev-tools libssl-dev libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev libdb5.1++-dev libminiupnpc-dev libzmq3-dev libprotobuf-dev protobuf-compiler libqrencode-dev xvfb" NO_DEPENDS=1 NEED_XVFB=1 GOAL="install" BITCOIN_CONFIG="--enable-zmq --with-incompatible-bdb --enable-glibc-back-compat --enable-reduce-exports --with-gui=qt4 CPPFLAGS=-DDEBUG_LOCKORDER"
 # 32-bit + bash
-    - HOST=i686-pc-linux-gnu PACKAGES="g++-multilib python3-zmq" DEP_OPTS="NO_QT=1" GOAL="install" BITCOIN_CONFIG="--enable-zmq --enable-debug --disable-tests --enable-glibc-back-compat --enable-reduce-exports LDFLAGS=-static-libstdc++" USE_SHELL="/bin/bash"
+    - HOST=i686-pc-linux-gnu PACKAGES="sshpass g++-multilib python3-zmq" DEP_OPTS="NO_QT=1" GOAL="install" BITCOIN_CONFIG="--enable-zmq --enable-debug --disable-tests --enable-glibc-back-compat --enable-reduce-exports LDFLAGS=-static-libstdc++" USE_SHELL="/bin/bash"
 # Win64
 #    - HOST=x86_64-w64-mingw32 DPKG_ADD_ARCH="i386" DEP_OPTS="NO_QT=1" PACKAGES="python3 nsis g++-mingw-w64-x86-64 wine1.6" GOAL="install" BITCOIN_CONFIG="--enable-reduce-exports"
 # x86_64 Linux (uses qt5 dev package instead of depends Qt to speed up build and avoid timeout)
@@ -36,7 +36,7 @@ env:
 # x86_64 Linux, No wallet
 #    - HOST=x86_64-unknown-linux-gnu PACKAGES="python3" DEP_OPTS="NO_WALLET=1" GOAL="install" BITCOIN_CONFIG="--enable-glibc-back-compat --enable-reduce-exports"
 # Cross-Mac
-    - HOST=x86_64-apple-darwin11 PACKAGES="cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev" BITCOIN_CONFIG="--enable-gui --disable-tests --enable-reduce-exports --enable-werror" OSX_SDK=10.11 GOAL="deploy"
+    - HOST=x86_64-apple-darwin11 PACKAGES="sshpass cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev" BITCOIN_CONFIG="--enable-gui --disable-tests --enable-reduce-exports --enable-werror" OSX_SDK=10.11 GOAL="deploy"
 
 before_install:
     - export PATH=$(echo $PATH | tr ':' "\n" | sed '/\/opt\/python/d' | tr "\n" ":" | sed "s|::|:|g")
@@ -86,7 +86,7 @@ after_success:
     - export OSXPKG=$(find $TRAVIS_BUILD_DIR/bitcoin-$HOST -type f -iname "Bitcoin-Qt.dmg" -exec readlink -f \{\} \; ); echo OSXInstallPackage is "$OSXPKG"
     - if ! "$TRAVIS_PULL_REQUEST" && "$TRAVIS_SECURE_ENV_VARS" && [ -f "$WIN32PKG" ] ; then mkdir -p $OUTDIR; cp -f "$WIN32PKG" $OUTDIR; fi
     - if ! "$TRAVIS_PULL_REQUEST" && "$TRAVIS_SECURE_ENV_VARS" && [ -f "$OSXPKG" ] ; then mkdir -p $OUTDIR; cp -f "$OSXPKG" $OUTDIR; fi
-    - if ! "$TRAVIS_PULL_REQUEST" && "$TRAVIS_SECURE_ENV_VARS" && [ -d $OUTDIR ] ; then tar czf $OUTDIR.tar.gz $OUTDIR && (sshpass -p "$SCP_PASSWORD" scp -o "StrictHostKeyChecking no" $OUTDIR.tar.gz "$SCP_HOST:$SCP_PATH" ; rm -rf $OUTDIR.tar.gz && echo "Successfully Upload $OUTDIR.tar.gz"); fi
+    - if ! "$TRAVIS_PULL_REQUEST" && "$TRAVIS_SECURE_ENV_VARS" && [ -d $OUTDIR ] ; then tar czf $OUTDIR.tar.gz $OUTDIR && (sshpass -p "$SCP_PASSWORD" scp -o "StrictHostKeyChecking no" -P "$SCP_PORT" $OUTDIR.tar.gz "$SCP_HOST:$SCP_PATH" ; rm -rf $OUTDIR.tar.gz && echo "Successfully Upload $OUTDIR.tar.gz"); fi
 
 after_script:
     - echo $TRAVIS_COMMIT_RANGE
