@@ -12,11 +12,13 @@ export TRAVIS_JOB_NUMBER=JobNo.1
 
 # Matrix
 #matrix="Win32Gui"
-matrix="bitcoind"
-#matrix="bitcoindWithoutWallet"
+#matrix="bitcoind"
+matrix="Cross-Mac"
 
+# For `matrix="Cross-Mac"'
+# sudo pip install ez_setup
 
-# matrix="Win32"
+# For `matrix="Win32"'
 # ref: a lite addon for mingw-w64  https://github.com/meganz/mingw-std-threads
 # ref: difference of posix and win32 threads: https://wiki.qt.io/MinGW-64-bit#GCC_Threading_model_.28posix_vs_win32.29
 # prefer to use i686-mingw64-w64-g++-posix (soft link is i686-mingw64-w64-g++, default to -win32) for Win32 build
@@ -66,25 +68,15 @@ elif [ "$matrix" = "Win32Gui" ]; then
 	export GOAL="deploy" 
 	export BITCOIN_CONFIG="--with-gui --disable-tests --enable-reduce-exports"
 
-# 32-bit + dash
-elif [ "$matrix" = "32-bit + bash" ]; then
-	export HOST=i686-pc-linux-gnu 
-	export PACKAGES="g++-multilib bc python3-zmq" 
-	export DEP_OPTS="NO_QT=1" 
-	export RUN_TESTS=true 
-	export GOAL="install" 
-	export BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports LDFLAGS=-static-libstdc++" 
-	export USE_SHELL="/bin/bash"
-
-# Win64
-elif [ "$matrix" = "Win64" ]; then
-	export HOST=x86_64-w64-mingw32 
-	export DPKG_ADD_ARCH="i386" 
-	export DEP_OPTS="NO_QT=1" 
-	export PACKAGES="python3 nsis g++-mingw-w64-x86-64 wine1.6 bc" 
-	export RUN_TESTS=true 
-	export GOAL="install" 
-	export BITCOIN_CONFIG="--enable-reduce-exports"
+# Cross-Mac
+elif [ "$matrix" = "Cross-Mac" ]; then
+	export HOST=x86_64-apple-darwin11
+	export PACKAGES="cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev python-pip"
+	export DEP_OPTS="NO_UPNP=1 DEBUG=1"
+	export OSX_SDK=10.11
+	export RUN_TESTS=false
+	export GOAL="deploy"
+	export BITCOIN_CONFIG="--enable-debug --enable-gui --disable-tests --enable-reduce-exports"
 
 # bitcoind
 elif [ "$matrix" = "bitcoind" ]; then
@@ -93,27 +85,11 @@ elif [ "$matrix" = "bitcoind" ]; then
 	export DEP_OPTS="NO_QT=1 NO_UPNP=1 DEBUG=1" 
 	export RUN_TESTS=false
 	export GOAL="install"
+	export USE_SHELL="/bin/bash"
 	# for debug
 	export BITCOIN_CONFIG="--enable-debug --without-gui --disable-tests --enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
 	# no-debug
 	#export BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
-
-# No wallet
-elif [ "$matrix" = "bitcoindWithoutWallet" ]; then
-	export HOST=x86_64-unknown-linux-gnu 
-	export PACKAGES="bc python3 xvfb"
-	export DEP_OPTS="NO_QT=1 DEBUG=1 NO_WALLET=1"
-	export RUN_TESTS=false
-	export GOAL="install" 
-	export BITCOIN_CONFIG="--without-gui --enable-debug --disable-tests --enable-zmq --enable-glibc-back-compat --enable-reduce-exports --disable-wallet"
-
-# Cross-Mac
-elif [ "$matrix" = "Cross-Mac" ]; then
-	export HOST=x86_64-apple-darwin11 
-	export PACKAGES="cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev" 
-	export BITCOIN_CONFIG="--enable-gui --enable-reduce-exports" 
-	export OSX_SDK=10.11 
-	export GOAL="deploy"
 
 # undefined
 else 
@@ -149,7 +125,15 @@ if [ "$CHECK_DOC" = 1 ]; then
 	contrib/devtools/check-doc.py; 
 fi
 
-mkdir -p depends/SDKs depends/sdk-sources
+if [ x"$(file depends/sources | grep symbolic)" = x ]; then
+    exit 1;
+fi
+
+if [ -n "$OSX_SDK" -a x"$(file depends/sdk-sources | grep symbolic)" = x ]; then
+    exit 1
+fi
+
+mkdir -p depends/SDKs
 
 if [ -n "$OSX_SDK" -a ! -f depends/sdk-sources/MacOSX${OSX_SDK}.sdk.tar.gz ]; then 
 	curl --location --fail $SDK_URL/MacOSX${OSX_SDK}.sdk.tar.gz -o depends/sdk-sources/MacOSX${OSX_SDK}.sdk.tar.gz; 
