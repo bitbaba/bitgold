@@ -42,18 +42,18 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  * transaction cannot be spent since it did not originally exist in the
  * database.
  *
- * CBlock(hash=0000000a49e3ce0f6623d6e4a2fbd8b3ab81c7bd1bb5df60b592dfe7fbcc81b0,
+ * CBlock(hash=0x0000018d2d31e4ed7df7b699d32cc1f4da1ba6e3e6f49a2b33b9ff43ffa630e0,
  *        ver=0x20000000,
- *        hashPrevBlock=0000000000000000000000000000000000000000000000000000000000000000,
- *        hashMerkleRoot=824c6bf0092259ffeb9e430d61c89b21739c00fd0f0cc53688be1fa8d4a48927,
+ *        hashPrevBlock=0x0000000000000000000000000000000000000000000000000000000000000000,
+ *        hashMerkleRoot=0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a,
  *        nTime=1509526800,
- *        nBits=1d0a901d,
- *        nNonce=314295870,
+ *        nBits=1e0f901d,
+ *        nNonce=7240431,
  *        vtx=1)
  * CTransaction(hash=824c6bf009, ver=1, vin.size=1, vout.size=1, nLockTime=0)
  *  CTxIn(COutPoint(0000000000, 4294967295), coinbase 00046931fc5923444a49412033312f4e6f762f3230313720636c6f7365642061742032333337372e3234)
  *  CScriptWitness()
- *  CTxOut(nValue=50.00000000, scriptPubKey=41048183aecd19078802388a000d81)
+ *  CTxOut(nValue=50.00000000, scriptPubKey=048183aecd19078802388a000d81b)
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
@@ -227,7 +227,7 @@ public:
         pchMessageStart[1] = 0x1d;
         pchMessageStart[2] = 0xbe;
         pchMessageStart[3] = 0xef;
-        nDefaultPort = 38333;
+        nDefaultPort = 40333;
         nPruneAfterHeight = 105200;
 
         genesis = CreateGenesisBlock(1509526800/*20171101-170000*/, 1/*nonce*/, 0x207fffff/*bits*/, VERSIONBITS_TOP_BITS/*version*/, 50 * COIN/*subsidy*/);
@@ -329,7 +329,7 @@ public:
         pchMessageStart[1] = 0xad;
         pchMessageStart[2] = 0xfe;
         pchMessageStart[3] = 0xe1;
-        nDefaultPort = 38444;
+        nDefaultPort = 40444;
         nPruneAfterHeight = 105200;
 
         genesis = CreateGenesisBlock(1509526800/*20171101-170000*/, 2/*nonce*/, 0x207fffff/*bits*/, VERSIONBITS_TOP_BITS/*version*/, 50 * COIN/*subsidy*/);
