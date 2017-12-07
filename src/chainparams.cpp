@@ -129,7 +129,7 @@ public:
         pchMessageStart[2] = 0xca;
         pchMessageStart[3] = 0xfe;
         nDefaultPort = 30333;
-        nPruneAfterHeight = 105200; // about 2 years
+        nPruneAfterHeight = 104832; // about 2 years
 
         genesis = CreateGenesisBlock(1509526800/*20171101-170000*/, 7240431/*nonce*/, 0x1e0f901d/*bits*/, VERSIONBITS_TOP_BITS/*version*/, 50 * COIN/*subsidy*/);
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -143,7 +143,7 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
 
-        bech32_hrp = "bc";
+        bech32_hrp = "BTG";
 
         // Note that of those with the service bits flag, most only support a subset of possible options
         /**
