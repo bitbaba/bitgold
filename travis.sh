@@ -12,8 +12,8 @@ export TRAVIS_JOB_NUMBER=JobNo.1
 
 # Matrix
 #matrix="Win32Gui"
-#matrix="bitcoind"
-matrix="Cross-Mac"
+matrix="bitcoind"
+#matrix="Cross-Mac"
 
 # For `matrix="Cross-Mac"'
 # sudo pip install ez_setup
