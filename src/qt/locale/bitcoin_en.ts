@@ -431,7 +431,7 @@
     <message>
         <location line="-510"/>
         <source>Send coins to a Bitcoin address</source>
-        <translation>Send coins to a Bitcoin address</translation>
+        <translation>Send coins to a BitGold address</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -461,7 +461,7 @@
     <message>
         <location line="+516"/>
         <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <translation>BitGold</translation>
     </message>
     <message>
         <location line="-741"/>
@@ -553,7 +553,7 @@
         <source>%n active connection(s) to Bitcoin network</source>
         <translation>
             <numerusform>%n active connection to Bitcoin network</numerusform>
-            <numerusform>%n active connections to Bitcoin network</numerusform>
+            <numerusform>%n active connections to BitGold network</numerusform>
         </translation>
     </message>
     <message>
@@ -1095,7 +1095,7 @@
     <message>
         <location filename="../intro.cpp" line="+20"/>
         <source>Bitcoin</source>
-        <translation type="unfinished">Bitcoin</translation>
+        <translation type="unfinished">BitGold</translation>
     </message>
     <message>
         <location line="+6"/>
