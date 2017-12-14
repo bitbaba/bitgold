@@ -82,7 +82,7 @@ script:
     - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then extended="--extended --exclude pruning,dbcrash"; fi
 after_success:
     # search for win32 install package, if found, export its full path.
-    - export WIN32PKG=$(find $TRAVIS_BUILD_DIR/ -type f -iname "-*-setup.exe"    -exec readlink -f \{\} \; ); echo Win32InstallPackage is "$WIN32PKG"
+    - export WIN32PKG=$(find $TRAVIS_BUILD_DIR/ -type f -iname "*-*-setup.exe"    -exec readlink -f \{\} \; ); echo Win32InstallPackage is "$WIN32PKG"
     - export OSXPKG=$(find $TRAVIS_BUILD_DIR/   -type f -iname "Bitgold-Core.dmg"       -exec readlink -f \{\} \; ); echo OSXInstallPackage is "$OSXPKG"
     - if ! "$TRAVIS_PULL_REQUEST" && "$TRAVIS_SECURE_ENV_VARS" && [ -f "$WIN32PKG" ] ; then mkdir -p $OUTDIR; cp -f "$WIN32PKG" $OUTDIR; fi
     - if ! "$TRAVIS_PULL_REQUEST" && "$TRAVIS_SECURE_ENV_VARS" && [ -f "$OSXPKG" ] ; then mkdir -p $OUTDIR; cp -f "$OSXPKG" $OUTDIR; fi
