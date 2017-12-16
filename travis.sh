@@ -87,7 +87,7 @@ elif [ "$matrix" = "bitcoind" ]; then
 	export GOAL="install"
 	export USE_SHELL="/bin/bash"
 	# for debug
-	export BITCOIN_CONFIG="--enable-debug --without-gui --disable-tests --disable-bench --enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
+	export BITCOIN_CONFIG="--enable-debug --without-gui --without-libs --disable-tests --disable-bench --enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
 	# no-debug
 	#export BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
 
