@@ -485,11 +485,8 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
 
     // Reject transactions with witness before segregated witness activates (override with -prematurewitness)
     bool witnessEnabled = IsWitnessEnabled(chainActive.Tip(), chainparams.GetConsensus());
-    if (tx.HasWitness() && !witnessEnabled) {
+    if (!gArgs.GetBoolArg("-prematurewitness", false) && tx.HasWitness() && !witnessEnabled) {
         return state.DoS(0, false, REJECT_NONSTANDARD, "no-witness-yet", true);
-    }
-    if (!tx.HasWitness() && witnessEnabled) {
-        return state.DoS(0, false, REJECT_NONSTANDARD, "not-witness-after-sw-active", true);
     }
 
     // Rather not work on nonstandard transactions (unless -testnet/-regtest)
