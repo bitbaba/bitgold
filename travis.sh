@@ -68,6 +68,15 @@ elif [ "$matrix" = "Win32Gui" ]; then
 	export GOAL="deploy" 
 	export BITCOIN_CONFIG="--with-gui --disable-tests --enable-reduce-exports"
 
+# Win64Gui
+elif [ "$matrix" = "Win64Gui" ]; then
+	export HOST=x86_64-w64-mingw32
+	export DPKG_ADD_ARCH="i386"
+	export PACKAGES="python3 nsis g++-mingw-w64-x86-64 wine1.6 bc"
+	export RUN_TESTS=false
+	export GOAL="deploy"
+	export BITCOIN_CONFIG="--with-gui --disable-tests disable-bench disable-debug --enable-reduce-exports"
+
 # Cross-Mac
 elif [ "$matrix" = "Cross-Mac" ]; then
 	export HOST=x86_64-apple-darwin11
