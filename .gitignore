@@ -1,3 +1,9 @@
+/bitgold.config
+/bitgold.creator
+/bitgold.creator.user
+/bitgold.files
+/bitgold.includes
+
 *.tar.gz
 
 *.exe
