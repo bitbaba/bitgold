@@ -146,7 +146,7 @@ public:
         bech32_hrp = "BTG";
 
         // Note that of those with the service bits flag, most only support a subset of possible options
-        vSeeds.emplace_back("seed.bitgold.bitbaba.com", true);
+        vSeeds.emplace_back("seed.bitgold.bitbaba.com", false);
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
