@@ -8,7 +8,7 @@ https://bitgold.bitbaba.com/
 What is BitGold?
 ----------------
 
-BitGold is an experimental digital currency that enables instant payments to
+BitGold is an new digital gold that enables instant payments to
 anyone, anywhere in the world. BitGold uses peer-to-peer technology to operate
 with no central authority: managing transactions and issuing money are carried
 out collectively by the network. BitGold Core is the name of open source
@@ -19,6 +19,7 @@ the BitGold Core software, see https://bintray.bitbaba.com/bintray/bitgold, or r
 [bitgold design](http://blog.csdn.net/hacode/article/details/78369398) and
 [bitcoin original whitepaper](https://bitcoincore.org/bitcoin.pdf).
 
+see chain status on [bitgold explorer](http://bitgold.bitbaba.com:3001)
 
 License
 -------
