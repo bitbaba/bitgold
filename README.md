@@ -5,6 +5,8 @@ BitGold Core integration/staging tree
 
 https://bitgold.bitbaba.com/
 
+or see status of chain on [bitgold explorer](http://bitgold.bitbaba.com:3001)
+
 What is BitGold?
 ----------------
 
@@ -19,13 +21,20 @@ the BitGold Core software, see https://bintray.bitbaba.com/bintray/bitgold, or r
 [bitgold design](http://blog.csdn.net/hacode/article/details/78369398) and
 [bitcoin original whitepaper](https://bitcoincore.org/bitcoin.pdf).
 
-see chain status on [bitgold explorer](http://bitgold.bitbaba.com:3001)
 
 License
 -------
 
 BitGold Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
 information or see https://opensource.org/licenses/MIT.
+
+Features
+--------
+
+- No free tx any more
+- No limit of block size
+- Seg-witness
+- Rebase utxo database
 
 Development Process
 -------------------
