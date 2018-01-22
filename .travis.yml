@@ -76,17 +76,17 @@ script:
     - make distdir VERSION=$HOST
     - cd bitgold-$HOST
     - ./configure --cache-file=../config.cache $BITCOIN_CONFIG_ALL $BITCOIN_CONFIG || ( cat config.log && false)
-    - pwd ; make $MAKEJOBS $GOAL || ( echo "Build failure. Verbose build follows." && make $GOAL V=1 ; false )
+    - make $MAKEJOBS $GOAL || ( echo "Build failure. Verbose build follows." && make $GOAL V=1 ; false )
     - export LD_LIBRARY_PATH=$TRAVIS_BUILD_DIR/depends/$HOST/lib
     - if [ "$RUN_TESTS" = "true" ]; then travis_wait 30 make $MAKEJOBS check VERBOSE=1; fi
     - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then extended="--extended --exclude pruning,dbcrash"; fi
 after_success:
     # search for win32 install package, if found, export its full path.
     - export WIN32PKG=$(find $TRAVIS_BUILD_DIR/ -type f -iname "*-*-setup.exe"    -exec readlink -f \{\} \; ); echo Win32InstallPackage is "$WIN32PKG"
-    - export OSXPKG=$(find $TRAVIS_BUILD_DIR/   -type f -iname "Bitgold-Core.dmg"       -exec readlink -f \{\} \; ); echo OSXInstallPackage is "$OSXPKG"
+    - export OSXPKG=$(find $TRAVIS_BUILD_DIR/   -type f -iname "Bitgold-Core.dmg" -exec readlink -f \{\} \; ); echo OSXInstallPackage is "$OSXPKG"
     - if ! "$TRAVIS_PULL_REQUEST" && "$TRAVIS_SECURE_ENV_VARS" && [ -f "$WIN32PKG" ] ; then mkdir -p $OUTDIR; cp -f "$WIN32PKG" $OUTDIR; fi
-    - if ! "$TRAVIS_PULL_REQUEST" && "$TRAVIS_SECURE_ENV_VARS" && [ -f "$OSXPKG" ] ; then mkdir -p $OUTDIR; cp -f "$OSXPKG" $OUTDIR; fi
-    - if ! "$TRAVIS_PULL_REQUEST" && "$TRAVIS_SECURE_ENV_VARS" && [ -d $OUTDIR ] ; then tar czf $OUTDIR.tar.gz $OUTDIR && (sudo sshpass -p "$SCP_PASSWORD" scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" -P "$SCP_PORT" $OUTDIR.tar.gz "$SCP_USER@$SCP_HOST:$SCP_PATH" ; rm -rf $OUTDIR.tar.gz && echo "Successfully Upload $OUTDIR.tar.gz"); fi
+    - if ! "$TRAVIS_PULL_REQUEST" && "$TRAVIS_SECURE_ENV_VARS" && [ -f "$OSXPKG"   ] ; then mkdir -p $OUTDIR; cp -f "$OSXPKG" $OUTDIR; fi
+    - if ! "$TRAVIS_PULL_REQUEST" && "$TRAVIS_SECURE_ENV_VARS" && [ -d $OUTDIR     ] ; then tar czf $OUTDIR.tar.gz $OUTDIR && (sudo sshpass -p "$SCP_PASSWORD" scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" -P "$SCP_PORT" $OUTDIR.tar.gz "$SCP_USER@$SCP_HOST:$SCP_PATH" ; rm -rf $OUTDIR.tar.gz && echo "Successfully Upload $OUTDIR.tar.gz"); fi
     # test
     - if [ "$RUN_TESTS" = "true" ]; then test/functional/test_runner.py --combinedlogslen=4000 --coverage --quiet ${extended}; fi
 after_script:
