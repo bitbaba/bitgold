@@ -1141,8 +1141,10 @@ UniValue sendmany(const JSONRPCRequest& request)
 
     // Check funds
     CAmount nBalance = pwallet->GetLegacyBalance(ISMINE_SPENDABLE, nMinDepth, &strAccount);
-    if (totalAmount > nBalance)
+    if (totalAmount > nBalance){
+        LogPrintf("sendmany: totalAmount[%ull] > nBalance[%ull]", totalAmount, nBalance);
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Account has insufficient funds");
+    }
 
     // Send
     CReserveKey keyChange(pwallet);
