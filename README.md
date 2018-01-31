@@ -61,12 +61,12 @@ which can be used to build bitgold on your local laptop.
 Example Usage:
 
 ```
-mkdir -p depsrc ; \
-ln -s $PWD/depsrc depends/sources ; \
+mkdir -p depsrc; \
+ln -s $PWD/depsrc depends/sources; \
 sh travis.sh Win32Gui bitgold
 ```
 
->Note: *depsrc* is used to cache locale depends sources tarballs.
+>Note: *depsrc* is used to cache locale source tarballs of depends.
 
 
 Testing
