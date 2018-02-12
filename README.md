@@ -3,9 +3,9 @@ BitGold Core integration/staging tree
 
 [![Build Status](https://travis-ci.org/bitbaba/bitgold.svg?branch=master)](https://travis-ci.org/bitbaba/bitgold)
 
-https://bitgold.bitbaba.com/
+[Pool Status](https://pool.bitbaba.com/)
 
-or see status of chain on [bitgold explorer](http://bitgold.bitbaba.com:3001)
+[Bitgold explorer](https://bitgold.bitbaba.com/)
 
 What is BitGold?
 ----------------
@@ -50,6 +50,24 @@ should be used to discuss complicated or controversial changes before working
 on a patch set.
 
 Developer IRC can be found on Freenode at #bitgold-core-dev.
+
+
+Automated Building
+------------------
+
+As you known, the .travis.yml is used for automated building. and here is a localized script called *travis.sh*, 
+which can be used to build bitgold on your local laptop.
+
+Example Usage:
+
+```
+mkdir -p depsrc; \
+ln -s $PWD/depsrc depends/sources; \
+sh travis.sh Win32Gui bitgold
+```
+
+>Note: *depsrc* is used to cache locale source tarballs of depends.
+
 
 Testing
 -------
