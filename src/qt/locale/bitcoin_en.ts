@@ -633,31 +633,36 @@
         <location line="+145"/>
         <source>Date: %1
 </source>
-        <translation>Date: %1</translation>
+        <translation>Date: %1
+</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Amount: %1
 </source>
-        <translation>Amount: %1</translation>
+        <translation>Amount: %1
+</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Type: %1
 </source>
-        <translation>Type: %1</translation>
+        <translation>Type: %1
+</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Label: %1
 </source>
-        <translation>Label: %1</translation>
+        <translation>Label: %1
+</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Address: %1
 </source>
-        <translation>Address: %1</translation>
+        <translation>Address: %1
+</translation>
     </message>
     <message>
         <location line="+1"/>
