@@ -32,8 +32,8 @@ Features
 --------
 
 - No free tx any more
-- No limit of block size
-- Seg-witness
+- No limit on block size
+- Seg-Witness
 - Rebase utxo database
 
 Development Process
