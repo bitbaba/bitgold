@@ -178,13 +178,13 @@ UniValue importprivkey(const JSONRPCRequest& request)
                 throw JSONRPCError(RPC_WALLET_ERROR, "Error adding key to wallet");
             }
             pwallet->LearnAllRelatedScripts(pubkey);
-        }
+        }		
+		return EncodeDestination(vchAddress);
     }
     if (fRescan) {
         pwallet->RescanFromTime(TIMESTAMP_MIN, reserver, true /* update */);
     }
-
-    return EncodeDestination(vchAddress);
+	return NullUniValue;
 }
 
 UniValue abortrescan(const JSONRPCRequest& request)
