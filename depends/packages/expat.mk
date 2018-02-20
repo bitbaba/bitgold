@@ -1,9 +1,8 @@
 package=expat
-$(package)_version=2.2.1
-$(package)_download_path=https://codeload.github.com/libexpat/libexpat/tar.gz
-$(package)_download_file=R_2_1_1
-$(package)_file_name=$(package)-$($(package)_version).tar.gz
-$(package)_sha256_hash=4b829bf8a8970fdb38211bce4e60a9d47082b11d2bec94d4561ab6eabb498459
+$(package)_version=2.2.5
+$(package)_download_path=https://github.com/libexpat/libexpat/releases/download/R_2_2_5/
+$(package)_file_name=$(package)-$($(package)_version).tar.bz2
+$(package)_sha256_hash=d9dc32efba7e74f788fcc4f212a43216fc37cf5f23f4c2339664d473353aedf6
 
 define $(package)_set_vars
 $(package)_config_opts=--disable-static
