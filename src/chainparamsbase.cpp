@@ -24,44 +24,6 @@ void AppendParamsHelpMessages(std::string& strUsage, bool debugHelp)
     strUsage += HelpMessageOpt("-testnet", _("Use the test chain"));
 }
 
-/**
- * Main network
- */
-class CBaseMainParams : public CBaseChainParams
-{
-public:
-    CBaseMainParams()
-    {
-        nRPCPort = 30332;
-    }
-};
-
-/**
- * Testnet (v3)
- */
-class CBaseTestNetParams : public CBaseChainParams
-{
-public:
-    CBaseTestNetParams()
-    {
-        nRPCPort = 40332;
-        strDataDir = "testnet3";
-    }
-};
-
-/*
- * Regression test
- */
-class CBaseRegTestParams : public CBaseChainParams
-{
-public:
-    CBaseRegTestParams()
-    {
-        nRPCPort = 40443;
-        strDataDir = "regtest";
-    }
-};
-
 static std::unique_ptr<CBaseChainParams> globalChainBaseParams;
 
 const CBaseChainParams& BaseParams()
@@ -73,11 +35,11 @@ const CBaseChainParams& BaseParams()
 std::unique_ptr<CBaseChainParams> CreateBaseChainParams(const std::string& chain)
 {
     if (chain == CBaseChainParams::MAIN)
-        return MakeUnique<CBaseChainParams>("", 8332);
+        return MakeUnique<CBaseChainParams>("", 30332);
     else if (chain == CBaseChainParams::TESTNET)
-        return MakeUnique<CBaseChainParams>("testnet3", 18332);
+        return MakeUnique<CBaseChainParams>("testnet3", 40332);
     else if (chain == CBaseChainParams::REGTEST)
-        return MakeUnique<CBaseChainParams>("regtest", 18443);
+        return MakeUnique<CBaseChainParams>("regtest", 40443);
     else
         throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
 }
