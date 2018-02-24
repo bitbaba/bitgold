@@ -671,6 +671,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
 
     if (!pblocktemplate->vchCoinbaseCommitment.empty() && fSupportsSegwit) {
         result.pushKV("default_witness_commitment", HexStr(pblocktemplate->vchCoinbaseCommitment.begin(), pblocktemplate->vchCoinbaseCommitment.end()));
+        result.pushKV("utxo_ser_hash", HexStr(GetHashUtxo()));
     }
 
     return result;

@@ -17,6 +17,7 @@
 #include <policy/policy.h>
 #include <primitives/transaction.h>
 #include <rpc/server.h>
+#include <rpc/blockchain.h>
 #include <streams.h>
 #include <sync.h>
 #include <txdb.h>
