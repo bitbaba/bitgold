@@ -32,8 +32,8 @@ Features
 --------
 
 - No free tx any more
-- No limit on block size
-- Seg-Witness
+- 1-Mega-bytes limit on block size(same as bitcoin core)
+- Seg-Witness(same as bitcoin core)
 - Rebase utxo database
 
 Development Process
