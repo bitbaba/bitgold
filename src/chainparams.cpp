@@ -82,9 +82,9 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
-        const uint256 HASH_GENESIS    = uint256S("0x1285c90cd4cbd709bc3db0494f7b2631daa7945aa1311872b5fcba8b7c0352ea");
-        const uint256 HASH_MERKLEROOT = uint256S("0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a");
-        consensus.nSubsidyHalvingInterval = 840000;
+        const uint256 HASH_GENESIS    = uint256S("0x0000063f1c6458585e8117e505924b49abc2192f2e1e4b2bd41afce197570357");
+        const uint256 HASH_MERKLEROOT = uint256S("0xa1820174d76bb7e15e5eaa357907d1a07c1752d39a08346097bfeff28d42ddd8");
+        consensus.nSubsidyHalvingInterval = 210000;
         consensus.BIP16Height = 0;
         consensus.BIP34Height = 0;
         consensus.BIP34Hash = HASH_GENESIS;
@@ -134,10 +134,24 @@ public:
         nPruneAfterHeight = 104832; // about 2 years
 
         genesis = CreateGenesisBlock(1509526800            /*20171101-170000*/
-                                     , 7240431             /*nonce*/
+                                     , 1080298             /*nonce*/
                                      , 0x1e0ffff0          /*bits*/
                                      , VERSIONBITS_TOP_BITS/*version*/
                                      , 50 * COIN           /*subsidy*/);
+
+        while(false){
+            arith_uint256 hash = UintToArith256(genesis.GetHash());
+            arith_uint256 target;
+            target.SetCompact(0x1e0ffff0);
+            if (hash < target){
+                printf("nonce: %d\npow:%s\n%merkle:%s\n\n"
+                        , genesis.nNonce
+                        , hash.ToString().c_str()
+                        , genesis.hashMerkleRoot.ToString().c_str());
+                break;
+            }
+            genesis.nNonce++;
+        }
 
         assert(genesis.GetHash() == HASH_GENESIS);
         assert(genesis.hashMerkleRoot == HASH_MERKLEROOT);
@@ -191,9 +205,9 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = "test";
-        const uint256 HASH_GENESIS    = uint256S("0x1285c90cd4cbd709bc3db0494f7b2631daa7945aa1311872b5fcba8b7c0352ea");
-        const uint256 HASH_MERKLEROOT = uint256S("0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a");
-        consensus.nSubsidyHalvingInterval = 840000;
+        const uint256 HASH_GENESIS    = uint256S("0x7638286a10ad14fc065601355f3aeba6c1ec55469fd928f6d2ae58eb4d975e5f");
+        const uint256 HASH_MERKLEROOT = uint256S("0xa1820174d76bb7e15e5eaa357907d1a07c1752d39a08346097bfeff28d42ddd8");
+        consensus.nSubsidyHalvingInterval = 210000;
         consensus.BIP16Height = 0;
         consensus.BIP34Height = 0;
         consensus.BIP34Hash = HASH_GENESIS;
@@ -244,6 +258,19 @@ public:
                                      , VERSIONBITS_TOP_BITS /*version*/
                                      , 50 * COIN            /*subsidy*/);
 
+        while(false){
+            arith_uint256 hash = UintToArith256(genesis.GetHash());
+            arith_uint256 target;
+            target.SetCompact(0x207fffff);
+            if (hash < target){
+                printf("nonce: %d\npow:%s\n%merkle:%s\n\n"
+                        , genesis.nNonce
+                        , hash.ToString().c_str()
+                        , genesis.hashMerkleRoot.ToString().c_str());
+                break;
+            }
+            genesis.nNonce++;
+        }
 
         assert(genesis.GetHash() == HASH_GENESIS);
         assert(genesis.hashMerkleRoot == HASH_MERKLEROOT);
@@ -295,8 +322,8 @@ class CRegTestParams : public CChainParams {
 public:
     CRegTestParams() {
         strNetworkID = "regtest";
-        const uint256 HASH_GENESIS    = uint256S("0x1285c90cd4cbd709bc3db0494f7b2631daa7945aa1311872b5fcba8b7c0352ea");
-        const uint256 HASH_MERKLEROOT = uint256S("0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a");
+        const uint256 HASH_GENESIS    = uint256S("0x5fcdf13a912cf23445226c4b42ebd9760479979098890757983f1741fb1a79f0");
+        const uint256 HASH_MERKLEROOT = uint256S("0xa1820174d76bb7e15e5eaa357907d1a07c1752d39a08346097bfeff28d42ddd8");
         consensus.nSubsidyHalvingInterval = 150;
         consensus.BIP16Height = 0;
         consensus.BIP34Height = 0;
@@ -346,9 +373,22 @@ public:
                                      , VERSIONBITS_TOP_BITS/*version*/
                                      , 50 * COIN           /*subsidy*/);
 
+        while(false){
+            arith_uint256 hash = UintToArith256(genesis.GetHash());
+            arith_uint256 target;
+            target.SetCompact(0x207fffff);
+            if (hash < target){
+                printf("nonce: %d\npow:%s\n%merkle:%s\n\n"
+                        , genesis.nNonce
+                        , hash.ToString().c_str()
+                        , genesis.hashMerkleRoot.ToString().c_str());
+                break;
+            }
+            genesis.nNonce++;
+        }
+
         assert(genesis.GetHash() == HASH_GENESIS);
         assert(genesis.hashMerkleRoot == HASH_MERKLEROOT);
-
         consensus.hashGenesisBlock = genesis.GetHash();
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.

@@ -120,7 +120,7 @@ if [ -n "$DPKG_ADD_ARCH" ]; then
 fi
 
 if [ -n "$PACKAGES" ]; then 
-	sudo apt-get update;
+	echo sudo apt-get update;
 fi
 
 if [ -n "$PACKAGES" ]; then 

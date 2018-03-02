@@ -8,7 +8,7 @@
 
 *.exe
 src/bitcoin
-src/bitcoind
+src/bitgoldd
 src/bitcoin-cli
 src/bitcoin-tx
 src/test/test_bitcoin
