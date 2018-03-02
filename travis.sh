@@ -5,7 +5,7 @@
 
 # Travis env.
 export TRAVIS_BUILD_ID="TravisBuildId-0"
-export TRAVIS_BUILD_DIR=$(pwd)
+export TRAVIS_BUILD_DIR=$PWD
 export TRAVIS_PULL_REQUEST="pr1"
 export TRAVIS_REPO_SLUG="username/reponame"
 export TRAVIS_JOB_NUMBER=JobNo.1
@@ -120,7 +120,7 @@ if [ -n "$DPKG_ADD_ARCH" ]; then
 fi
 
 if [ -n "$PACKAGES" ]; then 
-	echo ignore command \`sudo apt-get update\';
+	sudo apt-get update;
 fi
 
 if [ -n "$PACKAGES" ]; then 
@@ -129,20 +129,6 @@ fi
 
 # before_script:
 unset CC; unset CXX
-
-if [ "$CHECK_DOC" = 1 ]; then 
-	contrib/devtools/check-doc.py; 
-fi
-
-if [ x"$(file depends/sources | grep symbolic)" = x ]; then
-    exit 1;
-fi
-
-if [ -n "$OSX_SDK" -a x"$(file depends/sdk-sources | grep symbolic)" = x ]; then
-    exit 1
-fi
-
-mkdir -p depends/SDKs
 
 if [ -n "$OSX_SDK" -a ! -f depends/sdk-sources/MacOSX${OSX_SDK}.sdk.tar.gz ]; then 
 	curl --location --fail $SDK_URL/MacOSX${OSX_SDK}.sdk.tar.gz -o depends/sdk-sources/MacOSX${OSX_SDK}.sdk.tar.gz; 
@@ -154,28 +140,7 @@ fi
 
 make $MAKEJOBS -C depends HOST=$HOST $DEP_OPTS
 
-# Start xvfb if needed, as documented at https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
-if [ "$RUN_TESTS" = "true" -a "${DEP_OPTS#*NO_QT=1}" = "$DEP_OPTS" ]; then 
-	export DISPLAY=:99.0; 
-	/sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac; 
-fi
-
-
 #script:
-if [ "$CHECK_DOC" = 1 -a "$TRAVIS_REPO_SLUG" = "bitcoin/bitcoin" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then 
-	while read LINE; do 
-		travis_retry gpg --keyserver hkp://subset.pool.sks-keyservers.net --recv-keys $LINE; 
-	done < contrib/verify-commits/trusted-keys; 
-fi
-
-if [ "$CHECK_DOC" = 1 -a "$TRAVIS_REPO_SLUG" = "bitcoin/bitcoin" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then 
-	git fetch --unshallow; 
-fi
-
-if [ "$CHECK_DOC" = 1 -a "$TRAVIS_REPO_SLUG" = "bitcoin/bitcoin" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then 
-	contrib/verify-commits/verify-commits.sh; 
-fi
-
 export TRAVIS_COMMIT_LOG="$(git log --format=fuller -1)"
 
 if [ -n "$USE_SHELL" ]; then 
@@ -210,14 +175,6 @@ cd bitgold-$HOST
 make $MAKEJOBS $GOAL || ( echo "Build failure. Verbose build follows." && make $GOAL V=1 ; exit 1 )
 
 export LD_LIBRARY_PATH=$TRAVIS_BUILD_DIR/depends/$HOST/lib
-
-if [ "$RUN_TESTS" = "true" ]; then 
-	make $MAKEJOBS check VERBOSE=1; 
-fi
-
-if [ "$RUN_TESTS" = "true" -a -f test/functional/test_runner.py ]; then 
-	test/functional/test_runner.py --coverage; 
-fi
 
 #after_script:
 echo $TRAVIS_COMMIT_RANGE
