@@ -11,9 +11,6 @@
 /** Amount in satoshis (Can be negative) */
 typedef int64_t CAmount;
 
-static const CAmount UNIT = 1;
-static const CAmount GRAM = 100000000 * UNIT;
-
 static const CAmount COIN = 100000000;
 static const CAmount CENT = 1000000;
 
