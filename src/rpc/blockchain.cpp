@@ -51,6 +51,8 @@ extern void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& 
 
 /* Calculate the difficulty for a given block index,
  * or the block index of the given chain.
+ * Note: use the original bitcoin difficulty of genesis,
+ * and forget your own.
  */
 double GetDifficulty(const CChain& chain, const CBlockIndex* blockindex)
 {
@@ -64,14 +66,14 @@ double GetDifficulty(const CChain& chain, const CBlockIndex* blockindex)
 
     int nShift = (blockindex->nBits >> 24) & 0xff;
     double dDiff =
-        (double)0x000f901d / (double)(blockindex->nBits & 0x00ffFFff);
+        (double)0x0000ffff / (double)(blockindex->nBits & 0x00ffffff);
 
-    while (nShift < 0x1e) // 0x1e0f901d
+    while (nShift < 0x1d) // 0x1d00ffff
     {
         dDiff *= 256.0;
         nShift++;
     }
-    while (nShift > 0x1e) // 0x1e0f901d
+    while (nShift > 0x1d) // 0x1d00ffff
     {
         dDiff /= 256.0;
         nShift--;
