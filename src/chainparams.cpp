@@ -80,11 +80,10 @@ void CChainParams::UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64
  */
 class CMainParams : public CChainParams {
 public:
-    static const uint256 HASH_GENESIS    = uint256S("0x0000018d2d31e4ed7df7b699d32cc1f4da1ba6e3e6f49a2b33b9ff43ffa630e0");
-    static const uint256 HASH_MERKLEROOT = uint256S("0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a");
-public:
     CMainParams() {
         strNetworkID = "main";
+        const uint256 HASH_GENESIS    = uint256S("0x1285c90cd4cbd709bc3db0494f7b2631daa7945aa1311872b5fcba8b7c0352ea");
+        const uint256 HASH_MERKLEROOT = uint256S("0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a");
         consensus.nSubsidyHalvingInterval = 840000;
         consensus.BIP16Height = 0;
         consensus.BIP34Height = 0;
@@ -190,11 +189,10 @@ public:
  */
 class CTestNetParams : public CChainParams {
 public:
-    static const uint256 HASH_GENESIS    = uint256S("0x54192846adbe9997460098a0fd4f041c7456429d6885adc0c7d4900f04621b8b");
-    static const uint256 HASH_MERKLEROOT = uint256S("0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a");
-public:
     CTestNetParams() {
         strNetworkID = "test";
+        const uint256 HASH_GENESIS    = uint256S("0x1285c90cd4cbd709bc3db0494f7b2631daa7945aa1311872b5fcba8b7c0352ea");
+        const uint256 HASH_MERKLEROOT = uint256S("0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a");
         consensus.nSubsidyHalvingInterval = 840000;
         consensus.BIP16Height = 0;
         consensus.BIP34Height = 0;
@@ -295,11 +293,10 @@ public:
  */
 class CRegTestParams : public CChainParams {
 public:
-    static const uint256 HASH_GENESIS    = uint256S("0x1285c90cd4cbd709bc3db0494f7b2631daa7945aa1311872b5fcba8b7c0352ea");
-    static const uint256 HASH_MERKLEROOT = uint256S("0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a");
-public:
     CRegTestParams() {
         strNetworkID = "regtest";
+        const uint256 HASH_GENESIS    = uint256S("0x1285c90cd4cbd709bc3db0494f7b2631daa7945aa1311872b5fcba8b7c0352ea");
+        const uint256 HASH_MERKLEROOT = uint256S("0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a");
         consensus.nSubsidyHalvingInterval = 150;
         consensus.BIP16Height = 0;
         consensus.BIP34Height = 0;
