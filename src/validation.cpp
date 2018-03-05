@@ -3050,12 +3050,13 @@ void UpdateUncommittedBlockStructures(CBlock& block, const CBlockIndex* pindexPr
     //                         -> DHash(witnewssRoot, ...,{ ver0, ..., ver1, ..., ver2, witnessReserved})
     // * Data in {} will goto the witnessScript[0] of coinbase (that is, vin[0].witnessScript[0] == {data}).
     std::vector<unsigned char> ret(32, 0x00);
+    /*
     do {
         std::vector<unsigned char> witnessReservedData(32, 0x00);
-        uint256 hashUtxo = GetHashUtxo();
-        CHash256().Write(hashUtxo.begin(), 32).Write(witnessReservedData.data(), 32).Finalize(hashUtxo.begin());
-        memcpy(&ret[0], hashUtxo.begin(), 32);
+        CHash256().Write(ver0_commitment.begin(), 32).Write(witnessReservedData.data(), 32).Finalize(ver0_commitment.begin());
+        memcpy(&ret[0], ver0_commitment.begin(), 32);
     }while(0);
+    */
 
     if (commitpos != -1 && IsWitnessEnabled(pindexPrev, consensusParams) && !block.vtx[0]->HasWitness()) {
         CMutableTransaction tx(*block.vtx[0]);
@@ -3085,12 +3086,13 @@ std::vector<unsigned char> GenerateCoinbaseCommitment(CBlock& block, const CBloc
     //                         -> DHash(witnewssRoot, ...,{ ver0, ..., ver1, ..., ver2, witnessReserved})
     // * Data in {} will goto the witnessScript[0] of coinbase (that is, vin[0].witnessScript[0] == {data}).
     std::vector<unsigned char> ret(32, 0x00);
+    /*
     do {
         std::vector<unsigned char> witnessReservedData(32, 0x00);
-        uint256 hashUtxo = GetHashUtxo();
-        CHash256().Write(hashUtxo.begin(), 32).Write(witnessReservedData.data(), 32).Finalize(hashUtxo.begin());
-        memcpy(&ret[0], hashUtxo.begin(), 32);
+        CHash256().Write(ver0_commitment.begin(), 32).Write(witnessReservedData.data(), 32).Finalize(ver0_commitment.begin());
+        memcpy(&ret[0], ver0_commitment.begin(), 32);
     }while(0);
+    */
 
     if (consensusParams.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout != 0) {
         if (commitpos == -1) {
@@ -3228,6 +3230,8 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
             if (block.vtx[0]->vin[0].scriptWitness.stack.size() != 1 || block.vtx[0]->vin[0].scriptWitness.stack[0].size() != 32) {
                 return state.DoS(100, false, REJECT_INVALID, "bad-witness-nonce-size", true, strprintf("%s : invalid witness nonce size", __func__));
             }
+            // Minging: {DHash(ver0_commitment | reservedData_000...000)} => coinbase.vin[0].scriptWitness.stack[0];
+            // Verifying: commitment[6...31] === DHash(hashWitness | coinbase.vin[0].scriptWitness.stack[0]);
             CHash256().Write(hashWitness.begin(), 32).Write(&block.vtx[0]->vin[0].scriptWitness.stack[0][0], 32).Finalize(hashWitness.begin());
             if (memcmp(hashWitness.begin(), &block.vtx[0]->vout[commitpos].scriptPubKey[6], 32)) {
                 return state.DoS(100, false, REJECT_INVALID, "bad-witness-merkle-match", true, strprintf("%s : witness merkle commitment mismatch", __func__));
