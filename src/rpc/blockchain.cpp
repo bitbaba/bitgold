@@ -839,6 +839,45 @@ static void ApplyStats(CCoinsStats &stats, CHashWriter& ss, const uint256& hash,
     ss << VARINT(0);
 }
 
+//! Calculate statistics about the unspent transaction output set
+static bool GetUTXOStats(CCoinsView *view, CCoinsStats &stats)
+{
+    std::unique_ptr<CCoinsViewCursor> pcursor(view->Cursor());
+    assert(pcursor);
+
+    CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
+    stats.hashBlock = pcursor->GetBestBlock();
+    {
+        LOCK(cs_main);
+        stats.nHeight = mapBlockIndex.find(stats.hashBlock)->second->nHeight;
+    }
+    ss << stats.hashBlock;
+    uint256 prevkey;
+    std::map<uint32_t, Coin> outputs;
+    while (pcursor->Valid()) {
+        boost::this_thread::interruption_point();
+        COutPoint key;
+        Coin coin;
+        if (pcursor->GetKey(key) && pcursor->GetValue(coin)) {
+            if (!outputs.empty() && key.hash != prevkey) {
+                ApplyStats(stats, ss, prevkey, outputs);
+                outputs.clear();
+            }
+            prevkey = key.hash;
+            outputs[key.n] = std::move(coin);
+        } else {
+            return error("%s: unable to read value", __func__);
+        }
+        pcursor->Next();
+    }
+    if (!outputs.empty()) {
+        ApplyStats(stats, ss, prevkey, outputs);
+    }
+    stats.hashSerialized = ss.GetHash();
+    stats.nDiskSize = view->EstimateSize();
+    return true;
+}
+
 UniValue pruneblockchain(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
@@ -928,17 +967,6 @@ UniValue gettxoutsetinfo(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_INTERNAL_ERROR, "Unable to read UTXO set");
     }
     return ret;
-}
-
-uint256 GetHashUtxo()
-{
-    CCoinsStats stats;
-    FlushStateToDisk();
-    if (GetUTXOStats(pcoinsdbview.get(), stats)) {
-        return stats.hashSerialized;
-    } else {
-        throw JSONRPCError(RPC_INTERNAL_ERROR, "Unable to read UTXO set");
-    }
 }
 
 UniValue gettxout(const JSONRPCRequest& request)
