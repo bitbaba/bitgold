@@ -35,8 +35,5 @@ UniValue mempoolToJSON(bool fVerbose = false);
 /** Block header to JSON */
 UniValue blockheaderToJSON(const CBlockIndex* blockindex);
 
-/** Get Serialized Utxo Hash */
-uint256 GetHashUtxo();
-
 #endif
 
