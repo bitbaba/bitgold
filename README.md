@@ -33,7 +33,6 @@ Features
 
 - 1-Mega-bytes virtual limit on block size(same as bitcoin core)
 - Seg-Witness(same as bitcoin core)
-- Rebase utxo database
 
 Development Process
 -------------------
