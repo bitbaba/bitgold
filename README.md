@@ -54,11 +54,14 @@ Roadmaps
 ----------------
 
 - Support chainstate retrieving in script stack machine
-  - nonceOf
-  - hashOf
-  - timeOf
+  - nonceOf(height)
+  - hashOf(height)
+  - timeOf(height)
 
 - Support PoS (Proof-of-Stake)
+
+- Support state storage of non-utxo data
+
 
 Development Process
 -------------------
