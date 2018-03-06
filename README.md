@@ -46,7 +46,7 @@ Features
 
 - 5 minutes per block(half of bitcoin core)
 - 2-Mega-bytes serialized block size(2x bitcoin core)
-- 42,000,000 coins(2x of bitcoins and half of litecoins)
+- 42,000,000 coins in PoW stage(2x of bitcoins and half of litecoins)
 - Seg-Witness(same as bitcoin core)
 - sha256d as PoW (same as bitcoin core)
 
