@@ -86,8 +86,8 @@ public:
         const uint256 HASH_MERKLEROOT = uint256S("0xa1820174d76bb7e15e5eaa357907d1a07c1752d39a08346097bfeff28d42ddd8");
         consensus.nSubsidyHalvingInterval = 420000;
         consensus.BIP16Height = 0;
-        consensus.BIP34Height = 0;
-        consensus.BIP34Hash = HASH_GENESIS;
+        consensus.BIP34Height = 1;
+        consensus.BIP34Hash = uint256S("0x0000019a6504cae19fa5adb0f5f9a9200c9b5ba5aca3f343b197ae623e3224b0");
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
 
@@ -209,8 +209,8 @@ public:
         const uint256 HASH_MERKLEROOT = uint256S("0xa1820174d76bb7e15e5eaa357907d1a07c1752d39a08346097bfeff28d42ddd8");
         consensus.nSubsidyHalvingInterval = 420000;
         consensus.BIP16Height = 0;
-        consensus.BIP34Height = 0;
-        consensus.BIP34Hash = HASH_GENESIS;
+        consensus.BIP34Height = 100000000; // BIP34 has not activated on testnet
+        consensus.BIP34Hash = uint256();
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
@@ -326,8 +326,8 @@ public:
         const uint256 HASH_MERKLEROOT = uint256S("0xa1820174d76bb7e15e5eaa357907d1a07c1752d39a08346097bfeff28d42ddd8");
         consensus.nSubsidyHalvingInterval = 420000;
         consensus.BIP16Height = 0;
-        consensus.BIP34Height = 0;
-        consensus.BIP34Hash = HASH_GENESIS;
+        consensus.BIP34Height = 100000000; // BIP34 has not activated on regtest (far in the future so block v1 are not rejected in tests)
+        consensus.BIP34Hash = uint256();
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
