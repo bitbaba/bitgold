@@ -12,7 +12,7 @@
 
 uint256 CBlockHeader::GetHash() const
 {
-    CPowHashWriter ss(nType, nVersion);
+    CPowHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
     ss << (*this);
     return ss.GetHash();
 }
