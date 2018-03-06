@@ -15,6 +15,8 @@ Services
 
 - [Pool](https://pool.bitbaba.com/)
 
+- [Miner](https://github.com/bitbaba/cpuminer)
+
 - [Explorer](https://bitgold.bitbaba.com/)
 
 - [Exchange](https://ex.bitbaba.com/)
