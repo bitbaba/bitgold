@@ -3,9 +3,18 @@ BitGold Core integration/staging tree
 
 [![Build Status](https://travis-ci.org/bitbaba/bitgold.svg?branch=master)](https://travis-ci.org/bitbaba/bitgold)
 
-[Pool Status](https://pool.bitbaba.com/)
+[Pool](https://pool.bitbaba.com/)
 
-[Bitgold explorer](https://bitgold.bitbaba.com/)
+[Explorer](https://bitgold.bitbaba.com/)
+
+[Exchange](https://ex.bitbaba.com/)
+
+Downloads
+-------------
+
+[Win32](https://bintray.bitbaba.com/bitgold/bitgold-win32.tar.gz)
+[Ubuntu](https://bintray.bitbaba.com/bitgold/bitgold-ubuntu64.tar.gz)
+[Mac](https://bintray.bitbaba.com/bitgold/bitgold-mac.tar.gz)
 
 What is BitGold?
 ----------------
@@ -31,8 +40,11 @@ information or see https://opensource.org/licenses/MIT.
 Features
 --------
 
-- 1-Mega-bytes virtual limit on block size(same as bitcoin core)
+- 5 minutes per block(half of bitcoin core)
+- 2-Mega-bytes serialized block size(2x bitcoin core)
+- 42,000,000 coins(2x of bitcoins and half of litecoins)
 - Seg-Witness(same as bitcoin core)
+- sha256d as PoW (same as bitcoin core)
 
 Development Process
 -------------------
