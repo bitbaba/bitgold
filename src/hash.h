@@ -17,6 +17,39 @@
 
 typedef uint256 ChainCode;
 
+/** A PoW hasher class for Bitcoin (default: double SHA-256). */
+class CPowHash256 {
+private:
+    CSHA256 sha;
+public:
+    static const size_t OUTPUT_SIZE = CSHA256::OUTPUT_SIZE;
+
+    void Finalize(unsigned char hash[OUTPUT_SIZE]) {
+        unsigned char buf[CSHA256::OUTPUT_SIZE];
+        sha.Finalize(buf);
+        sha.Reset().Write(buf, CSHA256::OUTPUT_SIZE).Finalize(hash);
+
+        // if wanna triple SHA-256 (that is SHA256T), like this:
+        //sha.Reset().Write(hash, OUTPUT_SIZE).Finalize(hash);
+
+        // if wanna quad SHA-256 (that is SHA256Q), do again:
+        //sha.Reset().Write(hash, OUTPUT_SIZE).Finalize(hash);
+
+        // NOTE: Hash(Hash(x)) is NOT same as Hash(x|x),
+        // so remember Finalize()/Reset(), before Write().
+    }
+
+    CHash256& Write(const unsigned char *data, size_t len) {
+        sha.Write(data, len);
+        return *this;
+    }
+
+    CHash256& Reset() {
+        sha.Reset();
+        return *this;
+    }
+};
+
 /** A hasher class for Bitcoin's 256-bit hash (double SHA-256). */
 class CHash256 {
 private:
@@ -111,6 +144,41 @@ inline uint160 Hash160(const prevector<N, unsigned char>& vch)
 {
     return Hash160(vch.begin(), vch.end());
 }
+
+
+/** A writer stream (for serialization) that computes a 256-bit PoW hash. */
+class CPowHashWriter
+{
+private:
+    CPowHash256 ctx;
+
+    const int nType;
+    const int nVersion;
+public:
+
+    CPowHashWriter(int nTypeIn, int nVersionIn) : nType(nTypeIn), nVersion(nVersionIn) {}
+
+    int GetType() const { return nType; }
+    int GetVersion() const { return nVersion; }
+
+    void write(const char *pch, size_t size) {
+        ctx.Write((const unsigned char*)pch, size);
+    }
+
+    // invalidates the object
+    uint256 GetHash() {
+        uint256 result;
+        ctx.Finalize((unsigned char*)&result);
+        return result;
+    }
+
+    template<typename T>
+    CPowHashWriter& operator<<(const T& obj) {
+        // Serialize to this stream
+        ::Serialize(*this, obj);
+        return (*this);
+    }
+};
 
 /** A writer stream (for serialization) that computes a 256-bit hash. */
 class CHashWriter
