@@ -75,7 +75,7 @@ Dependency changes
 Bug fixes
 ---------
 
-* Clicking on a bitcoin: URI on Windows should now launch Bitcoin-Qt properly.
+* Clicking on a bitgold: URI on Windows should now launch Bitcoin-Qt properly.
 
 * When running -testnet, use RPC port 40332 by default.
 
