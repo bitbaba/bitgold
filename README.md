@@ -50,6 +50,16 @@ Features
 - Seg-Witness(same as bitcoin core)
 - sha256d as PoW (same as bitcoin core)
 
+Roadmaps
+----------------
+
+- Support chainstate retrieving in script stack machine
+  - nonceOf
+  - hashOf
+  - timeOf
+
+- Support PoS (Proof-of-Stake)
+
 Development Process
 -------------------
 
