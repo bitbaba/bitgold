@@ -670,7 +670,7 @@ UniValue dumpprivkey(const JSONRPCRequest& request)
         CPubKey pubKey = vchSecret.GetPubKey();
         CPrivKey privKey = vchSecret.GetPrivKey();
         UniValue reply(UniValue::VOBJ);
-        reply.push_back(Pair("priv", CBitcoinSecret(vchSecret).ToString()));
+        reply.push_back(Pair("priv", EncodeSecret(vchSecret)));
         reply.push_back(Pair("hex", HexStr(vchSecret)));
         reply.push_back(Pair("pub", HexStr(pubKey)));
         reply.push_back(Pair("compressed", vchSecret.IsCompressed()));
