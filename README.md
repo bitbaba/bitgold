@@ -84,7 +84,7 @@ Developer IRC can be found on Freenode at #bitgold-core-dev.
 
 Mining 
 -------------------
-[1] Pool
+- Pool
 
 ```
 ./minerd --algo=sha256d \
@@ -98,7 +98,7 @@ Mining
          --protocol-dump
 ```
 
-[2] GBT(GetBlockTemplate) on remote rpc
+- GBT(GetBlockTemplate) on remote rpc
 
 ```
 ./minerd --algo=sha256d \
@@ -113,7 +113,7 @@ Mining
 	 --protocol-dump
 ```
 
-[3] Solo-Mining Locally
+- Solo-Mining Locally
 
 ```
 while true; 
