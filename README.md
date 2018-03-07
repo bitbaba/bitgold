@@ -30,7 +30,7 @@ anyone, anywhere in the world. BitGold uses peer-to-peer technology to operate
 with no central authority: managing transactions and issuing money are carried
 out collectively by the network. BitGold Core is the name of open source
 software which enables the use of this currency. see [Features](https://github.com/bitbaba/bitgold/blob/master/README.md#features)
-and [RoadMaps](https://github.com/bitbaba/bitgold/blob/master/README.md#roadmaps)
+and [RoadMaps](https://github.com/bitbaba/bitgold/blob/master/README.md#roadmaps).
 
 For more information, as well as an immediately useable, binary version of
 the BitGold Core software, see https://bintray.bitbaba.com/bintray/bitgold, or read the
