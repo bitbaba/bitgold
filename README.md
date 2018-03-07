@@ -101,16 +101,16 @@ Mining
 [2] GBT(GetBlockTemplate) on remote rpc
 
 ```
-./minerd  --algo=sha256d \
-		--threads=1 \
-		--coinbase-sig="bitbaba" \
-		--coinbase-addr=GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM \
-		--url=http://api.bitbaba.com/ \
-		--no-getwork \
-		--user=rpcuser \
-		--pass=rpcpassword \
-		--debug \
-		--protocol-dump
+./minerd --algo=sha256d \
+	 --threads=1 \
+	 --coinbase-sig="bitbaba" \
+	 --coinbase-addr=GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM \
+	 --url=http://api.bitbaba.com/ \
+	 --no-getwork \
+	 --user=rpcuser \
+	 --pass=rpcpassword \
+	 --debug \
+	 --protocol-dump
 ```
 
 [3] Solo-Mining Locally
