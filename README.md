@@ -82,6 +82,46 @@ on a patch set.
 Developer IRC can be found on Freenode at #bitgold-core-dev.
 
 
+Mining 
+-------------------
+[1] Pool
+
+```
+./minerd --algo=sha256d \
+         --threads=1 \
+         --url=stratum+tcp://pool.bitbaba.com:3333 \
+         --no-getwork \
+         --no-gbt \
+         --user=GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM \
+         --pass=x \
+         --debug \
+         --protocol-dump
+```
+
+[2] GBT(GetBlockTemplate) on remote rpc
+
+```
+./minerd  --algo=sha256d \
+		--threads=1 \
+		--coinbase-sig="bitbaba" \
+		--coinbase-addr=GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM \
+		--url=http://api.bitbaba.com/ \
+		--no-getwork \
+		--user=rpcuser \
+		--pass=rpcpassword \
+		--debug \
+		--protocol-dump
+```
+
+[3] Solo-Mining Locally
+
+```
+while true; 
+	do ./bitgold-cli generatetoaddress 1 GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM 10000000; 
+done
+```
+
+
 Automated Building
 ------------------
 
