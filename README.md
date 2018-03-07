@@ -50,7 +50,7 @@ Features
 - 2-Mega-bytes serialized block size(2x bitcoin core)
 - 42,000,000 coins in PoW stage(2x of bitcoins and half of litecoins)
 - Seg-Witness(same as bitcoin core)
-- sha256d as PoW (same as bitcoin core)
+- GoldHash as PoW (now same as sha256d of bitcoin core)
 
 Roadmaps
 ----------------
@@ -90,12 +90,14 @@ which can be used to build bitgold on your local laptop.
 Example Usage:
 
 ```
-mkdir -p depsrc; \
-ln -s $PWD/depsrc depends/sources; \
-sh travis.sh Win32Gui bitgold
+$>mkdir -p ~/home/user1/tarballs; \
+$>ln -s ~/home/user1/tarballs depends/sources; \
+$>mkdir -p depends/sdk-sources depends/SDKs; \
+$>sudo apt-get update; \
+$>sh travis.sh;
 ```
 
->Note: *depsrc* is used to cache locale source tarballs of depends.
+>Note: *~/home/user1/tarballs* is used to cache locale source tarballs of depends.
 
 
 Testing

@@ -180,8 +180,8 @@ public:
         checkpointData = {
             {
                 {     0, HASH_GENESIS},
-                {  1008, uint256S("0x0000060391664ef2eeb2a08844da5281a729def0b266dc18452fbf3569ae7443")},
-                {  2016, uint256S("0x000001a9574b41f85d960049a51d7180c901b6db493e53b379507bb19cc1bcbc")},
+                //{  1008, uint256S("0x0000060391664ef2eeb2a08844da5281a729def0b266dc18452fbf3569ae7443")},
+                //{  2016, uint256S("0x000001a9574b41f85d960049a51d7180c901b6db493e53b379507bb19cc1bcbc")},
             }
         };
 
