@@ -29,7 +29,8 @@ BitGold is an new digital gold that enables instant payments to
 anyone, anywhere in the world. BitGold uses peer-to-peer technology to operate
 with no central authority: managing transactions and issuing money are carried
 out collectively by the network. BitGold Core is the name of open source
-software which enables the use of this currency.
+software which enables the use of this currency. see [Features](https://github.com/bitbaba/bitgold/blob/master/README.md#features)
+and [RoadMaps](https://github.com/bitbaba/bitgold/blob/master/README.md#roadmaps).
 
 For more information, as well as an immediately useable, binary version of
 the BitGold Core software, see https://bintray.bitbaba.com/bintray/bitgold, or read the
@@ -79,6 +80,46 @@ should be used to discuss complicated or controversial changes before working
 on a patch set.
 
 Developer IRC can be found on Freenode at #bitgold-core-dev.
+
+
+Mining 
+-------------------
+- Pool
+
+```
+./minerd --algo=sha256d \
+         --threads=1 \
+         --url=stratum+tcp://pool.bitbaba.com:3333 \
+         --no-getwork \
+         --no-gbt \
+         --user=GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM \
+         --pass=x \
+         --debug \
+         --protocol-dump
+```
+
+- GBT(GetBlockTemplate) on remote rpc
+
+```
+./minerd --algo=sha256d \
+	 --threads=1 \
+	 --coinbase-sig="bitbaba" \
+	 --coinbase-addr=GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM \
+	 --url=http://api.bitbaba.com/ \
+	 --no-getwork \
+	 --user=rpcuser \
+	 --pass=rpcpassword \
+	 --debug \
+	 --protocol-dump
+```
+
+- Solo-Mining Locally
+
+```
+while true; 
+	do ./bitgold-cli generatetoaddress 1 GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM 10000000; 
+done
+```
 
 
 Automated Building
