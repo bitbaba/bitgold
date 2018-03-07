@@ -21,23 +21,6 @@ Services
 
 - [Exchange](https://ex.bitbaba.com/)
 
-
-What is BitGold?
-----------------
-
-BitGold is an new digital gold that enables instant payments to
-anyone, anywhere in the world. BitGold uses peer-to-peer technology to operate
-with no central authority: managing transactions and issuing money are carried
-out collectively by the network. BitGold Core is the name of open source
-software which enables the use of this currency. see [Features](https://github.com/bitbaba/bitgold/blob/master/README.md#features)
-and [RoadMaps](https://github.com/bitbaba/bitgold/blob/master/README.md#roadmaps).
-
-For more information, as well as an immediately useable, binary version of
-the BitGold Core software, see https://bintray.bitbaba.com/bintray/bitgold, or read the
-[bitgold design](http://blog.csdn.net/hacode/article/details/78369398) and
-[bitcoin original whitepaper](https://bitcoincore.org/bitcoin.pdf).
-
-
 License
 -------
 
@@ -64,23 +47,6 @@ Roadmaps
 - Support PoS (Proof-of-Stake)
 
 - Support state storage of non-utxo data
-
-
-Development Process
--------------------
-
-The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/bitbaba/bitgold/tags) are created
-regularly to indicate new official, stable release versions of BitGold Core.
-
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
-
-The developer [mailing list](https://lists.linuxfoundation.org/mailman/listinfo/bitgold-dev)
-should be used to discuss complicated or controversial changes before working
-on a patch set.
-
-Developer IRC can be found on Freenode at #bitgold-core-dev.
-
 
 Mining 
 -------------------
@@ -117,10 +83,39 @@ Mining
 
 ```
 while true; 
-	do ./bitgold-cli generatetoaddress 1 GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM 10000000; 
+    do ./bitgold-cli generatetoaddress 1 GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM 10000000; 
 done
 ```
 
+What is BitGold?
+----------------
+
+BitGold is an new digital gold that enables instant payments to
+anyone, anywhere in the world. BitGold uses peer-to-peer technology to operate
+with no central authority: managing transactions and issuing money are carried
+out collectively by the network. BitGold Core is the name of open source
+software which enables the use of this currency. see [Features](https://github.com/bitbaba/bitgold/blob/master/README.md#features)
+and [RoadMaps](https://github.com/bitbaba/bitgold/blob/master/README.md#roadmaps).
+
+For more information, as well as an immediately useable, binary version of
+the BitGold Core software, see https://bintray.bitbaba.com/bintray/bitgold, or read the
+[bitgold design](http://blog.csdn.net/hacode/article/details/78369398) and
+[bitcoin original whitepaper](https://bitcoincore.org/bitcoin.pdf).
+
+Development Process
+-------------------
+
+The `master` branch is regularly built and tested, but is not guaranteed to be
+completely stable. [Tags](https://github.com/bitbaba/bitgold/tags) are created
+regularly to indicate new official, stable release versions of BitGold Core.
+
+The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+The developer [mailing list](https://lists.linuxfoundation.org/mailman/listinfo/bitgold-dev)
+should be used to discuss complicated or controversial changes before working
+on a patch set.
+
+Developer IRC can be found on Freenode at #bitgold-core-dev.
 
 Automated Building
 ------------------
