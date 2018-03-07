@@ -181,7 +181,12 @@ public:
             {
                 {     0, HASH_GENESIS},
                 {  1008, uint256S("0x00000ff673327dcbfbf65f13a594345bafd6804ad08eac1749939d01989a088d")},
-                //{  2016, uint256S("0x000001a9574b41f85d960049a51d7180c901b6db493e53b379507bb19cc1bcbc")},
+                {  2016, uint256S("0x000005f3b3f9ebddaf6be241619701d3db03b18b165b076862039075e8ab0751")},
+                {  4032, uint256S("0x00000306e714368fd891f1321fd2bcce806189de9b7801d557da5a4ccbc3965a")},
+                {  8064, uint256S("0x000000beee2315d0432228e365dea0c7324ba0e57a00a227dac5b44952204f79")},
+                { 10080, uint256S("0x000001debe0a25b2e017412977e694a67fede7bc38102d2206f441e0a422925a")},
+                { 12096, uint256S("0x0000006f36a44118ee46ebb313c6684c8a22fbbd626a3802e416983d5486cefe")},
+                { 12186, uint256S("0x000000092fcdc8cde04b50adfefa30e856a2058a2c790a51eaf64bdc40f164b8")},
             }
         };
 
