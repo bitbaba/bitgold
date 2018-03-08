@@ -58,6 +58,9 @@ struct Params {
     int BIP65Height;
     /** Block height at which BIP66 becomes active */
     int BIP66Height;
+    /** Block height at which nonceOf becomes active */
+    int NonceOfHeight;
+
     /**
      * Minimum blocks including miner confirmation of the total of `DifficultyAdjustmentInterval()' blocks in a retargeting period,
      * (nPowTargetTimespan / nPowTargetSpacing) which is also used for BIP9 deployments.

@@ -111,6 +111,10 @@ enum
     // Public keys in segregated witness scripts must be compressed
     //
     SCRIPT_VERIFY_WITNESS_PUBKEYTYPE = (1U << 15),
+
+    // Opcode: nonceOf(height)
+    //
+    SCRIPT_VERIFY_NONCEOF = (1U << 20),
 };
 
 bool CheckSignatureEncoding(const std::vector<unsigned char> &vchSig, unsigned int flags, ScriptError* serror);

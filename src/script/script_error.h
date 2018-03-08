@@ -64,6 +64,9 @@ typedef enum ScriptError_t
     SCRIPT_ERR_WITNESS_UNEXPECTED,
     SCRIPT_ERR_WITNESS_PUBKEYTYPE,
 
+    /* nonceOf*/
+    SCRIPT_ERR_NEGATIVE_BLOCKHEIGHT,
+
     SCRIPT_ERR_ERROR_COUNT
 } ScriptError;
 

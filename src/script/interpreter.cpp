@@ -423,8 +423,28 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                     break;
                 }
 
+                case OP_NONCEOF:{
+                    if (!(flags & SCRIPT_VERIFY_NONCEOF)) {
+                        // not enabled; treat as a NOP8
+                        break;
+                    }
+                    if (stack.size() < 1)
+                        return set_error(serror, SCRIPT_ERR_INVALID_STACK_OPERATION);
+
+                    const CScriptNum nHeight(stacktop(-1), fRequireMinimal);
+
+                    if (nHeight < 0)
+                        return set_error(serror, SCRIPT_ERR_NEGATIVE_BLOCKHEIGHT);
+
+                    popstack(stack);
+                    // TODO: retrieve nonceOf(height) from chain and push into stack top
+                    // Depends: BVM(...) => BVM(...,ChianState)
+                    CScriptNum bNonce(0);
+                    stack.push_back(bNonce.getvch());
+                }
+
                 case OP_NOP1: case OP_NOP4: case OP_NOP5:
-                case OP_NOP6: case OP_NOP7: case OP_NOP8: case OP_NOP9: case OP_NOP10:
+                case OP_NOP6: case OP_NOP7: case OP_NOP9: case OP_NOP10:
                 {
                     if (flags & SCRIPT_VERIFY_DISCOURAGE_UPGRADABLE_NOPS)
                         return set_error(serror, SCRIPT_ERR_DISCOURAGE_UPGRADABLE_NOPS);
