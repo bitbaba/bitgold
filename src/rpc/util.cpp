@@ -67,6 +67,23 @@ CScript CreateMultisigRedeemscript(const int required, const std::vector<CPubKey
     return result;
 }
 
+// Creates a gamble redeemscript from a given list of public keys and number required.
+CScript CreateGambleRedeemscript(const int height, const std::vector<CPubKey>& pubkeys)
+{
+    // Gather public keys
+    if (pubkeys.size() != 2) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Number of keys involved in the multisignature address creation != 2\nChange the number");
+    }
+
+    CScript result = GetScriptForGamble(height, pubkeys);
+
+    if (result.size() > MAX_SCRIPT_ELEMENT_SIZE) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, (strprintf("redeemScript exceeds size limit: %d > %d", result.size(), MAX_SCRIPT_ELEMENT_SIZE)));
+    }
+
+    return result;
+}
+
 class DescribeAddressVisitor : public boost::static_visitor<UniValue>
 {
 public:

@@ -340,6 +340,26 @@ CScript GetScriptForMultisig(int nRequired, const std::vector<CPubKey>& keys)
     return script;
 }
 
+CScript GetScriptForGamble(int height, const std::vector<CPubKey>& keys)
+{
+    CScript script;
+
+    script << CScript::EncodeOP_N(height);
+    script << OP_NONCEOF;
+    script << CScript::EncodeOP_N(2);
+    script << OP_MOD;
+    script << CScript::EncodeOP_N(0);
+    script << OP_NUMEQUAL;
+    script << OP_IF;
+    script << ToByteVector(keys[0]);
+    script << OP_ELSE;
+    script << ToByteVector(keys[1]);
+    script << OP_ENDIF;
+    script << OP_CHECKSIG;
+
+    return script;
+}
+
 CScript GetScriptForWitness(const CScript& redeemscript)
 {
     CScript ret;
