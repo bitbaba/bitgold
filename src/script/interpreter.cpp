@@ -823,7 +823,7 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                         break;
 
                     case OP_MOD:
-                        bn = bn1 % bn2;
+                        bn = bn1.getint() % bn2.getint();
                         break;
 
                     case OP_BOOLAND:             bn = (bn1 != bnZero && bn2 != bnZero); break;
