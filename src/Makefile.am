@@ -69,7 +69,7 @@ if BUILD_BITCOIND
 endif
 
 if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += bitgold-cli bitgold-tx
+  bin_PROGRAMS += bitgold-cli
 endif
 
 .PHONY: FORCE check-symbols check-security
@@ -421,27 +421,6 @@ bitgold_cli_LDADD = \
   $(LIBBITCOIN_CRYPTO)
 
 bitgold_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
-#
-
-# bitgold-tx binary #
-bitgold_tx_SOURCES = bitcoin-tx.cpp
-bitgold_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-bitgold_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-bitgold_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
-
-if TARGET_WINDOWS
-bitgold_tx_SOURCES += bitcoin-tx-res.rc
-endif
-
-bitgold_tx_LDADD = \
-  $(LIBUNIVALUE) \
-  $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CONSENSUS) \
-  $(LIBBITCOIN_CRYPTO) \
-  $(LIBSECP256K1)
-
-bitgold_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 #
 
 # bitcoinconsensus library #

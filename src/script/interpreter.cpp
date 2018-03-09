@@ -11,6 +11,7 @@
 #include <pubkey.h>
 #include <script/script.h>
 #include <uint256.h>
+#include <chain.h>
 
 typedef std::vector<unsigned char> valtype;
 
@@ -248,6 +249,9 @@ bool static CheckMinimalPush(const valtype& data, opcodetype opcode) {
     return true;
 }
 
+/** The currently-connected chain of blocks (protected by cs_main). */
+extern CChain& chainActive;
+
 bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& script, unsigned int flags, const BaseSignatureChecker& checker, SigVersion sigversion, ScriptError* serror)
 {
     static const CScriptNum bnZero(0);
@@ -436,10 +440,14 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                     if (nHeight < 0)
                         return set_error(serror, SCRIPT_ERR_NEGATIVE_BLOCKHEIGHT);
 
-                    popstack(stack);
                     // TODO: retrieve nonceOf(height) from chain and push into stack top
                     // Depends: BVM(...) => BVM(...,ChianState)
                     CScriptNum bNonce(0);
+                    CBlockIndex * pblock = chainActive[nHeight.getint()];
+                    if(pblock == nullptr){
+                        return set_error(serror, SCRIPT_ERR_INVALID_STACK_OPERATION);
+                    }
+                    popstack(stack);
                     stack.push_back(bNonce.getvch());
                 }
 
