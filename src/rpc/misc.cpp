@@ -343,6 +343,61 @@ UniValue createmultisig(const JSONRPCRequest& request)
     return result;
 }
 
+UniValue creategamble(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 2)
+    {
+        std::string msg = "creategamble height [\"key\",...]\n"
+            "\nCreates a gamble address with 2 keys required.\n"
+            "It returns a json object with the address and redeemScript.\n"
+            "\nArguments:\n"
+            "1. height                         (numeric, required) The block height.\n"
+            "2. \"keys\"                       (string, required) A json array of hex-encoded public keys\n"
+            "     [\n"
+            "       \"key\"                    (string) The hex-encoded public key\n"
+            "       ,...\n"
+            "     ]\n"
+
+            "\nResult:\n"
+            "{\n"
+            "  \"address\":\"gambleaddress\", (string) The value of the new gamble address.\n"
+            "  \"redeemScript\":\"script\"       (string) The string value of the hex-encoded redemption script.\n"
+            "}\n"
+
+            "\nExamples:\n"
+            "\nCreate a gamble address from 2 public keys\n"
+            + HelpExampleCli("creategamble", "100 \"[\\\"03789ed0bb717d88f7d321a368d905e7430207ebbd82bd342cf11ae157a7ace5fd\\\",\\\"03dbc6764b8884a92e871274b87583e6d5c2a58819473e17e107ef3f6aa5a61626\\\"]\"") +
+            "\nAs a json rpc call\n"
+            + HelpExampleRpc("creategamble", "100, \"[\\\"03789ed0bb717d88f7d321a368d905e7430207ebbd82bd342cf11ae157a7ace5fd\\\",\\\"03dbc6764b8884a92e871274b87583e6d5c2a58819473e17e107ef3f6aa5a61626\\\"]\"")
+        ;
+        throw std::runtime_error(msg);
+    }
+
+    int height = request.params[0].get_int();
+
+    // Get the public keys
+    const UniValue& keys = request.params[1].get_array();
+    std::vector<CPubKey> pubkeys;
+    for (unsigned int i = 0; i < keys.size(); ++i) {
+        if (IsHex(keys[i].get_str()) && (keys[i].get_str().length() == 66 || keys[i].get_str().length() == 130)) {
+            pubkeys.push_back(HexToPubKey(keys[i].get_str()));
+        } else {
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("Invalid public key: %s\nNote that from v0.16, createmultisig no longer accepts addresses."
+            " Users must use addmultisigaddress to create multisig addresses with addresses known to the wallet.", keys[i].get_str()));
+        }
+    }
+
+    // Construct using pay-to-script-hash:
+    CScript inner = CreateGambleRedeemscript(height, pubkeys);
+    CScriptID innerID(inner);
+
+    UniValue result(UniValue::VOBJ);
+    result.pushKV("address", EncodeDestination(innerID));
+    result.pushKV("redeemScript", HexStr(inner.begin(), inner.end()));
+
+    return result;
+}
+
 UniValue verifymessage(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 3)
@@ -665,6 +720,7 @@ static const CRPCCommand commands[] =
     { "control",            "logging",                &logging,                {"include", "exclude"}},
     { "util",               "validateaddress",        &validateaddress,        {"address"} }, /* uses wallet if enabled */
     { "util",               "createmultisig",         &createmultisig,         {"nrequired","keys"} },
+    { "util",               "creategamble",           &creategamble,           {"nheight","keys"} },
     { "util",               "verifymessage",          &verifymessage,          {"address","signature","message"} },
     { "util",               "signmessagewithprivkey", &signmessagewithprivkey, {"privkey","message"} },
 
