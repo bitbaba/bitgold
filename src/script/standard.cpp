@@ -344,7 +344,7 @@ CScript GetScriptForGamble(int height, const std::vector<CPubKey>& keys)
 {
     CScript script;
 
-    script << CScript::EncodeOP_N(height);
+    script << CScriptNum(height);
     script << OP_NONCEOF;
     script << CScript::EncodeOP_N(2);
     script << OP_MOD;

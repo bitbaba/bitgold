@@ -446,9 +446,11 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                     if(pblock == nullptr){
                         return set_error(serror, SCRIPT_ERR_INVALID_STACK_OPERATION);
                     }
+                    bNonce = pblock->nNonce;
                     popstack(stack);
                     stack.push_back(bNonce.getvch());
                 }
+                break;
 
                 case OP_NOP1: case OP_NOP4: case OP_NOP5:
                 case OP_NOP6: case OP_NOP7: case OP_NOP9: case OP_NOP10:
