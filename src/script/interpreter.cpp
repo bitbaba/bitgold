@@ -452,8 +452,12 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                 }
                 break;
 
+                case OP_NOP10:{
+                    // no operations
+                }break;
+
                 case OP_NOP1: case OP_NOP4: case OP_NOP5:
-                case OP_NOP6: case OP_NOP7: case OP_NOP9: case OP_NOP10:
+                case OP_NOP6: case OP_NOP7: case OP_NOP9:
                 {
                     if (flags & SCRIPT_VERIFY_DISCOURAGE_UPGRADABLE_NOPS)
                         return set_error(serror, SCRIPT_ERR_DISCOURAGE_UPGRADABLE_NOPS);
@@ -1458,11 +1462,13 @@ bool VerifyScript(const CScript& scriptSig, const CScript& scriptPubKey, const C
     if (!EvalScript(stack, scriptSig, flags, checker, SIGVERSION_BASE, serror))
         // serror is set
         return false;
+    // {BOTTOM}{sig}{redeem}{TOP}
     if (flags & SCRIPT_VERIFY_P2SH)
         stackCopy = stack;
     if (!EvalScript(stack, scriptPubKey, flags, checker, SIGVERSION_BASE, serror))
         // serror is set
         return false;
+    // {BOTTOM}{sig}{redeem}{true}{TOP}
     if (stack.empty())
         return set_error(serror, SCRIPT_ERR_EVAL_FALSE);
     if (CastToBool(stack.back()) == false)
@@ -1496,6 +1502,7 @@ bool VerifyScript(const CScript& scriptSig, const CScript& scriptPubKey, const C
 
         // Restore stack.
         swap(stack, stackCopy);
+        // {BOTTOM}{sig}{redeem}{TOP}
 
         // stack cannot be empty here, because if it was the
         // P2SH  HASH <> EQUAL  scriptPubKey would be evaluated with
@@ -1505,6 +1512,8 @@ bool VerifyScript(const CScript& scriptSig, const CScript& scriptPubKey, const C
         const valtype& pubKeySerialized = stack.back();
         CScript pubKey2(pubKeySerialized.begin(), pubKeySerialized.end());
         popstack(stack);
+        // {BOTTOM}{sig}{TOP}
+        // {redeem} ==> pubKey2
 
         if (!EvalScript(stack, pubKey2, flags, checker, SIGVERSION_BASE, serror))
             // serror is set

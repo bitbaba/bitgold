@@ -95,6 +95,14 @@ bool Solver(const CScript& scriptPubKey, txnouttype& typeRet, std::vector<std::v
         return true;
     }
 
+    if (scriptPubKey.size() >= 1 && scriptPubKey[0] == OP_GAMBLESCRIPT) {
+        typeRet = TX_GAMBLESCRIPT;
+        // Note: useless, comment following lines
+        //std::vector<unsigned char> gambleBytes(scriptPubKey.begin()+1, scriptPubKey.end());
+        //vSolutionsRet.push_back(gambleBytes);
+        return true;
+    }
+
     // Scan templates
     const CScript& script1 = scriptPubKey;
     for (const std::pair<txnouttype, CScript>& tplate : mTemplates)
@@ -343,7 +351,7 @@ CScript GetScriptForMultisig(int nRequired, const std::vector<CPubKey>& keys)
 CScript GetScriptForGamble(int height, const std::vector<CPubKey>& keys)
 {
     CScript script;
-
+    script << OP_GAMBLESCRIPT; // simple version of semantic OP_EVAL
     script << CScriptNum(height);
     script << OP_NONCEOF;
     script << CScript::EncodeOP_N(2);
@@ -356,7 +364,6 @@ CScript GetScriptForGamble(int height, const std::vector<CPubKey>& keys)
     script << ToByteVector(keys[1]);
     script << OP_ENDIF;
     script << OP_CHECKSIG;
-
     return script;
 }
 

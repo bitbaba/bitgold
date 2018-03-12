@@ -81,6 +81,13 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
     case TX_NULL_DATA:
     case TX_WITNESS_UNKNOWN:
         return false;
+    case TX_GAMBLESCRIPT:
+        return creator.KeyStore().GetKeys().size()
+                && Sign1(*creator.KeyStore().GetKeys().begin()/*use first key to sign*/
+                         , creator
+                         , scriptPubKey/*OP_GAMBLESCRIPT <redeemscript>*/
+                         , ret
+                         , sigversion);
     case TX_PUBKEY:
         keyID = CPubKey(vSolutions[0]).GetID();
         return Sign1(keyID, creator, scriptPubKey, ret, sigversion);

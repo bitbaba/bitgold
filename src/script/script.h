@@ -177,8 +177,7 @@ enum opcodetype
     OP_NOP7 = 0xb6,
     OP_NONCEOF = 0xb7,OP_NOP8 = OP_NONCEOF,
     OP_NOP9 = 0xb8,
-    OP_NOP10 = 0xb9,
-
+    OP_GAMBLESCRIPT = 0xb9,OP_NOP10 = OP_GAMBLESCRIPT,
 
     // template matching params
     OP_SMALLINTEGER = 0xfa,
