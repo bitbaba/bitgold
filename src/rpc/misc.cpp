@@ -351,7 +351,7 @@ UniValue creategamble(const JSONRPCRequest& request)
             "\nCreates a gamble address with 2 keys required.\n"
             "It returns a json object with the address and redeemScript.\n"
             "\nArguments:\n"
-            "1. height                         (numeric, required) The block height.\n"
+            "1. height                         (numeric, required) The block height, greater than 16.\n"
             "2. \"keys\"                       (string, required) A json array of hex-encoded public keys\n"
             "     [\n"
             "       \"key\"                    (string) The hex-encoded public key\n"
