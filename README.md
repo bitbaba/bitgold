@@ -44,6 +44,8 @@ Roadmaps
   - hashOf(height)
   - timeOf(height)
 
+- Support non-standard sub-script of P2SH
+
 - Support PoS (Proof-of-Stake)
 
 - Support state storage of non-utxo data
