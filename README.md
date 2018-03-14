@@ -106,6 +106,14 @@ ping -w 1 -n 5 1.0.0.1
 goto :restart
 ```
 
+>Note: remember to configure bitgold.conf with:
+
+```
+server=1
+rpcuser=rpcuser
+rpcpassword=rpcpassword
+```
+
 What is BitGold?
 ----------------
 
