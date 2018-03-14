@@ -83,10 +83,27 @@ Mining
 
 - Solo-Mining Locally
 
+mine.sh
+
 ```
 while true; 
     do ./bitgold-cli generatetoaddress 1 GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM 10000000; 
 done
+```
+
+mine.bat
+
+```
+@echo off
+:restart
+
+echo minging...
+
+bitgold-cli generatetoaddress 1 GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM 10000000
+
+ping -w 1 -n 5 1.0.0.1
+
+goto :restart
 ```
 
 What is BitGold?
