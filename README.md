@@ -9,6 +9,7 @@ Downloads
 - [Win32](https://bintray.bitbaba.com/bitgold/bitgold-win32.tar.gz)
 - [Ubuntu](https://bintray.bitbaba.com/bitgold/bitgold-ubuntu64.tar.gz)
 - [Mac](https://bintray.bitbaba.com/bitgold/bitgold-mac.tar.gz)
+- [minerd](https://bintray.bitbaba.com/bitgold/bitgold-miner.zip)
 
 Services
 ----------------
