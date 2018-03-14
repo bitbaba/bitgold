@@ -9,14 +9,15 @@
 #include <qt/paymentserver.h>
 #include <qt/transactionrecord.h>
 
-#include <base58.h>
 #include <consensus/consensus.h>
+#include <key_io.h>
 #include <validation.h>
 #include <script/script.h>
 #include <timedata.h>
 #include <util.h>
 #include <wallet/db.h>
 #include <wallet/wallet.h>
+#include <policy/policy.h>
 
 #include <stdint.h>
 #include <string>
@@ -241,6 +242,7 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
 
     strHTML += "<b>" + tr("Transaction ID") + ":</b> " + rec->getTxID() + "<br>";
     strHTML += "<b>" + tr("Transaction total size") + ":</b> " + QString::number(wtx.tx->GetTotalSize()) + " bytes<br>";
+    strHTML += "<b>" + tr("Transaction virtual size") + ":</b> " + QString::number(GetVirtualTransactionSize(*wtx.tx)) + " bytes<br>";
     strHTML += "<b>" + tr("Output index") + ":</b> " + QString::number(rec->getOutputIndex()) + "<br>";
 
     // Message from normal bitgold:URI (bitgold:123...?message=example)

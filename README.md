@@ -9,6 +9,7 @@ Downloads
 - [Win32](https://bintray.bitbaba.com/bitgold/bitgold-win32.tar.gz)
 - [Ubuntu](https://bintray.bitbaba.com/bitgold/bitgold-ubuntu64.tar.gz)
 - [Mac](https://bintray.bitbaba.com/bitgold/bitgold-mac.tar.gz)
+- [minerd](https://bintray.bitbaba.com/bitgold/bitgold-miner.zip)
 
 Services
 ----------------
@@ -40,9 +41,11 @@ Roadmaps
 ----------------
 
 - Support chainstate retrieving in script stack machine
-  - nonceOf(height)
+  - nonceOf(height) [commits](https://github.com/bitbaba/bitgold/commits/nonceOf)
   - hashOf(height)
   - timeOf(height)
+
+- Support non-standard sub-script of P2SH
 
 - Support PoS (Proof-of-Stake)
 
@@ -81,10 +84,35 @@ Mining
 
 - Solo-Mining Locally
 
+mine.sh
+
 ```
 while true; 
     do ./bitgold-cli generatetoaddress 1 GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM 10000000; 
 done
+```
+
+mine.bat
+
+```
+@echo off
+:restart
+
+echo minging...
+
+bitgold-cli generatetoaddress 1 GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM 10000000
+
+ping -w 1 -n 5 1.0.0.1
+
+goto :restart
+```
+
+>Note: remember to configure bitgold.conf with:
+
+```
+server=1
+rpcuser=rpcuser
+rpcpassword=rpcpassword
 ```
 
 What is BitGold?
