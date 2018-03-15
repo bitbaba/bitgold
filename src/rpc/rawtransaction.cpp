@@ -970,11 +970,12 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
             + HelpExampleRpc("signrawtransaction", "\"myhex\"")
         );
 
+    /*
     if (!IsDeprecatedRPCEnabled("signrawtransaction")) {
         throw JSONRPCError(RPC_METHOD_DEPRECATED, "signrawtransaction is deprecated and will be fully removed in v0.18. "
             "To use signrawtransaction in v0.17, restart bitcoind with -deprecatedrpc=signrawtransaction.\n"
             "Projects should transition to using signrawtransactionwithkey and signrawtransactionwithwallet before upgrading to v0.18");
-    }
+    }*/
 
     RPCTypeCheck(request.params, {UniValue::VSTR, UniValue::VARR, UniValue::VARR, UniValue::VSTR}, true);
 

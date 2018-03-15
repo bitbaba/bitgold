@@ -1327,11 +1327,12 @@ UniValue addwitnessaddress(const JSONRPCRequest& request)
         throw std::runtime_error(msg);
     }
 
+    /*
     if (!IsDeprecatedRPCEnabled("addwitnessaddress")) {
         throw JSONRPCError(RPC_METHOD_DEPRECATED, "addwitnessaddress is deprecated and will be fully removed in v0.17. "
             "To use addwitnessaddress in v0.16, restart bitcoind with -deprecatedrpc=addwitnessaddress.\n"
             "Projects should transition to using the address_type argument of getnewaddress, or option -addresstype=[bech32|p2sh-segwit] instead.\n");
-    }
+    }*/
 
     {
         LOCK(cs_main);
