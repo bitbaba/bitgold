@@ -87,6 +87,7 @@ public:
         consensus.nSubsidyHalvingInterval = 420000;
         consensus.BIP16Height = 0;
         consensus.BIP34Height = 1;
+        consensus.NonceOfHeight = 1;        
         consensus.BIP34Hash = uint256S("0x0000019a6504cae19fa5adb0f5f9a9200c9b5ba5aca3f343b197ae623e3224b0");
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
