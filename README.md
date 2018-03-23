@@ -41,6 +41,92 @@ Roadmaps
 
 - Support chainstate retrieving in script stack machine
   - nonceOf(height)
+  
+  ```c++
+	CScript GetScriptForGamble(int height, const std::vector<CPubKey>& keys)
+	{
+	    CScript script;
+	    script << OP_GAMBLESCRIPT; // simple version of semantic OP_EVAL
+	    script << CScriptNum(height);
+	    script << OP_NONCEOF;
+	    script << CScript::EncodeOP_N(2);
+	    script << OP_MOD;
+	    script << CScript::EncodeOP_N(0);
+	    script << OP_NUMEQUAL;
+	    script << OP_IF;
+	    script << ToByteVector(keys[0]);
+	    script << OP_ELSE;
+	    script << ToByteVector(keys[1]);
+	    script << OP_ENDIF;
+	    script << OP_CHECKSIG;
+	    return script;
+	}
+  ```
+  
+  ```
+	>getnewaddress 'gambler1' legacy 
+	GKx8fpnm2RW4ebXq66FhAyym6d6DhLNxiF
+	
+	>getaddressinfo 
+	{
+  		"address": "GKx8fpnm2RW4ebXq66FhAyym6d6DhLNxiF",
+		...
+  		"pubkey": "028ae98df9f28ead984f980393e7bfd865d80a5b484300755dbf25870e4f8f1d56",
+		...
+	}
+	
+	>getnewaddress 'gambler2' legacy
+	GQSyTMjRoUsCaVfuU4KzfgVha3t642V1X5
+	
+	>getaddressinfo GQSyTMjRoUsCaVfuU4KzfgVha3t642V1X5
+	{
+  		"address": "GQSyTMjRoUsCaVfuU4KzfgVha3t642V1X5",
+		...
+  		"pubkey": "028b040ecb3c4d87e91a82e3f3dd3196b53de8fdb840577e7f8556b48d3ac6d7f3",
+		...
+	}
+	
+	>getblockcount 
+	26428
+	
+	>creategamble 26500 "[\"028ae98df9f28ead984f980393e7bfd865d80a5b484300755dbf25870e4f8f1d56\", \"028b040ecb3c4d87e91a82e3f3dd3196b53de8fdb840577e7f8556b48d3ac6d7f3\"]"
+	{
+  		"address": "Sc8FeTEYnLjEL9qVj3Mqz2nWgTEygTV3ds",
+  		"redeemScript": "b9028467b75297009c6321028ae98df9f28ead984f980393e7bfd865d80a5b484300755dbf25870e4f8f1d566721028b040ecb3c4d87e91a82e3f3dd3196b53de8fdb840577e7f8556b48d3ac6d7f368ac"
+	}
+	
+	>sendtoaddress Sc8FeTEYnLjEL9qVj3Mqz2nWgTEygTV3ds 1 "" "" false
+	55fe01a00ea0ab336b77c0ef8519fe7865f912f128e8e5db6225185dab6fa968
+	
+	>sendtoaddress Sc8FeTEYnLjEL9qVj3Mqz2nWgTEygTV3ds 1 "" "" false
+	d9e4f6f4c82b89df9ecefba343b16cacfa844f2d9c7e4496f22dd5df6a7943be
+	
+	>getaddressinfo Sc8FeTEYnLjEL9qVj3Mqz2nWgTEygTV3ds
+	{
+	  "address": "Sc8FeTEYnLjEL9qVj3Mqz2nWgTEygTV3ds",
+	  "scriptPubKey": "a914a2b1ed20c88a9f197b7009053a6ecba9807d8ed787",
+	  "ismine": false,
+	  "iswatchonly": false,
+	  "isscript": true,
+	  "iswitness": false
+	}
+	
+	# set a redeem address for winner
+	>getnewaddress "winner" legacy
+	GYMHC1iRhtKsK2GMAEvybkbSeNTtHakScP
+	
+	# Redeem from "txid=d9e4f6f4c82b89df9ecefba343b16cacfa844f2d9c7e4496f22dd5df6a7943be,vout=0"
+	# and same as "txid=55fe01a00ea0ab336b77c0ef8519fe7865f912f128e8e5db6225185dab6fa968,vout=0"	
+	>createrawtransaction "[{\"txid\":\"55fe01a00ea0ab336b77c0ef8519fe7865f912f128e8e5db6225185dab6fa968\", \"vout\":0},{\"txid\":\"d9e4f6f4c82b89df9ecefba343b16cacfa844f2d9c7e4496f22dd5df6a7943be\", \"vout\":0}]" "{\"GYMHC1iRhtKsK2GMAEvybkbSeNTtHakScP\":1.99}"
+	020000000268a96fab5d182562dbe5e828f112f96578fe1985efc0776b33aba00ea001fe550000000000ffffffffbe43796adfd52df296447e9c2d4f84faac6cb143a3fbce9edf892bc8f4f6e4d90000000000ffffffff01c07fdc0b000000001976a9149f1f2a4013414b22dfb9aafd0e354fd83e45ec1888ac00000000
+
+	>dumpprivkey GKx8fpnm2RW4ebXq66FhAyym6d6DhLNxiF
+	K??????????????????????????????????????????????????
+
+	>dumpprivkey GQSyTMjRoUsCaVfuU4KzfgVha3t642V1X5
+	K??????????????????????????????????????????????????
+
+  ```
   - hashOf(height)
   - timeOf(height)
 
@@ -94,7 +180,8 @@ BitGold [BGOLD] is an new digital gold that enables instant payments to
 anyone, anywhere in the world. BitGold uses peer-to-peer technology to operate
 with no central authority: managing transactions and issuing money are carried
 out collectively by the network. BitGold Core is the name of open source
-software which enables the use of this currency. see [Features](https://github.com/bitbaba/bitgold/blob/master/README.md#features)
+software which enables the use of this currency. 
+see [Features](https://github.com/bitbaba/bitgold/blob/master/README.md#features)
 and [RoadMaps](https://github.com/bitbaba/bitgold/blob/master/README.md#roadmaps).
 
 For more information, as well as an immediately useable, binary version of
@@ -102,26 +189,12 @@ the BitGold Core software, see https://bintray.bitbaba.com/bintray/bitgold, or r
 [bitgold design](http://blog.csdn.net/hacode/article/details/78369398) and
 [bitcoin original whitepaper](https://bitcoincore.org/bitcoin.pdf).
 
-Development Process
--------------------
-
-The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/bitbaba/bitgold/tags) are created
-regularly to indicate new official, stable release versions of BitGold Core.
-
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
-
-The developer [mailing list](https://lists.linuxfoundation.org/mailman/listinfo/bitgold-dev)
-should be used to discuss complicated or controversial changes before working
-on a patch set.
-
-Developer IRC can be found on Freenode at #bitgold-core-dev.
-
-Automated Building
+Building
 ------------------
 
-As you known, the .travis.yml is used for automated building. and here is a localized script called *travis.sh*, 
-which can be used to build bitgold on your local laptop.
+As you known, the .travis.yml is used for automated building. 
+Here is a localized script called *travis.sh*, which can be used 
+to build bitgold on your local laptop.
 
 Example Usage:
 
@@ -135,45 +208,3 @@ $>sh travis.sh;
 
 >Note: *~/home/user1/tarballs* is used to cache locale source tarballs of depends.
 
-
-Testing
--------
-
-Testing and code review is the bottleneck for development; we get more pull
-requests than we can review and test on short notice. Please be patient and help out by testing
-other people's pull requests, and remember this is a security-critical project where any mistake might cost people
-lots of money.
-
-### Automated Testing
-
-Developers are strongly encouraged to write [unit tests](src/test/README.md) for new code, and to
-submit new unit tests for old code. Unit tests can be compiled and run
-(assuming they weren't disabled in configure) with: `make check`. Further details on running
-and extending unit tests can be found in [/src/test/README.md](/src/test/README.md).
-
-There are also [regression and integration tests](/test), written
-in Python, that are run automatically on the build server.
-These tests can be run (if the [test dependencies](/test) are installed) with: `test/functional/test_runner.py`
-
-The Travis CI system makes sure that every pull request is built for Windows, Linux, and OS X, and that unit/sanity tests are run automatically.
-
-### Manual Quality Assurance (QA) Testing
-
-Changes should be tested by somebody other than the developer who wrote the
-code. This is especially important for large or high-risk changes. It is useful
-to add a test plan to the pull request description if testing the changes is
-not straightforward.
-
-Translations
-------------
-
-Changes to translations as well as new translations can be submitted to
-[BitGold Core's Transifex page](https://www.transifex.com/projects/p/bitgold/).
-
-Translations are periodically pulled from Transifex and merged into the git repository. See the
-[translation process](doc/translation_process.md) for details on how this works.
-
-**Important**: We do not accept translation changes as GitHub pull requests because the next
-pull from Transifex would automatically overwrite them again.
-
-Translators should also subscribe to the [mailing list](https://groups.google.com/forum/#!forum/bitgold-translators).

@@ -87,6 +87,7 @@ public:
         consensus.nSubsidyHalvingInterval = 420000;
         consensus.BIP16Height = 0;
         consensus.BIP34Height = 1;
+        consensus.NonceOfHeight = 1;        
         consensus.BIP34Hash = uint256S("0x0000019a6504cae19fa5adb0f5f9a9200c9b5ba5aca3f343b197ae623e3224b0");
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
@@ -187,6 +188,7 @@ public:
                 { 10080, uint256S("0x000001debe0a25b2e017412977e694a67fede7bc38102d2206f441e0a422925a")},
                 { 12096, uint256S("0x0000006f36a44118ee46ebb313c6684c8a22fbbd626a3802e416983d5486cefe")},
                 { 12186, uint256S("0x000000092fcdc8cde04b50adfefa30e856a2058a2c790a51eaf64bdc40f164b8")},
+                { 26107, uint256S("0x000000009695c2cd224adc8800b2fd2336f3c1795babdea4cc03f49fa5ff757a")},
             }
         };
 
@@ -335,6 +337,7 @@ public:
         consensus.nSubsidyHalvingInterval = 420000;
         consensus.BIP16Height = 0;
         consensus.BIP34Height = 100000000; // BIP34 has not activated on regtest (far in the future so block v1 are not rejected in tests)
+        consensus.NonceOfHeight = 1;
         consensus.BIP34Hash = uint256();
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
