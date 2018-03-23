@@ -66,6 +66,7 @@ Roadmaps
   ```
 	>getnewaddress 'gambler1' legacy 
 	GKx8fpnm2RW4ebXq66FhAyym6d6DhLNxiF
+	
 	>getaddressinfo 
 	{
   		"address": "GKx8fpnm2RW4ebXq66FhAyym6d6DhLNxiF",
@@ -73,8 +74,10 @@ Roadmaps
   		"pubkey": "028ae98df9f28ead984f980393e7bfd865d80a5b484300755dbf25870e4f8f1d56",
 		...
 	}
+	
 	>getnewaddress 'gambler2' legacy
 	GQSyTMjRoUsCaVfuU4KzfgVha3t642V1X5
+	
 	>getaddressinfo GQSyTMjRoUsCaVfuU4KzfgVha3t642V1X5
 	{
   		"address": "GQSyTMjRoUsCaVfuU4KzfgVha3t642V1X5",
@@ -82,17 +85,41 @@ Roadmaps
   		"pubkey": "028b040ecb3c4d87e91a82e3f3dd3196b53de8fdb840577e7f8556b48d3ac6d7f3",
 		...
 	}
+	
 	>getblockcount 
 	26428
+	
 	>creategamble 26500 "[\"028ae98df9f28ead984f980393e7bfd865d80a5b484300755dbf25870e4f8f1d56\", \"028b040ecb3c4d87e91a82e3f3dd3196b53de8fdb840577e7f8556b48d3ac6d7f3\"]"
 	{
   		"address": "Sc8FeTEYnLjEL9qVj3Mqz2nWgTEygTV3ds",
   		"redeemScript": "b9028467b75297009c6321028ae98df9f28ead984f980393e7bfd865d80a5b484300755dbf25870e4f8f1d566721028b040ecb3c4d87e91a82e3f3dd3196b53de8fdb840577e7f8556b48d3ac6d7f368ac"
 	}
+	
 	>sendtoaddress Sc8FeTEYnLjEL9qVj3Mqz2nWgTEygTV3ds 1 "" "" false
 	55fe01a00ea0ab336b77c0ef8519fe7865f912f128e8e5db6225185dab6fa968
+	
 	>sendtoaddress Sc8FeTEYnLjEL9qVj3Mqz2nWgTEygTV3ds 1 "" "" false
 	d9e4f6f4c82b89df9ecefba343b16cacfa844f2d9c7e4496f22dd5df6a7943be
+	
+	>getaddressinfo Sc8FeTEYnLjEL9qVj3Mqz2nWgTEygTV3ds
+	{
+	  "address": "Sc8FeTEYnLjEL9qVj3Mqz2nWgTEygTV3ds",
+	  "scriptPubKey": "a914a2b1ed20c88a9f197b7009053a6ecba9807d8ed787",
+	  "ismine": false,
+	  "iswatchonly": false,
+	  "isscript": true,
+	  "iswitness": false
+	}
+	
+	# Redeem from "txid=d9e4f6f4c82b89df9ecefba343b16cacfa844f2d9c7e4496f22dd5df6a7943be,vout=0"
+	# and same as "txid=55fe01a00ea0ab336b77c0ef8519fe7865f912f128e8e5db6225185dab6fa968,vout=0"
+	>getnewaddress "winner" legacy
+	GYMHC1iRhtKsK2GMAEvybkbSeNTtHakScP
+	
+	>createrawtransaction "[{\"txid\":\"55fe01a00ea0ab336b77c0ef8519fe7865f912f128e8e5db6225185dab6fa968\", \"vout\":0},{\"txid\":\"d9e4f6f4c82b89df9ecefba343b16cacfa844f2d9c7e4496f22dd5df6a7943be\", \"vout\":0}]" "{\"GYMHC1iRhtKsK2GMAEvybkbSeNTtHakScP\":1.99}"
+	020000000268a96fab5d182562dbe5e828f112f96578fe1985efc0776b33aba00ea001fe550000000000ffffffffbe43796adfd52df296447e9c2d4f84faac6cb143a3fbce9edf892bc8f4f6e4d90000000000ffffffff01c07fdc0b000000001976a9149f1f2a4013414b22dfb9aafd0e354fd83e45ec1888ac00000000
+
+
   ```
   - hashOf(height)
   - timeOf(height)
