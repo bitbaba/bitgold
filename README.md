@@ -42,7 +42,7 @@ Roadmaps
 - Support chainstate retrieving in script stack machine
   - nonceOf(height)
   ```
-  	>getnewaddress 'gambler1' legacy 
+	>getnewaddress 'gambler1' legacy 
 	GKx8fpnm2RW4ebXq66FhAyym6d6DhLNxiF
 	>getaddressinfo 
 	{
