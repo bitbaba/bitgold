@@ -194,7 +194,7 @@ Roadmaps
   Redeem on each utxo locked by gamble script
   
   ```
-  	# You can also redeem on sigle utxo
+	# You can also redeem on sigle utxo
 	>createrawtransaction "[{\"txid\":\"55fe01a00ea0ab336b77c0ef8519fe7865f912f128e8e5db6225185dab6fa968\", \"vout\":1}]" "{\"GYMHC1iRhtKsK2GMAEvybkbSeNTtHakScP\":0.995}"
 	020000000168a96fab5d182562dbe5e828f112f96578fe1985efc0776b33aba00ea001fe550100000000ffffffff01e03fee05000000001976a9149f1f2a4013414b22dfb9aafd0e354fd83e45ec1888ac00000000
 
