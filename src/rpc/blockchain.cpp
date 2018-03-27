@@ -878,6 +878,29 @@ static bool GetUTXOStats(CCoinsView *view, CCoinsStats &stats)
     return true;
 }
 
+//! Calculate statistics about the unspent transaction output set
+static bool GetUTXOs(CCoinsView *view, const CTxDestination & dest, std::map<COutPoint, CAmount> & outset)
+{
+    std::unique_ptr<CCoinsViewCursor> pcursor(view->Cursor());
+    assert(pcursor);
+    while (pcursor->Valid()) {
+        boost::this_thread::interruption_point();
+        COutPoint key; Coin coin;
+        if (pcursor->GetKey(key) && pcursor->GetValue(coin)) {
+            CTxDestination coin_dest;
+            if (ExtractDestination(coin.out.scriptPubKey, coin_dest)
+                && dest == coin_dest)
+            {
+                outset.insert(std::make_pair(key, coin.out.nValue));
+            }
+        } else {
+            return error("%s: unable to read value", __func__);
+        }
+        pcursor->Next();
+    }
+    return true;
+}
+
 UniValue pruneblockchain(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
@@ -963,6 +986,47 @@ UniValue gettxoutsetinfo(const JSONRPCRequest& request)
         ret.pushKV("hash_serialized_2", stats.hashSerialized.GetHex());
         ret.pushKV("disk_size", stats.nDiskSize);
         ret.pushKV("total_amount", ValueFromAmount(stats.nTotalAmount));
+    } else {
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "Unable to read UTXO set");
+    }
+    return ret;
+}
+
+UniValue gettxoutset(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 1)
+        throw std::runtime_error(
+            "gettxoutset\n"
+            "\nReturns the unspent transaction output set.\n"
+            "Note this call may take some time.\n"
+            "\nArguments:\n"
+            "1. \"address\"         (string, required) address\n"
+            "\nResult:\n"
+            "[{\n"
+            "  \"txid\":\"hex\",    (string) The transaction id\n"
+            "  \"n\": n,            (number) the index of transaction outputs\n"
+            "  \"amount\": n,       (number) utxo value\n"
+            "  \"coinbase\": n,     (boolean) if coinbase\n"
+            "},...]\n"
+            "\nExamples:\n"
+            + HelpExampleCli("gettxoutset", "")
+            + HelpExampleRpc("gettxoutset", "")
+        );
+
+    UniValue ret(UniValue::VARR);
+    CTxDestination dest = DecodeDestination(request.params[0].get_str());
+    std::map<COutPoint, Coin> outset;
+    if (GetUTXOs(pcoinsdbview.get(), dest, outset)) {
+        for(auto it = outset.begin(); it != outset.end(); ++it){
+            COutPoint outpoint = it->first;
+            Coin coin = it->second;
+            UniValue elt(UniValue::VOBJ);
+            elt.pushKV("txid", outpoint.hash.ToString());
+            elt.pushKV("n", outpoint.n);
+            elt.pushKV("amount", coin.out.nValue);
+            elt.pushKV("coinbase", coin.IsCoinBase());
+            ret.push_back(elt);
+        }
     } else {
         throw JSONRPCError(RPC_INTERNAL_ERROR, "Unable to read UTXO set");
     }
@@ -1637,6 +1701,7 @@ static const CRPCCommand commands[] =
     { "blockchain",         "getrawmempool",          &getrawmempool,          {"verbose"} },
     { "blockchain",         "gettxout",               &gettxout,               {"txid","n","include_mempool"} },
     { "blockchain",         "gettxoutsetinfo",        &gettxoutsetinfo,        {} },
+    { "blockchain",         "gettxoutset",            &gettxoutset,            {"address"} },
     { "blockchain",         "pruneblockchain",        &pruneblockchain,        {"height"} },
     { "blockchain",         "savemempool",            &savemempool,            {} },
     { "blockchain",         "verifychain",            &verifychain,            {"checklevel","nblocks"} },
