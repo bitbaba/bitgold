@@ -18,6 +18,7 @@
 #include <primitives/transaction.h>
 #include <rpc/server.h>
 #include <rpc/blockchain.h>
+#include <script/standard.h>
 #include <streams.h>
 #include <sync.h>
 #include <txdb.h>
