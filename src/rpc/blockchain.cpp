@@ -26,6 +26,7 @@
 #include <util.h>
 #include <utilstrencodings.h>
 #include <hash.h>
+#include <base58.h>
 #include <validationinterface.h>
 #include <warnings.h>
 
@@ -880,7 +881,7 @@ static bool GetUTXOStats(CCoinsView *view, CCoinsStats &stats)
 }
 
 //! Calculate statistics about the unspent transaction output set
-static bool GetUTXOs(CCoinsView *view, const CTxDestination & dest, std::map<COutPoint, CAmount> & outset)
+static bool GetUTXOs(CCoinsView *view, const CTxDestination & dest, std::map<COutPoint, Coin> & outset)
 {
     std::unique_ptr<CCoinsViewCursor> pcursor(view->Cursor());
     assert(pcursor);
@@ -889,10 +890,9 @@ static bool GetUTXOs(CCoinsView *view, const CTxDestination & dest, std::map<COu
         COutPoint key; Coin coin;
         if (pcursor->GetKey(key) && pcursor->GetValue(coin)) {
             CTxDestination coin_dest;
-            if (ExtractDestination(coin.out.scriptPubKey, coin_dest)
-                && dest == coin_dest)
+            if (ExtractDestination(coin.out.scriptPubKey, coin_dest) && dest == coin_dest)
             {
-                outset.insert(std::make_pair(key, coin.out.nValue));
+                outset.insert(std::make_pair(key, coin));
             }
         } else {
             return error("%s: unable to read value", __func__);
@@ -1023,7 +1023,7 @@ UniValue gettxoutset(const JSONRPCRequest& request)
             Coin coin = it->second;
             UniValue elt(UniValue::VOBJ);
             elt.pushKV("txid", outpoint.hash.ToString());
-            elt.pushKV("n", outpoint.n);
+            //elt.pushKV("n", outpoint.n);
             elt.pushKV("amount", coin.out.nValue);
             elt.pushKV("coinbase", coin.IsCoinBase());
             ret.push_back(elt);
