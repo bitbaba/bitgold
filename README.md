@@ -1,7 +1,7 @@
 BitGold Core integration/staging tree
 =====================================
 
-[![Build Status](https://travis-ci.org/bitbaba/bitgold.svg?branch=master)](https://travis-ci.org/bitbaba/bitgold)
+[![Build Status](https://travis-ci.org/imharrywu/bitgold.svg?branch=master)](https://travis-ci.org/imharrywu/bitgold)
 
 What is BitGold?
 ----------------
