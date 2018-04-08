@@ -140,7 +140,7 @@ public:
                                      , 50 * COIN           /*subsidy*/);
 
         while(false){// search genesis
-            static FILE * genesis_file = NULL; if (gensis_file == NULL) {gensis_file = fopen("genesis.info", "w");}
+            static FILE * genesis_file = NULL; if (genesis_file == NULL) {genesis_file = fopen("genesis.info", "w");}
             arith_uint256 hash = UintToArith256(genesis.GetHash());
             arith_uint256 target;
             target.SetCompact(0x1e0ffff0);
@@ -150,7 +150,7 @@ public:
                         , genesis.nNonce
                         , hash.ToString().c_str()
                         , genesis.hashMerkleRoot.ToString().c_str());
-                    fclose(genesis_file); gensis_file = NULL;
+                    fclose(genesis_file); genesis_file = NULL;
                     exit(0);
                 }
             }
@@ -274,7 +274,7 @@ public:
                                      , 50 * COIN            /*subsidy*/);
 
         while(false){
-            static FILE * genesis_file = NULL; if (gensis_file == NULL) {gensis_file = fopen("genesis.info", "w");}
+            static FILE * genesis_file = NULL; if (genesis_file == NULL) {genesis_file = fopen("genesis.info", "w");}
             arith_uint256 hash = UintToArith256(genesis.GetHash());
             arith_uint256 target;
             target.SetCompact(0x207fffff);
@@ -395,7 +395,7 @@ public:
                                      , 50 * COIN           /*subsidy*/);
 
         while(false){
-            static FILE * genesis_file = NULL; if (gensis_file == NULL) {gensis_file = fopen("genesis.info", "w");}
+            static FILE * genesis_file = NULL; if (genesis_file == NULL) {genesis_file = fopen("genesis.info", "w");}
             arith_uint256 hash = UintToArith256(genesis.GetHash());
             arith_uint256 target;
             target.SetCompact(0x207fffff);
