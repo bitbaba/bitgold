@@ -1,10 +1,11 @@
-SDKs/
+/SDKs/
+/SDKs
+/sources/
+/sources
+/sdk-sources/
+/sdk-sources
 work/
 built/
-sources/
-/sources
-sdk-sources/
-/sdk-sources
 config.site
 x86_64*
 i686*
