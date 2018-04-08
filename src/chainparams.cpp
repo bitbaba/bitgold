@@ -139,16 +139,20 @@ public:
                                      , VERSIONBITS_TOP_BITS/*version*/
                                      , 50 * COIN           /*subsidy*/);
 
-        while(false){
+        while(false){// search genesis
+            static FILE * genesis_file = NULL; if (gensis_file == NULL) {gensis_file = fopen("genesis.info", "w");}
             arith_uint256 hash = UintToArith256(genesis.GetHash());
             arith_uint256 target;
             target.SetCompact(0x1e0ffff0);
             if (hash < target){
-                printf("nonce: %d\npow:%s\n%merkle:%s\n\n"
+                if(genesis_file != NULL){
+                    fprintf(genesis_file, "nonce: %d\npow:%s\n%merkle:%s\n\n"
                         , genesis.nNonce
                         , hash.ToString().c_str()
                         , genesis.hashMerkleRoot.ToString().c_str());
-                break;
+                    fclose(genesis_file); gensis_file = NULL;
+                    exit(0);
+                }
             }
             genesis.nNonce++;
         }
@@ -270,15 +274,19 @@ public:
                                      , 50 * COIN            /*subsidy*/);
 
         while(false){
+            static FILE * genesis_file = NULL; if (gensis_file == NULL) {gensis_file = fopen("genesis.info", "w");}
             arith_uint256 hash = UintToArith256(genesis.GetHash());
             arith_uint256 target;
             target.SetCompact(0x207fffff);
             if (hash < target){
-                printf("nonce: %d\npow:%s\n%merkle:%s\n\n"
+                if (genesis_file != NULL){
+                    fprintf(genesis_file, "nonce: %d\npow:%s\n%merkle:%s\n\n"
                         , genesis.nNonce
                         , hash.ToString().c_str()
                         , genesis.hashMerkleRoot.ToString().c_str());
-                break;
+                    fclose(genesis_file); genesis_file = NULL;
+                    exit(0);
+                }
             }
             genesis.nNonce++;
         }
@@ -387,15 +395,19 @@ public:
                                      , 50 * COIN           /*subsidy*/);
 
         while(false){
+            static FILE * genesis_file = NULL; if (gensis_file == NULL) {gensis_file = fopen("genesis.info", "w");}
             arith_uint256 hash = UintToArith256(genesis.GetHash());
             arith_uint256 target;
             target.SetCompact(0x207fffff);
             if (hash < target){
-                printf("nonce: %d\npow:%s\n%merkle:%s\n\n"
+                if (genesis_file != NULL){
+                    printf("nonce: %d\npow:%s\n%merkle:%s\n\n"
                         , genesis.nNonce
                         , hash.ToString().c_str()
                         , genesis.hashMerkleRoot.ToString().c_str());
-                break;
+                    fclose(genesis_file); genesis_file = NULL;
+                    exit(0);
+                }
             }
             genesis.nNonce++;
         }
