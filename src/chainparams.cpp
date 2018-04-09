@@ -146,7 +146,7 @@ public:
             target.SetCompact(0x1e0ffff0);
             if (hash < target){
                 if(genesis_file != NULL){
-                    fprintf(genesis_file, "nonce: %d\npow:%s\n%merkle:%s\n\n"
+                    fprintf(genesis_file, "nonce: %d\npow:%s\nmerkle:%s\n\n"
                         , genesis.nNonce
                         , hash.ToString().c_str()
                         , genesis.hashMerkleRoot.ToString().c_str());
@@ -280,7 +280,7 @@ public:
             target.SetCompact(0x207fffff);
             if (hash < target){
                 if (genesis_file != NULL){
-                    fprintf(genesis_file, "nonce: %d\npow:%s\n%merkle:%s\n\n"
+                    fprintf(genesis_file, "nonce: %d\npow:%s\nmerkle:%s\n\n"
                         , genesis.nNonce
                         , hash.ToString().c_str()
                         , genesis.hashMerkleRoot.ToString().c_str());
@@ -401,7 +401,7 @@ public:
             target.SetCompact(0x207fffff);
             if (hash < target){
                 if (genesis_file != NULL){
-                    printf("nonce: %d\npow:%s\n%merkle:%s\n\n"
+                    printf("nonce: %d\npow:%s\nmerkle:%s\n\n"
                         , genesis.nNonce
                         , hash.ToString().c_str()
                         , genesis.hashMerkleRoot.ToString().c_str());
