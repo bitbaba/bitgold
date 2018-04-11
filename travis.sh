@@ -11,8 +11,8 @@ export TRAVIS_REPO_SLUG="username/reponame"
 export TRAVIS_JOB_NUMBER=JobNo.1
 
 # Matrix
-#matrix="Win32Gui"
-matrix="bitcoind"
+matrix="Win32Gui"
+#matrix="bitcoind"
 #matrix="Cross-Mac"
 
 # For `matrix="Cross-Mac"'
@@ -54,7 +54,7 @@ elif [ "$matrix" = "Win32" ]; then
 	export HOST=i686-w64-mingw32 
 	export DPKG_ADD_ARCH="i386" 
 	export DEP_OPTS="NO_QT=1" 
-	export PACKAGES="python3 nsis g++-mingw-w64-i686 wine1.6 bc" 
+	export PACKAGES="python3 nsis g++-mingw-w64-i686 bc" 
 	export RUN_TESTS=true 
 	export GOAL="install" 
 	export BITCOIN_CONFIG="--disable-tests --enable-reduce-exports"
@@ -63,7 +63,7 @@ elif [ "$matrix" = "Win32" ]; then
 elif [ "$matrix" = "Win32Gui" ]; then
 	export HOST=i686-w64-mingw32 
 	export DPKG_ADD_ARCH="i386" 
-	export PACKAGES="python3 nsis g++-mingw-w64-i686 wine1.6 bc" 
+	export PACKAGES="python3 nsis g++-mingw-w64-i686 bc" 
 	export RUN_TESTS=false
 	export GOAL="deploy" 
 	export BITCOIN_CONFIG="--with-gui --disable-tests --enable-reduce-exports"
@@ -72,7 +72,7 @@ elif [ "$matrix" = "Win32Gui" ]; then
 elif [ "$matrix" = "Win64Gui" ]; then
 	export HOST=x86_64-w64-mingw32
 	export DPKG_ADD_ARCH="i386"
-	export PACKAGES="python3 nsis g++-mingw-w64-x86-64 wine1.6 bc"
+	export PACKAGES="python3 nsis g++-mingw-w64-x86-64 bc"
 	export RUN_TESTS=false
 	export GOAL="deploy"
 	export BITCOIN_CONFIG="--with-gui --disable-tests disable-bench disable-debug --enable-reduce-exports"
@@ -81,24 +81,24 @@ elif [ "$matrix" = "Win64Gui" ]; then
 elif [ "$matrix" = "Cross-Mac" ]; then
 	export HOST=x86_64-apple-darwin11
 	export PACKAGES="cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev python-pip"
-	export DEP_OPTS="NO_UPNP=1 DEBUG=1"
+	export DEP_OPTS=""
 	export OSX_SDK=10.11
 	export RUN_TESTS=false
 	export GOAL="deploy"
-	export BITCOIN_CONFIG="--enable-debug --enable-gui --disable-tests --enable-reduce-exports"
+	export BITCOIN_CONFIG="--disable-debug --enable-gui --disable-bench --disable-tests --enable-reduce-exports"
 
 # bitcoind
 elif [ "$matrix" = "bitcoind" ]; then
-	export HOST=x86_64-unknown-linux-gnu 
-	export PACKAGES="bc python3-zmq" 
-	export DEP_OPTS="NO_QT=1 NO_UPNP=1 DEBUG=1" 
+	export HOST=x86_64-unknown-linux-gnu
+	export PACKAGES="bc python3-zmq"
+	export DEP_OPTS="NO_QT=1 NO_UPNP=1 DEBUG=1"
 	export RUN_TESTS=false
 	export GOAL="install"
 	export USE_SHELL="/bin/bash"
 	# for debug
-	export BITCOIN_CONFIG="--enable-debug --without-gui --without-libs --disable-tests --disable-bench --enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
+	#export BITCOIN_CONFIG="--enable-debug --without-gui --without-libs --disable-tests --disable-bench --enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
 	# no-debug
-	#export BITCOIN_CONFIG="--enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
+	export BITCOIN_CONFIG="--disable-debug --without-gui --without-libs --disable-tests --disable-bench --enable-zmq --enable-glibc-back-compat --enable-reduce-exports CPPFLAGS=-DDEBUG_LOCKORDER"
 
 # undefined
 else 
