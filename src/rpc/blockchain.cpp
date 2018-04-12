@@ -903,9 +903,7 @@ static bool GetUTXOs(CCoinsView *view, const std::string & address, std::map<COu
         if (pcursor->GetKey(key) && pcursor->GetValue(coin)) {
             CTxDestination coin_dest;
             if (ExtractDestination(coin.out.scriptPubKey, coin_dest) && address == CBitcoinAddress(coin_dest).ToString())
-            {
                 outset.insert(std::make_pair(key, coin));
-            }
         } else {
             return error("%s: unable to read value", __func__);
         }
