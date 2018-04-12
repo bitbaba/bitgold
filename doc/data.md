@@ -1,7 +1,9 @@
 ### compile a transaction
 
 ```
-createrawtransaction "[{\"txid\":\"bcea974b4f912fb94ccacb3e80c11f9bf5818e26236778abff68dd2e25911761\", \"vout\": 0}]"  "{\"data\" : \"41424344454647484142434445464748414243444546474841424344454647484142434445464748\", \"GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM\": 24.99}"
+createrawtransaction 
+"[{\"txid\":\"bcea974b4f912fb94ccacb3e80c11f9bf5818e26236778abff68dd2e25911761\", \"vout\": 0}]"  
+"{\"data\" : \"41424344454647484142434445464748414243444546474841424344454647484142434445464748\", \"GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM\": 24.99}"
 ```
 
 ```
