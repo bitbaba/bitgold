@@ -901,9 +901,9 @@ static bool GetUTXOs(CCoinsView *view, const std::string & address, std::map<COu
         boost::this_thread::interruption_point();
         COutPoint key; Coin coin;
         if (pcursor->GetKey(key) && pcursor->GetValue(coin)) {
-            CTxDestination addr;
-            if (ExtractDestination(coin.out.scriptPubKey, addr) && address == EncodeDestination(addr))
-                outset.insert(std::make_pair(key, coin));
+            //CTxDestination addr;
+            //if (ExtractDestination(coin.out.scriptPubKey, addr) && address == EncodeDestination(addr))
+            //    outset.insert(std::make_pair(key, coin));
         } else {
             return error("%s: unable to read value", __func__);
         }
