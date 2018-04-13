@@ -893,7 +893,7 @@ static bool GetUTXOStats(CCoinsView *view, CCoinsStats &stats)
 }
 
 //! Calculate statistics about the unspent transaction output set
-static bool GetUTXOs(CCoinsView *view, const CTxDestination & dest, std::map<COutPoint, Coin> & outset)
+static bool GetUTXOs(CCoinsView *view, const std::string & address, std::map<COutPoint, Coin> & outset)
 {
     std::unique_ptr<CCoinsViewCursor> pcursor(view->Cursor());
     assert(pcursor);
@@ -901,8 +901,8 @@ static bool GetUTXOs(CCoinsView *view, const CTxDestination & dest, std::map<COu
         boost::this_thread::interruption_point();
         COutPoint key; Coin coin;
         if (pcursor->GetKey(key) && pcursor->GetValue(coin)) {
-            CTxDestination coin_dest;
-            if (ExtractDestination(coin.out.scriptPubKey, coin_dest) && dest == coin_dest)
+            CTxDestination addr;
+            if (ExtractDestination(coin.out.scriptPubKey, addr) && address == EncodeDestination(addr))
             {
                 outset.insert(std::make_pair(key, coin));
             }
@@ -1027,7 +1027,7 @@ UniValue gettxoutset(const JSONRPCRequest& request)
         );
 
     UniValue ret(UniValue::VARR);
-    CTxDestination dest = DecodeDestination(request.params[0].get_str());
+    std::string dest = (request.params[0].get_str());
     std::map<COutPoint, Coin> outset;
     if (GetUTXOs(pcoinsdbview.get(), dest, outset)) {
         for(auto it = outset.begin(); it != outset.end(); ++it){
@@ -1035,7 +1035,7 @@ UniValue gettxoutset(const JSONRPCRequest& request)
             Coin coin = it->second;
             UniValue elt(UniValue::VOBJ);
             elt.pushKV("txid", outpoint.hash.ToString());
-            //elt.pushKV("n", outpoint.n);
+            elt.pushKV("n", (int)outpoint.n);
             elt.pushKV("amount", coin.out.nValue);
             elt.pushKV("coinbase", coin.IsCoinBase());
             ret.push_back(elt);
