@@ -191,7 +191,7 @@ protected:
 
     bool Condition(const CBlockIndex* pindex, const Consensus::Params& params) const override
     {
-        return (((pindex->nVersion & VERSIONBITS_TOP_MASK) == VERSIONBITS_TOP_BITS) && (pindex->nVersion & Mask(params)) != 0);
+        return (((pindex->nVersion & VERSIONBITS_TOP_MASK) == VersionBitsTopBits(pindex != NULL ? pindex->nHeight : 0)) && (pindex->nVersion & Mask(params)) != 0);
     }
 
 public:
@@ -219,6 +219,14 @@ int VersionBitsStateSinceHeight(const CBlockIndex* pindexPrev, const Consensus::
 uint32_t VersionBitsMask(const Consensus::Params& params, Consensus::DeploymentPos pos)
 {
     return VersionBitsConditionChecker(pos).Mask(params);
+}
+
+int32_t VersionBitsTopBits(int nHeight)
+{
+    if (nHeight >= SHA256Q_HEIGHT){
+        return 0x40000000;
+    }
+    return 0x20000000;
 }
 
 void VersionBitsCache::Clear()
