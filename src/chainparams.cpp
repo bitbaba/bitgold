@@ -137,7 +137,7 @@ public:
         genesis = CreateGenesisBlock(1509526800            /*20171101-170000*/
                                      , 1080298             /*nonce*/
                                      , 0x1e0ffff0          /*bits*/
-                                     , VERSIONBITS_TOP_BITS/*version*/
+                                     , 0x20000000          /*version*/
                                      , 50 * COIN           /*subsidy*/);
 
         while(false){
@@ -265,7 +265,7 @@ public:
         genesis = CreateGenesisBlock(1509526800             /*20171101-170000*/
                                      , 1                    /*nonce*/
                                      , 0x207fffff           /*bits*/
-                                     , VERSIONBITS_TOP_BITS /*version*/
+                                     , 0x20000000           /*version*/
                                      , 50 * COIN            /*subsidy*/);
 
         while(false){
@@ -381,7 +381,7 @@ public:
         genesis = CreateGenesisBlock(1509526800            /*20171101-170000*/
                                      , 2                   /*nonce*/
                                      , 0x207fffff          /*bits*/
-                                     , VERSIONBITS_TOP_BITS/*version*/
+                                     , 0x20000000          /*version*/
                                      , 50 * COIN           /*subsidy*/);
 
         while(false){
