@@ -119,26 +119,6 @@ AC_ARG_ENABLE([upnp-default],
   [use_upnp_default=$enableval],
   [use_upnp_default=no])
 
-AC_ARG_ENABLE(tests,
-    AS_HELP_STRING([--disable-tests],[do not compile tests (default is to compile)]),
-    [use_tests=$enableval],
-    [use_tests=yes])
-
-AC_ARG_ENABLE(gui-tests,
-    AS_HELP_STRING([--disable-gui-tests],[do not compile GUI tests (default is to compile if GUI and tests enabled)]),
-    [use_gui_tests=$enableval],
-    [use_gui_tests=$use_tests])
-
-AC_ARG_ENABLE(bench,
-    AS_HELP_STRING([--disable-bench],[do not compile benchmarks (default is to compile)]),
-    [use_bench=$enableval],
-    [use_bench=yes])
-
-AC_ARG_ENABLE([extended-functional-tests],
-    AS_HELP_STRING([--enable-extended-functional-tests],[enable expensive functional tests when using lcov (default no)]),
-    [use_extended_functional_tests=$enableval],
-    [use_extended_functional_tests=no])
-
 AC_ARG_WITH([qrencode],
   [AS_HELP_STRING([--with-qrencode],
   [enable QR code support (default is yes if qt is enabled and libqrencode is found)])],
@@ -162,18 +142,6 @@ AC_ARG_ENABLE([ccache],
   [do not use ccache for building (default is to use if found)])],
   [use_ccache=$enableval],
   [use_ccache=auto])
-
-AC_ARG_ENABLE([lcov],
-  [AS_HELP_STRING([--enable-lcov],
-  [enable lcov testing (default is no)])],
-  [use_lcov=$enableval],
-  [use_lcov=no])
-
-AC_ARG_ENABLE([lcov-branch-coverage],
-  [AS_HELP_STRING([--enable-lcov-branch-coverage],
-  [enable lcov testing branch coverage (default is no)])],
-  [use_lcov_branch=yes],
-  [use_lcov_branch=no])
 
 AC_ARG_ENABLE([glibc-back-compat],
   [AS_HELP_STRING([--enable-glibc-back-compat],
