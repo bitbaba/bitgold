@@ -61,7 +61,10 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 {
     assert(pindexLast != nullptr);
 
-    if(pindexLast->nHeight + 1 >= SHA256Q_HEIGHT){
+    if(pindexLast->nHeight + 1 == SHA256Q_HEIGHT){
+        return 0x201fffff;
+    }
+    if(pindexLast->nHeight + 1 > SHA256Q_HEIGHT){
         return GetNextWorkRequiredV2(pindexLast, pblock, params);
     }
 
