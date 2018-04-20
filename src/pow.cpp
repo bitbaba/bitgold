@@ -9,6 +9,32 @@
 #include <chain.h>
 #include <primitives/block.h>
 #include <uint256.h>
+#include <versionbits.h>
+
+static unsigned int CalculateNextWorkRequiredV2(const CBlockIndex* pindexLast, int64_t nFirstBlockTime, const Consensus::Params& params)
+{
+    if (params.fPowNoRetargeting)
+        return pindexLast->nBits;
+
+    // Limit adjustment step
+    int64_t nActualTimespan = pindexLast->GetBlockTime() - nFirstBlockTime;
+    if (nActualTimespan < params.nPowTargetSpacing/2)
+        nActualTimespan = params.nPowTargetSpacing/2;
+    if (nActualTimespan > params.nPowTargetSpacing*2)
+        nActualTimespan = params.nPowTargetSpacing*2;
+
+    // Retarget
+    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
+    arith_uint256 bnNew;
+    bnNew.SetCompact(pindexLast->nBits);
+    bnNew *= nActualTimespan;
+    bnNew /= params.nPowTargetSpacing;
+
+    if (bnNew > bnPowLimit)
+        bnNew = bnPowLimit;
+
+    return bnNew.GetCompact();
+}
 
 /**
  * @brief GetNextWorkRequiredV2, retarget every one block, since sha256q hard-fork point.
@@ -22,42 +48,20 @@ static unsigned int GetNextWorkRequiredV2(const CBlockIndex* pindexLast, const C
     assert(pindexLast != nullptr);
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 
-    // Only change once per difficulty adjustment interval
-    if ((pindexLast->nHeight+1) % params.DifficultyAdjustmentInterval() != 0)
-    {
-        if (params.fPowAllowMinDifficultyBlocks)
-        {
-            // Special difficulty rule for testnet:
-            // If the new block's timestamp is more than 2* 10 minutes
-            // then allow mining of a min-difficulty block.
-            if (pblock->GetBlockTime() > pindexLast->GetBlockTime() + params.nPowTargetSpacing*2)
-                return nProofOfWorkLimit;
-            else
-            {
-                // Return the last non-special-min-difficulty-rules-block
-                const CBlockIndex* pindex = pindexLast;
-                while (pindex->pprev && pindex->nHeight % params.DifficultyAdjustmentInterval() != 0 && pindex->nBits == nProofOfWorkLimit)
-                    pindex = pindex->pprev;
-                return pindex->nBits;
-            }
-        }
-        return pindexLast->nBits;
-    }
-
     // Go back by what we want to be 14 days worth of blocks
-    int nHeightFirst = pindexLast->nHeight - (params.DifficultyAdjustmentInterval()-1);
+    int nHeightFirst = pindexLast->nHeight - (1);
     assert(nHeightFirst >= 0);
     const CBlockIndex* pindexFirst = pindexLast->GetAncestor(nHeightFirst);
     assert(pindexFirst);
 
-    return CalculateNextWorkRequired(pindexLast, pindexFirst->GetBlockTime(), params);
+    return CalculateNextWorkRequiredV2(pindexLast, pindexFirst->GetBlockTime(), params);
 }
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
     assert(pindexLast != nullptr);
 
-    if(pindexLast->nHeight + 1 >= 40320){
+    if(pindexLast->nHeight + 1 >= SHA256Q_HEIGHT){
         return GetNextWorkRequiredV2(pindexLast, pblock, params);
     }
 

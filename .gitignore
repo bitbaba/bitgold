@@ -7,6 +7,7 @@
 
 *.tar.gz
 
+/linux.sh
 *.exe
 src/bitcoin
 src/bitgoldd
