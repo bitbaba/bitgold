@@ -1712,7 +1712,7 @@ public:
 
     bool Condition(const CBlockIndex* pindex, const Consensus::Params& params) const override
     {
-        return ((pindex->nVersion & VERSIONBITS_TOP_MASK) == VersionBitsTopBits(pindex->nHeight)) &&
+        return ((pindex->nVersion & VERSIONBITS_TOP_MASK) == VersionBitsTopBits(pindex != NULL ? pindex->nHeight : 0)) &&
                ((pindex->nVersion >> bit) & 1) != 0 &&
                ((ComputeBlockVersion(pindex->pprev, params) >> bit) & 1) == 0;
     }
@@ -3134,6 +3134,11 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
 {
     assert(pindexPrev != nullptr);
     const int nHeight = pindexPrev->nHeight + 1;
+
+    // Check top bits of block version
+    if ((block.nVersion & VERSIONBITS_TOP_MASK) != VersionBitsTopBits(nHeight)){
+        return state.DoS(100, false, REJECT_INVALID, "bad-top-bits", false, "incorrect proof of work");
+    }
 
     // Check proof of work
     const Consensus::Params& consensusParams = params.GetConsensus();
