@@ -15,7 +15,7 @@ static const int32_t VERSIONBITS_TOP_MASK = 0xE0000000UL;
 /** Total bits available for versionbits */
 static const int32_t VERSIONBITS_NUM_BITS = 29;
 /** sha256q height */
-static const int32_t SHA256Q_HEIGHT = 40000;
+static const int32_t SHA256Q_HEIGHT = 40320;
 
 enum ThresholdState {
     THRESHOLD_DEFINED,
