@@ -24,7 +24,7 @@ static unsigned int CalculateNextWorkRequiredV2(const CBlockIndex* pindexLast, i
         nActualTimespan = params.nPowTargetSpacing*2;
 
     // Retarget
-    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
+    const arith_uint256 bnPowLimit = UintToArith256(uint256S("0x1fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
     arith_uint256 bnNew;
     bnNew.SetCompact(pindexLast->nBits);
     bnNew *= nActualTimespan;
@@ -46,7 +46,7 @@ static unsigned int CalculateNextWorkRequiredV2(const CBlockIndex* pindexLast, i
 static unsigned int GetNextWorkRequiredV2(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
     assert(pindexLast != nullptr);
-    unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
+    unsigned int nProofOfWorkLimit = 0x201fffff;
 
     // Go back by what we want to be 14 days worth of blocks
     int nHeightFirst = pindexLast->nHeight - (1);
