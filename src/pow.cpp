@@ -133,9 +133,10 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&
     arith_uint256 bnTarget;
 
     bnTarget.SetCompact(nBits, &fNegative, &fOverflow);
+    //printf("%s\n", hash.ToString().c_str());
 
     // Check range
-    if (fNegative || bnTarget == 0 || fOverflow || bnTarget > UintToArith256(params.powLimit))
+    if (fNegative || bnTarget == 0 || fOverflow /*|| bnTarget > UintToArith256(params.powLimit)*/)
         return false;
 
     // Check proof of work matches claimed amount
