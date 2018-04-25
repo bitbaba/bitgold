@@ -86,12 +86,14 @@ Roadmaps
 
 - Support state storage of non-utxo data
 
+- Support Tx comments(e.g. "pay for coffe")
+
 Mining 
 -------------------
 - Pool
 
 ```
-./minerd --algo=sha256d \
+./minerd --algo=sha256q \
          --threads=1 \
          --url=stratum+tcp://pool.bitbaba.com:3333 \
          --no-getwork \
@@ -105,7 +107,7 @@ Mining
 - GBT(GetBlockTemplate) on remote rpc
 
 ```
-./minerd --algo=sha256d \
+./minerd --algo=sha256q \
 	 --threads=1 \
 	 --coinbase-sig="bitbaba" \
 	 --coinbase-addr=GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM \
@@ -142,7 +144,7 @@ ping -w 1 -n 5 1.0.0.1
 goto :restart
 ```
 
->Note: remember to configure bitgold.conf with:
+>Note: remember to configure bitgold.conf as following:
 
 ```
 server=1
@@ -150,22 +152,7 @@ rpcuser=rpcuser
 rpcpassword=rpcpassword
 ```
 
-Development Process
--------------------
-
-The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/bitbaba/bitgold/tags) are created
-regularly to indicate new official, stable release versions of BitGold Core.
-
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
-
-The developer [mailing list](https://lists.linuxfoundation.org/mailman/listinfo/bitgold-dev)
-should be used to discuss complicated or controversial changes before working
-on a patch set.
-
-Developer IRC can be found on Freenode at #bitgold-core-dev.
-
-Automated Building
+Building from sources
 ------------------
 
 As you known, the .travis.yml is used for automated building. 
