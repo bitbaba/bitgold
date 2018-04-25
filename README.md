@@ -1,30 +1,7 @@
 BitGold Project 
 =====================================
 
-[![Build Status](https://travis-ci.org/imharrywu/bitgold.svg?branch=master)](https://travis-ci.org/imharrywu/bitgold)
-
-What is BitGold?
-----------------
-
-BitGold is an new digital gold that enables instant payments to
-anyone, anywhere in the world. BitGold uses peer-to-peer technology to operate
-with no central authority: managing transactions and issuing money are carried
-out collectively by the network. BitGold Core is the name of open source
-software which enables the use of this currency. see [Features](https://github.com/bitbaba/bitgold/blob/master/README.md#features)
-and [RoadMaps](https://github.com/bitbaba/bitgold/blob/master/README.md#roadmaps).
-
-For more information, as well as an immediately useable, binary version of
-the BitGold Core software, see https://bintray.bitbaba.com/bintray/bitgold, or read the
-[bitgold design](http://blog.csdn.net/hacode/article/details/78369398) and
-[bitcoin original whitepaper](https://bitcoincore.org/bitcoin.pdf).
-
-License
--------
-
-BitGold[BGOLD] is released under the terms of the MIT license. 
-
-See [COPYING](COPYING) for more information or see https://opensource.org/licenses/MIT.
-
+[![Build Status](https://travis-ci.org/bitbaba/bitgold.svg?branch=master)](https://travis-ci.org/bitbaba/bitgold)
 
 What is BitGold?
 ----------------
@@ -41,6 +18,14 @@ For more information, as well as an immediately useable, binary version of
 the BitGold Core software, see https://bintray.bitbaba.com/bintray/bitgold, or read the
 [bitgold design](http://blog.csdn.net/hacode/article/details/78369398) and
 [bitcoin original whitepaper](https://bitcoincore.org/bitcoin.pdf).
+
+
+License
+-------
+
+BitGold[BGOLD] is released under the terms of the MIT license. 
+
+See [COPYING](COPYING) for more information or see https://opensource.org/licenses/MIT.
 
 Downloads
 -------------
@@ -86,12 +71,14 @@ Roadmaps
 
 - Support state storage of non-utxo data
 
+- Support Tx comments(e.g. "pay for coffe")
+
 Mining 
 -------------------
 - Pool
 
 ```
-./minerd --algo=sha256d \
+./minerd --algo=sha256q \
          --threads=1 \
          --url=stratum+tcp://pool.bitbaba.com:3333 \
          --no-getwork \
@@ -105,7 +92,7 @@ Mining
 - GBT(GetBlockTemplate) on remote rpc
 
 ```
-./minerd --algo=sha256d \
+./minerd --algo=sha256q \
 	 --threads=1 \
 	 --coinbase-sig="bitbaba" \
 	 --coinbase-addr=GZmKHp12bDUiDCkvvzyZzytwRcNaW3viDM \
@@ -142,7 +129,7 @@ ping -w 1 -n 5 1.0.0.1
 goto :restart
 ```
 
->Note: remember to configure bitgold.conf with:
+>Note: remember to configure bitgold.conf as following:
 
 ```
 server=1
@@ -150,22 +137,7 @@ rpcuser=rpcuser
 rpcpassword=rpcpassword
 ```
 
-Development Process
--------------------
-
-The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/bitbaba/bitgold/tags) are created
-regularly to indicate new official, stable release versions of BitGold Core.
-
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
-
-The developer [mailing list](https://lists.linuxfoundation.org/mailman/listinfo/bitgold-dev)
-should be used to discuss complicated or controversial changes before working
-on a patch set.
-
-Developer IRC can be found on Freenode at #bitgold-core-dev.
-
-Automated Building
+Building from sources
 ------------------
 
 As you known, the .travis.yml is used for automated building. 
