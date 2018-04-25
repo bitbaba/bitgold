@@ -6,29 +6,6 @@ BitGold Project
 What is BitGold?
 ----------------
 
-BitGold is an new digital gold that enables instant payments to
-anyone, anywhere in the world. BitGold uses peer-to-peer technology to operate
-with no central authority: managing transactions and issuing money are carried
-out collectively by the network. BitGold Core is the name of open source
-software which enables the use of this currency. see [Features](https://github.com/bitbaba/bitgold/blob/master/README.md#features)
-and [RoadMaps](https://github.com/bitbaba/bitgold/blob/master/README.md#roadmaps).
-
-For more information, as well as an immediately useable, binary version of
-the BitGold Core software, see https://bintray.bitbaba.com/bintray/bitgold, or read the
-[bitgold design](http://blog.csdn.net/hacode/article/details/78369398) and
-[bitcoin original whitepaper](https://bitcoincore.org/bitcoin.pdf).
-
-License
--------
-
-BitGold[BGOLD] is released under the terms of the MIT license. 
-
-See [COPYING](COPYING) for more information or see https://opensource.org/licenses/MIT.
-
-
-What is BitGold?
-----------------
-
 BitGold [BGOLD] is an new digital gold that enables instant payments to
 anyone, anywhere in the world. BitGold uses peer-to-peer technology to operate
 with no central authority: managing transactions and issuing money are carried
@@ -41,6 +18,14 @@ For more information, as well as an immediately useable, binary version of
 the BitGold Core software, see https://bintray.bitbaba.com/bintray/bitgold, or read the
 [bitgold design](http://blog.csdn.net/hacode/article/details/78369398) and
 [bitcoin original whitepaper](https://bitcoincore.org/bitcoin.pdf).
+
+
+License
+-------
+
+BitGold[BGOLD] is released under the terms of the MIT license. 
+
+See [COPYING](COPYING) for more information or see https://opensource.org/licenses/MIT.
 
 Downloads
 -------------
