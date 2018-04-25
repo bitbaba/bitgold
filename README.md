@@ -1,7 +1,7 @@
 BitGold Project 
 =====================================
 
-[![Build Status](https://travis-ci.org/imharrywu/bitgold.svg?branch=master)](https://travis-ci.org/imharrywu/bitgold)
+[![Build Status](https://travis-ci.org/bitbaba/bitgold.svg?branch=master)](https://travis-ci.org/bitbaba/bitgold)
 
 What is BitGold?
 ----------------
