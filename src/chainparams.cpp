@@ -47,8 +47,8 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  *        hashPrevBlock=0x0000000000000000000000000000000000000000000000000000000000000000,
  *        hashMerkleRoot=0x5fd8818c00a3e171e4d43e7194dfbc8df60ded3416e79af1688b3e5448c8564a,
  *        nTime=1509526800,
- *        nBits=1e0f901d,
- *        nNonce=7240431,
+ *        nBits=0x1e0ffff0,
+ *        nNonce=1080298,
  *        vtx=1)
  * CTransaction(hash=824c6bf009, ver=1, vin.size=1, vout.size=1, nLockTime=0)
  *  CTxIn(COutPoint(0000000000, 4294967295), coinbase 00046931fc5923444a49412033312f4e6f762f3230313720636c6f7365642061742032333337372e3234)
