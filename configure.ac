@@ -8,7 +8,7 @@ define(_CLIENT_VERSION_IS_RELEASE, true) # just SET this flag ONLY in TAGGED rel
 define(_COPYRIGHT_YEAR, 2018)
 define(_COPYRIGHT_HOLDERS,[The %s developers])
 define(_COPYRIGHT_HOLDERS_SUBSTITUTION,[[BitGold]])
-AC_INIT([BitGold],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION],[https://github.com/bitbaba/bitgold/issues],[bitgold],[https://bitgold.bitbaba.com/])
+AC_INIT([BitGold Core],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION],[https://github.com/bitbaba/bitgold/issues],[bitgold],[https://bitgold.bitbaba.com/])
 AC_CONFIG_SRCDIR([src/validation.cpp])
 AC_CONFIG_HEADERS([src/config/bitcoin-config.h])
 AC_CONFIG_AUX_DIR([build-aux])
