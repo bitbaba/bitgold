@@ -73,7 +73,7 @@ if BUILD_BITCOIN_UTILS
 endif
 
 .PHONY: FORCE check-symbols check-security
-# bitgold core #
+# BitGold #
 BITCOIN_CORE_H = \
   addrdb.h \
   addrman.h \

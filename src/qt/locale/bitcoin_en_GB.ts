@@ -3179,7 +3179,7 @@
     </message>
     <message>
         <source>Bitcoin Core</source>
-        <translation>BitGold Core</translation>
+        <translation>BitGold</translation>
     </message>
     <message>
         <source>The %s developers</source>

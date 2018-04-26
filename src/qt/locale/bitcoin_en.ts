@@ -4196,7 +4196,7 @@
     <message>
         <location line="-397"/>
         <source>Bitcoin Core</source>
-        <translation>BitGold Core</translation>
+        <translation>BitGold</translation>
     </message>
     <message>
         <location line="+1"/>

@@ -1,7 +1,7 @@
-Contributing to BitGold Core
+Contributing to BitGold
 ============================
 
-The BitGold Core project operates an open contributor model where anyone is
+The BitGold project operates an open contributor model where anyone is
 welcome to contribute towards development in the form of peer review, testing
 and patches. This document explains the practical process and guidelines for
 contributing.
@@ -169,11 +169,11 @@ workload on reviewing.
 "Decision Making" Process
 -------------------------
 
-The following applies to code changes to the BitGold Core project (and related
+The following applies to code changes to the BitGold project (and related
 projects such as libsecp256k1), and is not to be confused with overall BitGold
 Network Protocol consensus changes.
 
-Whether a pull request is merged into BitGold Core rests with the project merge
+Whether a pull request is merged into BitGold rests with the project merge
 maintainers and ultimately the project lead.
 
 Maintainers will take into consideration if a patch is in line with the general
@@ -272,7 +272,7 @@ about:
 Release Policy
 --------------
 
-The project leader is the release manager for each Bitgold Core release.
+The project leader is the release manager for each BitGold release.
 
 Copyright
 ---------
