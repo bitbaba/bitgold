@@ -40,9 +40,9 @@ QString BitcoinUnits::longName(int unit)
 {
     switch(unit)
     {
-    case BTC: return QString("GOLD");
-    case mBTC: return QString("mGOLD");
-    case uBTC: return QString::fromUtf8("μGOLD (bits)");
+    case BTC: return QString("BGD");
+    case mBTC: return QString("m BGD");
+    case uBTC: return QString::fromUtf8("μ BGD");
     default: return QString("???");
     }
 }
@@ -51,7 +51,7 @@ QString BitcoinUnits::shortName(int unit)
 {
     switch(unit)
     {
-    case uBTC: return QString::fromUtf8("bits");
+    case uBTC: return QString::fromUtf8("μ");
     default:   return longName(unit);
     }
 }
@@ -62,7 +62,7 @@ QString BitcoinUnits::description(int unit)
     {
     case BTC: return QString("BitGold");
     case mBTC: return QString("Milli-BitGold (1 / 1" THIN_SP_UTF8 "000)");
-    case uBTC: return QString("Micro-BitGold (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+    case uBTC: return QString("Micro-BitGold (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     default: return QString("???");
     }
 }

@@ -1,4 +1,4 @@
-BitGold Project 
+BitGold Project
 =====================================
 
 [![Build Status](https://travis-ci.org/bitbaba/bitgold.svg?branch=master)](https://travis-ci.org/bitbaba/bitgold)
@@ -6,7 +6,7 @@ BitGold Project
 What is BitGold?
 ----------------
 
-BitGold [GOLD] is an new digital gold that enables instant payments to
+BitGold [BGD] is an new digital gold that enables instant payments to
 anyone, anywhere in the world. BitGold uses peer-to-peer technology to operate
 with no central authority: managing transactions and issuing money are carried
 out collectively by the network. BitGold is the name of open source
@@ -23,7 +23,7 @@ the BitGold software, see https://bintray.bitbaba.com/bintray/bitgold, or read t
 License
 -------
 
-BitGold[GOLD] is released under the terms of the MIT license.
+BitGold[BGD] is released under the terms of the MIT license.
 
 See [COPYING](COPYING) for more information or see https://opensource.org/licenses/MIT.
 

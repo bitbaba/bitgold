@@ -171,7 +171,7 @@ public:
         // BIP32 private key
         base58Prefixes[EXT_SECRET_KEY] = {4, 136, 173, 228};// xprv
 
-        bech32_hrp = "GOLD";
+        bech32_hrp = "BGD";
 
         // Note that of those with the service bits flag, most only support a subset of possible options
         vSeeds.emplace_back("seed.bitgold.bitbaba.com"/*, false*/);
