@@ -1004,11 +1004,11 @@ UniValue gettxoutsetinfo(const JSONRPCRequest& request)
     return ret;
 }
 
-UniValue gettxoutset(const JSONRPCRequest& request)
+UniValue getutxos(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw std::runtime_error(
-            "gettxoutset\n"
+            "getutxos\n"
             "\nReturns the unspent transaction output set.\n"
             "Note this call may take some time.\n"
             "\nArguments:\n"
@@ -1021,8 +1021,8 @@ UniValue gettxoutset(const JSONRPCRequest& request)
             "  \"coinbase\": n,     (boolean) if coinbase\n"
             "},...]\n"
             "\nExamples:\n"
-            + HelpExampleCli("gettxoutset", "")
-            + HelpExampleRpc("gettxoutset", "")
+            + HelpExampleCli("getutxos", "")
+            + HelpExampleRpc("getutxos", "")
         );
 
     UniValue ret(UniValue::VARR);
@@ -1707,7 +1707,7 @@ static const CRPCCommand commands[] =
     { "blockchain",         "getrawmempool",          &getrawmempool,          {"verbose"} },
     { "blockchain",         "gettxout",               &gettxout,               {"txid","n","include_mempool"} },
     { "blockchain",         "gettxoutsetinfo",        &gettxoutsetinfo,        {} },
-    { "blockchain",         "gettxoutset",            &gettxoutset,            {"address"} },
+    { "blockchain",         "getutxos",               &getutxos,               {"address"} },
     { "blockchain",         "pruneblockchain",        &pruneblockchain,        {"height"} },
     { "blockchain",         "savemempool",            &savemempool,            {} },
     { "blockchain",         "verifychain",            &verifychain,            {"checklevel","nblocks"} },
