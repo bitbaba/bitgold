@@ -31,8 +31,10 @@
 #include <init.h>
 #include <ui_interface.h>
 #include <util.h>
+#include <rpc/mining.h>
 
 #include <iostream>
+#include <boost/thread.hpp>
 
 #include <QAction>
 #include <QApplication>
@@ -380,6 +382,7 @@ void BitcoinGUI::createActions()
 
     mineAction = new QAction(platformStyle->TextColorIcon(":/icons/tx_mined"), tr("&Mine"), this);
     mineAction->setMenuRole(QAction::NoRole);
+    mineAction->setCheckable(true);
     mineAction->setStatusTip(tr("Start mine %1 in wallet client").arg(tr(PACKAGE_NAME)));
 
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -676,9 +679,68 @@ void BitcoinGUI::showHelpMessageClicked()
     helpMessageDialog->show();
 }
 
+static void BitcoinMiner()
+{
+    LogPrintf("BitGoldMiner started\n");
+    SetThreadPriority(THREAD_PRIORITY_LOWEST);
+    RenameThread("bitgold-miner");
+
+    CWallet * const pwallet = ::vpwallets[0];
+
+    std::shared_ptr<CReserveScript> coinbase_script;
+    pwallet->GetScriptForMining(coinbase_script);
+
+    try {
+        // Throw an error if no script was provided.  This can happen
+        // due to some internal error but also if the keypool is empty.
+        // In the latter case, already the pointer is NULL.
+        if (!coinbaseScript || coinbaseScript->reserveScript.empty())
+            throw std::runtime_error("No coinbase script available (mining requires a wallet)");
+
+        while (true) {
+            generateBlocks(coinbaseScript, 1, 0x100000, true);
+            MilliSleep(500);
+        }
+    }
+    catch (const boost::thread_interrupted&)
+    {
+        LogPrintf("BitgoldMiner terminated\n");
+        throw;
+    }
+    catch (const std::runtime_error &e)
+    {
+        LogPrintf("BitgoldMiner runtime error: %s\n", e.what());
+        return;
+    }
+}
+
+static void GenerateBitcoins(bool fGenerate, int nThreads)
+{
+    static boost::thread_group* minerThreads = NULL;
+
+    if (nThreads < 0)
+        nThreads = GetNumCores();
+
+    if (minerThreads != NULL)
+    {
+        minerThreads->interrupt_all();
+        delete minerThreads;
+        minerThreads = NULL;
+    }
+
+    if (nThreads == 0 || !fGenerate)
+        return;
+
+    minerThreads = new boost::thread_group();
+    for (int i = 0; i < nThreads; i++)
+        minerThreads->create_thread(&BitcoinMiner);
+}
+
 void BitcoinGUI::mineActionClicked()
 {
-    //helpMessageDialog->show();
+    int nGenProcLimit = GetNumCores()-1;
+    bool fGenerate = mineAction->isChecked();
+    GenerateBitcoins(fGenerate, nGenProcLimit);
 }
 
 #ifdef ENABLE_WALLET
