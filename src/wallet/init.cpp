@@ -126,10 +126,10 @@ bool WalletParameterInteraction()
     }
 
     g_wallet_allow_fallback_fee = Params().IsFallbackFeeEnabled();
-    if (gArgs.IsArgSet("-fallbackfee"))
+    if (/*gArgs.IsArgSet("-fallbackfee")*/true)
     {
         CAmount nFeePerK = 0;
-        if (!ParseMoney(gArgs.GetArg("-fallbackfee", ""), nFeePerK))
+        if (!ParseMoney(gArgs.GetArg("-fallbackfee", "0.002"), nFeePerK))
             return InitError(strprintf(_("Invalid amount for -fallbackfee=<amount>: '%s'"), gArgs.GetArg("-fallbackfee", "")));
         if (nFeePerK > HIGH_TX_FEE_PER_KB)
             InitWarning(AmountHighWarn("-fallbackfee") + " " +
