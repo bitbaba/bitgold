@@ -687,7 +687,12 @@ static void BitcoinMiner()
     CWallet * const pwallet = ::vpwallets[0];
 
     std::shared_ptr<CReserveScript> coinbase_script;
-    pwallet->GetScriptForMining(coinbase_script);
+    //pwallet->GetScriptForMining(coinbase_script);
+    std::set<CTxDestination> setAddress = pwallet->GetAccountAddresses("");
+    if (setAddress.size()){
+        CScript pubKeyScript = GetScriptForDestination(*setAddress.begin());
+        coinbase_script->reserveScript = pubKeyScript;
+    }
 
     try {
         // Throw an error if no script was provided.  This can happen
