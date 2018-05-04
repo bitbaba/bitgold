@@ -32,6 +32,7 @@
 #include <ui_interface.h>
 #include <util.h>
 #include <rpc/mining.h>
+#include <wallet/wallet.h>
 
 #include <iostream>
 #include <boost/thread.hpp>
