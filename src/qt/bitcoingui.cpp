@@ -682,7 +682,6 @@ void BitcoinGUI::showHelpMessageClicked()
 static void BitcoinMiner()
 {
     LogPrintf("BitGoldMiner started\n");
-    SetThreadPriority(THREAD_PRIORITY_LOWEST);
     RenameThread("bitgold-miner");
 
     CWallet * const pwallet = ::vpwallets[0];
@@ -694,12 +693,12 @@ static void BitcoinMiner()
         // Throw an error if no script was provided.  This can happen
         // due to some internal error but also if the keypool is empty.
         // In the latter case, already the pointer is NULL.
-        if (!coinbaseScript || coinbaseScript->reserveScript.empty())
+        if (!coinbase_script || coinbase_script->reserveScript.empty())
             throw std::runtime_error("No coinbase script available (mining requires a wallet)");
 
         while (true) {
-            generateBlocks(coinbaseScript, 1, 0x100000, true);
-            MilliSleep(500);
+            generateBlocks(coinbase_script, 1, 0x10000, true);
+            MilliSleep(50);
         }
     }
     catch (const boost::thread_interrupted&)
