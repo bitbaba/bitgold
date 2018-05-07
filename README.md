@@ -50,18 +50,19 @@ Services
 Features
 --------
 
-- 5 minutes per block(half of bitcoin core)
-- 2-Mega-bytes serialized block size(2x bitcoin core)
-- 42,000,000 coins in PoW stage(2x of bitcoins and half of litecoins)
-- Seg-Witness(same as bitcoin core)
-- GoldHash as PoW (now same as sha256d of bitcoin core)
+- 5 minutes per block
+- 2-Mega-bytes serialized block size(2x of bitcoin core)
+- 42,000,000 coins in PoW stage
+- Seg-Witness
+- GoldHash as PoW (now SHA256Q, asic-resistant)
+- Miner-inside GUI wallet
 
 Roadmaps
 ----------------
 
 - Support chainstate retrieving in script stack machine
   - nonceOf(height)
-  (gamble.md)[https://github.com/bitbaba/bitgold/blob/bitgold/doc/gamble.md]
+    (gamble.md)[https://github.com/bitbaba/bitgold/blob/bitgold/doc/gamble.md]
   - hashOf(height)
   - timeOf(height)
 
