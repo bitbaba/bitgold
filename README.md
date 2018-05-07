@@ -61,8 +61,7 @@ Roadmaps
 ----------------
 
 - Support chainstate retrieving in script stack machine
-  - nonceOf(height)
-    (gamble.md)[https://github.com/bitbaba/bitgold/blob/bitgold/doc/gamble.md]
+  - nonceOf(height) [example: use nonce to gamble](https://github.com/bitbaba/bitgold/blob/bitgold/doc/gamble.md)
   - hashOf(height)
   - timeOf(height)
 
