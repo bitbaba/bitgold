@@ -67,11 +67,13 @@ Roadmaps
 
 - Support non-standard sub-script of P2SH
 
-- Support PoS (Proof-of-Stake)
-
 - Support state storage of non-utxo data
 
 - Support Tx comments(e.g. "pay for coffe")
+
+- Support Instant Messenaging Chat
+
+- Support Mounting of Turing-complete VM for smart contract
 
 Mining 
 -------------------
