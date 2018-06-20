@@ -30,22 +30,23 @@ See [COPYING](COPYING) for more information or see https://opensource.org/licens
 Downloads
 -------------
 
-- [Win32](https://bintray.bitbaba.com/bitgold/bitgold-win32.tar.gz)
-- [Ubuntu](https://bintray.bitbaba.com/bitgold/bitgold-ubuntu64.tar.gz)
-- [Mac](https://bintray.bitbaba.com/bitgold/bitgold-mac.tar.gz)
-- [minerd](https://bintray.bitbaba.com/bitgold/bitgold-miner.zip)
+- [Win32 Wallet](https://bintray.bitbaba.com/bitgold/bitgold-win32.tar.gz)
+- [Ubuntu Wallet](https://bintray.bitbaba.com/bitgold/bitgold-ubuntu64.tar.gz)
+- [Mac Wallet](https://bintray.bitbaba.com/bitgold/bitgold-mac.tar.gz)
+- [pre-built miner for windows](https://bintray.bitbaba.com/bitgold/bitgold-miner.zip)
 
 Services
 ----------------
 
 - [Pool](https://pool.bitbaba.com/)
 
-- [Miner](https://github.com/bitbaba/cpuminer)
+- [source of Miner](https://github.com/bitbaba/cpuminer)
 
 - [Explorer](https://bitgold.bitbaba.com/)
 
-- [Exchange](https://ex.bitbaba.com/)
+- [Exchange1](https://vipzbt.com/Trade/index/market/bgd_cny)
 
+- [Exchange2](https://ex.bitbaba.com/)
 
 Features
 --------
